@@ -1,6 +1,6 @@
 ---
 layout: '../../layouts/BlogPost.astro'
-title: 'Field Notes: Unicorn Migration Season 2024'
+title: '국내 ETF와 해외 ETF 차이'
 date: '2026-05-14'
 description: 'Three weeks in the sub-alpine during peak Equus monoceros migration. What we measured, what we failed to measure, and what measured us instead.'
 tags: ['field-notes', 'methodology', 'monoceros']

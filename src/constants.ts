@@ -9,7 +9,7 @@ export const SITE_DATA = {
     name: 'Jihee H',
 
     // A brief tagline describing your role or expertise (3-5 words/phrases)
-    tagline: "Avian-Feline Fluff Dynamics | Lead Investigator",
+    tagline: "I write random things about Finance & Math",
 
     // Social media handles (username only, not full URL)
     // Set to empty string "" to hide an icon

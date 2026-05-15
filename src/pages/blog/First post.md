@@ -69,4 +69,4 @@ The cracked ribs are healing. The data are being processed. Season five begins i
 
 ---
 
-*The Monoceros Initiative is funded by the Mythical Conservation Society. All field protocols are available on request. The anomalous trajectory data from day fourteen will be discussed, when we understand it, in a forthcoming paper.*
+*해당 블로그는 투자권유를 하지 않습니다. 투자에 대한 판단과 책임은 전적으로 자기 자신에게 있습니다*

@@ -11,7 +11,7 @@ tags: ['해외주식', '해외주식etf', '해외주식세금']
 
 ![Field assistants on migration watch duty, sub-alpine camp, night 7. The note reads: "Still waiting for sparkly hooves. Paws crossed. B"](/astro-scholar/images/blog/sub-alpine-camp-2024.png)
 
-The MCS defines adequate shelter as "a structure capable of withstanding prevailing weather conditions for the expected duration of field activity." I would add the clause "including weather conditions that were not prevailing when you arrived but became prevailing six hours later," which describes approximately half of all sub-alpine field campaigns and which the MCS has not, to date, incorporated into their guidelines.
+The MCS defines adequate shelter as "a structure capable of withstanding prevailing weather conditions for the expected duration of field activity." 
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 
@@ -26,13 +26,11 @@ QQQ
 
 Trail signatures are captured using long-exposure spectral photography calibrated to the 490–510 nm band, which corresponds to the primary bioluminescent emission of *Equus monoceros* during twilight transit. We supplement this with rainbow-refraction triangulation — positioning three reference prisms at known coordinates and calculating source position from the angular distribution of refracted light across the 540–680 nm band, which the mane-refractive effect produces reliably when the subjects pass within forty metres of the array.
 
-This sounds more controlled than it is. The subjects do not pass within forty metres of the array on a schedule. The subjects pass where they pass, when they pass, and the job of the field team is to be in the right location to observe them, which requires knowing where they will be before they are there, which requires the models we are building from data we are still collecting, which is the central recursive difficulty of this particular research programme.
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 
 Two new corridor candidates, designated C-15 and C-16, consistent with the satellite predictions. Three additional observations of the mane-refractive effect that strengthen our wavelength-selective prismatic model — the refracted spectrum was narrow enough (Δλ < 4 nm) to rule out passive scattering and support active light manipulation, which is the interpretation our critics find most uncomfortable.
 
-One anomalous reading on day fourteen: a refraction event with a source angle inconsistent with any of our active prism positions, suggesting either a measurement error or a subject whose approach trajectory was unlike any we have previously recorded. We checked the equipment three times. The equipment was fine. The trajectory is in the dataset. We have not published this yet because we do not know what to do with it, which is the honest answer that peer reviewers rarely accept as a methods statement.
 
 ## 펀드와 ETF 차이
 
@@ -40,15 +38,10 @@ One anomalous reading on day fourteen: a refraction event with a source angle in
 ETF -> 가능
 펀드 -> 불가능
 
-C. R. Glitterhorn's rain gauge, which indicated a precipitation level that conflicted with our lived experience of nights six through nine by a factor of approximately four. We believe the gauge was correct and that the discrepancy reflects an extremely localised orographic precipitation event. We believe this because the alternative — that the gauge was faulty and we spent four nights in conditions we had not budgeted for — is also true and less interesting scientifically.
+ETF는 성격상 주식에 가깝고 펀드는 은행에서 가입/해지하는 예금처럼 은행에서 판매되는 상품과 비슷하기 때문에 증권사 앱에서 실시간으로 거래할 수 없다.
+펀드는 펀드 안에 들어있는 자산들의 순자산가치를 측정해야 하기 때문에 실시간으로 그 가치를 산출하기 쉽지 않고, 그렇게 때문에 하루 한 번 그 가치를 측정, 산출한다.
+이러한 유동성 차이로 최근 자금들이 펀드에서 ETF로 옮겨가는 경향을 보이고 있다.
 
-## On the Experience of Sub-Alpine Field Work
-
-I am occasionally asked, usually by students who are considering joining the Monoceros Initiative, what it is actually like to spend three weeks in the sub-alpine tracking migration corridors at night.
-
-The honest answer is: cold, wet, intermittently spectacular, and nothing like the methods section describes.
-
-Methods sections describe what you did. They do not describe the forty-seven nights in the preceding years that produced the protocol that made the three weeks coherent. They do not describe the moment on day twelve when the cloud cover broke at 3 AM and the entire eastern ridge was lit by refracted bioluminescence from a transit event we had not predicted, and the equipment was running, and the data were good, and for approximately ninety seconds everything worked exactly as it was supposed to.
 
 > You do fieldwork for those ninety seconds. Everything else is preparation.
 

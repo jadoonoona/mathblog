@@ -63,9 +63,9 @@ ETF는 성격상 주식에 가깝고 펀드는 은행에서 가입/해지하는 
 이러한 유동성 차이로 최근 자금들이 펀드에서 ETF로 옮겨가는 경향을 보이고 있다.
 
 
-> You do fieldwork for those ninety seconds. Everything else is preparation.
+> 중요한 건 개인의 투자 금액과 수익 규모에 따라 세금 계산을 해보는 것.
 
-The cracked ribs are healing. The data are being processed. Season five begins in September 2025, and I am already reviewing the MCS shelter specifications.
+
 
 ---
 

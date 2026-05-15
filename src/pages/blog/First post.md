@@ -9,7 +9,7 @@ tags: ['해외주식', '해외주식etf', '해외주식세금', '국내상장해
 해외 주식을 투자하고 있다면 신경써야 할 건 과세기준.
 해외 주식에 투자할 경우 연간 실현손익이 250만원을 넘을 경우에 "양도소득세"를 내게 된다.
 
-![Field assistants on migration watch duty, sub-alpine camp, night 7. The note reads: "Still waiting for sparkly hooves. Paws crossed. B"](/astro-scholar/images/blog/sub-alpine-camp-2024.png)
+![Field assistants on migration watch duty, sub-alpine camp, night 7. The note reads: "Still waiting for sparkly hooves. Paws crossed. B"](/public/images/blog/ChatGPT Image May 15, 2026 at 02_50_05 PM.png)
 
 국내상장 해외 ETF와 해외ETF에 투자하는 시나리오를 비교해 보면서 어떤 상품에 투자하는게 자신의 상황에 맞는 것인지 알아봅시다.
 

@@ -3,7 +3,7 @@ layout: '../../layouts/BlogPost.astro'
 title: '국내 ETF와 해외 ETF 차이'
 date: '2026-05-14'
 description: '해외 ETF에 투자하고 싶은데 국내에서 출시된 해외 ETF와 해외 ETF중 어느 것에 투자할 지 모르겠을 때 참고하면 좋은 글'
-tags: ['해외주식', '해외주식etf', '해외주식세금']
+tags: ['해외주식', '해외주식etf', '해외주식세금', '국내상장해외etf']
 ---
 
 해외 주식을 투자하고 있다면 신경써야 할 건 과세기준.
@@ -22,12 +22,30 @@ ACE - 한국투자신탁운용에서 출시한 ETF\
 SOL - 신한자산운용에서 출시한 ETF\
 
 
-각 증권사들은 국내 개별종목에 투자하는 ETF뿐 아니라 해외 지수 & 개별종목에 투자하는 ETF를 출시했다.\
+각 증권사들은 국내 개별종목에 투자하는 ETF뿐 아니라 해외 지수 & 개별종목에 투자하는 ETF를 출시했다.
+
+아래의 두 시나리오를 생각해보자.
+
+철수는 수중에 2000만원의 현금이 있어 올해 초 미국에 상장된 Vanguard S&P500 ETF에 투자했다.
+연초에 투자한 2000만원이 현재 2500만원이 되어 초과수익 550만원이 발생하고 있다.
+
+해외주식은 250만원이 비과세 공제가 되기 때문에 초과수익 300만원에 대해 22%의 세금을 내야 한다.
+
+반면 철수가 2000만원을 국내상장된 해외 etf, 즉 다음
+TIGER 미국 S&P 500\
+KODEX 미국 S&P 500\
+ACE 미국 S&P 500
+중 하나에 투자했을 경우에는
+
+ETF를 매도할 때 생기는 수익 300만원에 대해서 15.4% 세금 부과, 그래고 배당(분배금)이 발생했을 시 그에 대해 15.4%를 부과하게 된다.
+배당금을 10만원 받았다고 가정하면
+300만원 * 15.4% + 10만원 * 15.4%를 세금으로 지불하게 되는 것이다.
 
 
-## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 
-Two new corridor candidates, designated C-15 and C-16, consistent with the satellite predictions. Three additional observations of the mane-refractive effect that strengthen our wavelength-selective prismatic model — the refracted spectrum was narrow enough (Δλ < 4 nm) to rule out passive scattering and support active light manipulation, which is the interpretation our critics find most uncomfortable.
+
+
+
 
 
 ## 펀드와 ETF 차이

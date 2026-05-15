@@ -15,16 +15,14 @@ The MCS defines adequate shelter as "a structure capable of withstanding prevail
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 
-KODEX - 삼성증권에서 출시한 ETF
-TIGER - 미래에셋애서 출시한 ETF
-RISE - KB 자산운용에서 출시한 ETF
-ACE - 한국투자신탁운용에서 출시한 ETF
-SOL - 신한자산운용에서 출시한 ETF
+KODEX - 삼성증권에서 출시한 ETF\
+TIGER - 미래에셋애서 출시한 ETF\
+RISE - KB 자산운용에서 출시한 ETF\
+ACE - 한국투자신탁운용에서 출시한 ETF\
+SOL - 신한자산운용에서 출시한 ETF\
 
-SPY
-QQQ
 
-Trail signatures are captured using long-exposure spectral photography calibrated to the 490–510 nm band, which corresponds to the primary bioluminescent emission of *Equus monoceros* during twilight transit. We supplement this with rainbow-refraction triangulation — positioning three reference prisms at known coordinates and calculating source position from the angular distribution of refracted light across the 540–680 nm band, which the mane-refractive effect produces reliably when the subjects pass within forty metres of the array.
+각 증권사들은 국내 개별종목에 투자하는 ETF뿐 아니라 해외 지수 & 개별종목에 투자하는 ETF를 출시했다.\
 
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?

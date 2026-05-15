@@ -3,10 +3,11 @@ layout: '../../layouts/BlogPost.astro'
 title: '국내 ETF와 해외 ETF 차이'
 date: '2026-05-14'
 description: '해외 ETF에 투자하고 싶은데 국내에서 출시된 해외 ETF와 해외 ETF중 어느 것에 투자할 지 모르겠을 때 참고하면 좋은 글'
-tags: ['field-notes', 'methodology', 'monoceros']
+tags: ['해외주식', '해외주식etf', '해외주식세금']
 ---
 
-I returned from the sub-alpine on October 28th with 847 GB of spectral photography, fourteen trail-signature measurements, three cracked ribs from a fall on the north-facing scree slope on day nine, and a revised opinion of the Mythical Conservation Society's definition of "adequate shelter."
+해외 주식을 투자하고 있다면 신경써야 할 건 과세기준.
+해외 주식에 투자할 경우 연간 실현손익이 250만원을 넘을 경우에 "양도소득세"를 내게 된다.
 
 ![Field assistants on migration watch duty, sub-alpine camp, night 7. The note reads: "Still waiting for sparkly hooves. Paws crossed. B"](/astro-scholar/images/blog/sub-alpine-camp-2024.png)
 
@@ -18,6 +19,7 @@ KODEX - 삼성증권에서 출시한 ETF
 TIGER - 미래에셋애서 출시한 ETF
 RISE - KB 자산운용에서 출시한 ETF
 ACE - 한국투자신탁운용에서 출시한 ETF
+SOL - 신한자산운용에서 출시한 ETF
 
 SPY
 QQQ
@@ -32,9 +34,11 @@ Two new corridor candidates, designated C-15 and C-16, consistent with the satel
 
 One anomalous reading on day fourteen: a refraction event with a source angle inconsistent with any of our active prism positions, suggesting either a measurement error or a subject whose approach trajectory was unlike any we have previously recorded. We checked the equipment three times. The equipment was fine. The trajectory is in the dataset. We have not published this yet because we do not know what to do with it, which is the honest answer that peer reviewers rarely accept as a methods statement.
 
-## What Failed
+## 펀드와 ETF 차이
 
-The eastern array on nights six through nine, due to moisture ingress in the long-exposure housing. We lost approximately thirty hours of potential observation time. My field notebook from those days contains a level of vocabulary that I would not reproduce here, followed by four pages of revised equipment protocols that I am incorporating into the updated FDT field manual.
+거래소에서 실시간으로 거래가 가능한가?
+ETF -> 가능
+펀드 -> 불가능
 
 C. R. Glitterhorn's rain gauge, which indicated a precipitation level that conflicted with our lived experience of nights six through nine by a factor of approximately four. We believe the gauge was correct and that the discrepancy reflects an extremely localised orographic precipitation event. We believe this because the alternative — that the gauge was faulty and we spent four nights in conditions we had not budgeted for — is also true and less interesting scientifically.
 

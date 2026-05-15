@@ -4,6 +4,7 @@ title: 'On the Measurability of Fluff: A Field Note'
 date: '2026-01-15'
 description: 'A methodological reflection on why fluff-density is a physical parameter and not a punchline — and what it cost to establish that distinction.'
 tags: ['methodology', 'reflections']
+hidden: true
 ---
 
 I am often asked — at conferences, at department teas, and once by a journalist who seemed disappointed that I was real — whether I am aware that my subject matter is funny. I am. I have always been. This does not, as some colleagues appear to believe, undermine the science.

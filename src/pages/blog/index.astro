@@ -8,17 +8,17 @@ interface Post {
     description?: string;
     tags?: string[];
     url: string;
+    hidden?: boolean;
 }
 
 const postFiles = import.meta.glob<{ frontmatter: Post }>('./*.md', { eager: true });
-
 const sorted: Post[] = Object.entries(postFiles)
     .map(([path, mod]) => ({
         ...mod.frontmatter,
         url: `${import.meta.env.BASE_URL}blog/` + path.replace('./', '').replace('.md', '') + '/',
     }))
+    .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
 const allTags = [...new Set(sorted.flatMap(p => p.tags ?? []))].sort();
 
 function formatDate(dateStr: string) {

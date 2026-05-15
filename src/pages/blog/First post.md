@@ -11,7 +11,7 @@ tags: ['해외주식', '해외주식etf', '해외주식세금', '국내상장해
 
 ![Field assistants on migration watch duty, sub-alpine camp, night 7. The note reads: "Still waiting for sparkly hooves. Paws crossed. B"](/astro-scholar/images/blog/sub-alpine-camp-2024.png)
 
-The MCS defines adequate shelter as "a structure capable of withstanding prevailing weather conditions for the expected duration of field activity." 
+국내상장 해외 ETF와 해외ETF에 투자하는 시나리오를 비교해 보면서 어떤 상품에 투자하는게 자신의 상황에 맞는 것인지 알아봅시다.
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 

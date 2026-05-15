@@ -2,7 +2,7 @@
 layout: '../../layouts/BlogPost.astro'
 title: '국내 ETF와 해외 ETF 차이'
 date: '2026-05-14'
-description: 'Three weeks in the sub-alpine during peak Equus monoceros migration. What we measured, what we failed to measure, and what measured us instead.'
+description: '해외 ETF에 투자하고 싶은데 국내에서 출시된 해외 ETF와 해외 ETF중 어느 것에 투자할 지 모르겠을 때 참고하면 좋은 글'
 tags: ['field-notes', 'methodology', 'monoceros']
 ---
 
@@ -14,9 +14,10 @@ The MCS defines adequate shelter as "a structure capable of withstanding prevail
 
 ## 그렇다면 국내 상장 해외 ETF의 세금은 어떤식으로 적용될까?
 
-KODEX
-TIGER
-RISE
+KODEX - 삼성증권에서 출시한 ETF
+TIGER - 미래에셋애서 출시한 ETF
+RISE - KB 자산운용에서 출시한 ETF
+ACE - 한국투자신탁운용에서 출시한 ETF
 
 SPY
 QQQ

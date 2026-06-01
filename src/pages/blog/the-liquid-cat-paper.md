@@ -4,7 +4,6 @@ title: 'The Liquid Cat Paper, Four Years On'
 date: '2025-08-20'
 description: 'My most-cited work is a paper about cats fitting into containers. I have complicated feelings about this, which I will now express at length.'
 tags: ['reflections', 'publications']
-hidden: true
 ---
 
 In 2022, the *Journal of Non-Newtonian Biomechanics* published my paper "Volumetric Fluidity in Felids: Empirical Confirmation of the Liquid Cat Hypothesis." It has since become the most-cited thing I have ever written. I am asked about it at every conference I attend. A journalist described it as "delightfully silly." My postdoc supervisor — who spent fifteen years trying to get his own most-cited paper past four hundred citations — sent me a congratulations note that I am fairly confident was not entirely sincere.

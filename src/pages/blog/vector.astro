@@ -1,0 +1,195 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+
+const topics = [
+  // ── Linear Algebra ──────────────────────────────────────────────
+  {
+    category: "Linear Algebra",
+    items: [
+      {
+        slug: "vector-spaces",
+        title: "Vector Spaces",
+        venue: "Foundations — axioms, subspaces, and examples over ℝ and ℂ",
+        extra: "The eight axioms; why the first quadrant of ℝ² fails; common examples including polynomial and function spaces",
+        status: "complete",
+      },
+      {
+        slug: "linear-independence-bases",
+        title: "Linear Independence & Bases",
+        venue: "Span, basis, dimension, and the Steinitz exchange lemma",
+        extra: "Standard bases for ℝⁿ, 𝒫ₙ, and ℝᵐˣⁿ; why all bases of a finite-dimensional space share the same cardinality",
+        status: "complete",
+      },
+      {
+        slug: "linear-maps",
+        title: "Linear Maps & Matrices",
+        venue: "Kernels, images, rank-nullity theorem",
+        extra: "Matrix representation of a linear map; change of basis; the rank-nullity theorem with proof",
+        status: "wip",
+      },
+      {
+        slug: "eigenvalues",
+        title: "Eigenvalues & Diagonalisation",
+        venue: "Characteristic polynomial, eigenvectors, diagonalisability",
+        extra: null,
+        status: "draft",
+      },
+      {
+        slug: "inner-product-spaces",
+        title: "Inner Product Spaces",
+        venue: "Gram–Schmidt, orthonormal bases, orthogonal projections",
+        extra: null,
+        status: "draft",
+      },
+    ],
+  },
+
+  // ── Real Analysis ────────────────────────────────────────────────
+  {
+    category: "Real Analysis",
+    items: [
+      {
+        slug: "limits-continuity",
+        title: "Limits & Continuity",
+        venue: "ε–δ definition, continuity, IVT, EVT",
+        extra: "Full ε–δ proofs for polynomial limits; removable, jump, and infinite discontinuities; Intermediate and Extreme Value Theorems",
+        status: "complete",
+      },
+      {
+        slug: "differentiation",
+        title: "Differentiation",
+        venue: "Derivative as a limit, chain rule, MVT, Taylor's theorem",
+        extra: "Mean Value Theorem and consequences; Taylor's theorem with Lagrange remainder",
+        status: "wip",
+      },
+      {
+        slug: "riemann-integration",
+        title: "Riemann Integration",
+        venue: "Darboux sums, integrability criterion, FTC",
+        extra: null,
+        status: "draft",
+      },
+      {
+        slug: "sequences-series",
+        title: "Sequences & Series",
+        venue: "Convergence, Cauchy criterion, power series",
+        extra: null,
+        status: "draft",
+      },
+    ],
+  },
+
+  // ── Probability ──────────────────────────────────────────────────
+  {
+    category: "Probability",
+    items: [
+      {
+        slug: "probability-spaces",
+        title: "Probability Spaces",
+        venue: "σ-algebras, Kolmogorov axioms, inclusion-exclusion",
+        extra: "Why σ-algebras and not just power sets; countable additivity vs. finite additivity; Borel σ-algebra on ℝ",
+        status: "complete",
+      },
+      {
+        slug: "random-variables",
+        title: "Random Variables & Distributions",
+        venue: "CDF, PMF, PDF; expectation and variance",
+        extra: "Discrete vs. continuous RVs; common families: Bernoulli, Binomial, Poisson, Exponential, Normal",
+        status: "wip",
+      },
+      {
+        slug: "conditioning",
+        title: "Conditioning & Independence",
+        venue: "Conditional probability, Bayes' theorem, independence",
+        extra: null,
+        status: "draft",
+      },
+    ],
+  },
+
+  // ── Topology ─────────────────────────────────────────────────────
+  {
+    category: "Topology",
+    items: [
+      {
+        slug: "metric-spaces",
+        title: "Metric Spaces",
+        venue: "Open and closed sets, compactness, completeness",
+        extra: "Heine–Borel theorem; why completeness and compactness are independent; examples from function spaces",
+        status: "wip",
+      },
+      {
+        slug: "topological-spaces",
+        title: "Topological Spaces",
+        venue: "Open sets, continuity, connectedness, quotient topology",
+        extra: null,
+        status: "draft",
+      },
+    ],
+  },
+];
+
+const statusLabel: Record<string, string> = {
+  complete: "✓",
+  wip:      "~",
+  draft:    "○",
+};
+---
+
+<Layout pageTitle="Math Notes">
+  <div class="page-container">
+    <h1>Math Notes</h1>
+
+    <p class="intro-text">
+      A running record of concepts I am working through — definitions, proofs,
+      and the intuitions that make them click. Entries marked
+      <span class="legend-complete">✓</span> are reasonably complete;
+      <span class="legend-wip">~</span> are still being written;
+      <span class="legend-draft">○</span> are placeholders I have not yet started.
+    </p>
+
+    {topics.map(({ category, items }) => (
+      <section>
+        <h2>{category}</h2>
+        <ul class="custom-list">
+          {items.map(({ slug, title, venue, extra, status }) => (
+            <li>
+              <a
+                class="list-item-title"
+                href={`${base}math/${slug}`}
+              >
+                <span class={`status-dot status-${status}`}>{statusLabel[status]}</span>
+                {title}
+              </a>
+              <span class="list-item-description">
+                {venue}
+                {extra && (
+                  <span class="extra-links">{extra}</span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .legend-complete { color: var(--color-complete, #16a34a); font-weight: 700; }
+  .legend-wip      { color: var(--color-wip,      #ca8a04); font-weight: 700; }
+  .legend-draft    { color: var(--color-draft,     #9ca3af); font-weight: 700; }
+
+  .status-dot {
+    display: inline-block;
+    width: 1.25em;
+    font-size: 0.8em;
+    font-weight: 700;
+    vertical-align: middle;
+    margin-right: 0.1em;
+  }
+  .status-complete { color: var(--color-complete, #16a34a); }
+  .status-wip      { color: var(--color-wip,      #ca8a04); }
+  .status-draft    { color: var(--color-draft,     #9ca3af); }
+</style>

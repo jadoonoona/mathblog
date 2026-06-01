@@ -2,7 +2,44 @@
 import Layout from './Layout.astro';
 import '../styles/blog.css';
 
+interface Post {
+    title: string;
+    date: string;
+    description?: string;
+    tags?: string[];
+    hidden?: boolean;
+}
+
 const { frontmatter } = Astro.props;
+const section = Astro.props.section ?? frontmatter.section ?? 'blog';
+
+const blogPostFiles = import.meta.glob<{ frontmatter: Post }>(
+    '../pages/blog/*.md',
+    { eager: true }
+);
+const mathNoteFiles = import.meta.glob<{ frontmatter: Post }>(
+    '../pages/math-notes/*.md',
+    { eager: true }
+);
+
+const sectionFiles = section === 'math-notes' ? mathNoteFiles : blogPostFiles;
+const sectionBase = section === 'math-notes' ? `${import.meta.env.BASE_URL}math-notes/` : `${import.meta.env.BASE_URL}blog/`;
+const sidebarHeading = section === 'math-notes' ? 'All Notes' : 'All Posts';
+const sectionLabel = section === 'math-notes' ? 'Math Notes' : 'Blog';
+const sectionFooterLabel = section === 'math-notes' ? 'all notes' : 'all posts';
+
+const sortedPosts = Object.entries(sectionFiles)
+    .map(([path, mod]) => ({
+        ...mod.frontmatter,
+        url:
+            section === 'math-notes'
+                ? sectionBase + path.replace('../pages/math-notes/', '').replace('.md', '') + '/'
+                : sectionBase + path.replace('../pages/blog/', '').replace('.md', '') + '/',
+    }))
+    .filter(post => !post.hidden)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const currentTitle = frontmatter.title;
 
 const dateStr = new Date(frontmatter.date).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -12,31 +49,54 @@ const dateStr = new Date(frontmatter.date).toLocaleDateString('en-GB', {
 ---
 
 <Layout pageTitle={frontmatter.title}>
-    <div class="page-container">
-        <div class="post-header">
-            <a href={`${import.meta.env.BASE_URL}blog/`} class="back-link">← Blog</a>
-            <h1 class="post-title">{frontmatter.title}</h1>
-            <div class="post-meta">
-                <time datetime={frontmatter.date}>{dateStr}</time>
-                {frontmatter.tags && (
-                    <div class="post-tags">
-                        {frontmatter.tags.map((tag: string) => (
-                            <span class="tag">{tag}</span>
-                        ))}
-                    </div>
+    <div class="page-container post-layout">
+        <aside class="post-sidebar">
+            <h2>{sidebarHeading}</h2>
+            <ul class="sidebar-post-list">
+                {sortedPosts.map(post => (
+                    <li>
+                        <a
+                            href={post.url}
+                            class={`sidebar-post-link ${post.title === currentTitle ? 'current' : ''}`}
+                        >
+                            <span class="sidebar-post-title">{post.title}</span>
+                            <time>{new Date(post.date).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            })}</time>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </aside>
+
+        <div class="post-content">
+            <div class="post-header">
+                <a href={sectionBase} class="back-link">← {sectionLabel}</a>
+                <h1 class="post-title">{frontmatter.title}</h1>
+                <div class="post-meta">
+                    <time datetime={frontmatter.date}>{dateStr}</time>
+                    {frontmatter.tags && (
+                        <div class="post-tags">
+                            {frontmatter.tags.map((tag: string) => (
+                                <span class="tag">{tag}</span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {frontmatter.description && (
+                    <p class="post-description">{frontmatter.description}</p>
                 )}
             </div>
-            {frontmatter.description && (
-                <p class="post-description">{frontmatter.description}</p>
-            )}
-        </div>
 
-        <article class="post-body">
-            <slot />
-        </article>
+            <article class="post-body">
+                <slot />
+            </article>
 
-        <div class="post-footer">
-            <a href={`${import.meta.env.BASE_URL}blog/`} class="back-link">← Back to all posts</a>
+            <div class="post-footer">
+                <a href={sectionBase} class="back-link">← Back to {sectionFooterLabel}</a>
+            </div>
         </div>
     </div>
 </Layout>

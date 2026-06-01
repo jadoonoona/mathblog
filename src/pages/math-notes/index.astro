@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/blog.css';
+const base = import.meta.env.BASE_URL;
+
+interface NoteFrontmatter {
+    title: string;
+    date?: string;
+    category?: string;
+    description?: string;
+    status?: 'complete' | 'wip' | 'draft';
+    hidden?: boolean;
+}
+
+const noteFiles = import.meta.glob<{ frontmatter: NoteFrontmatter }>('./*.md', { eager: true });
+
+const notes = Object.entries(noteFiles)
+    .map(([path, mod]) => {
+        const slug = path.replace('./', '').replace('.md', '');
+        return {
+            ...mod.frontmatter,
+            url: `${base}math-notes/${slug}/`,
+        };
+    })
+    .filter(note => !note.hidden)
+    .sort((a, b) => {
+        if (a.date && b.date) {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+        if (a.date) return -1;
+        if (b.date) return 1;
+        return a.title.localeCompare(b.title);
+    });
+
+const groupedNotes = Array.from(
+    notes.reduce((map, note) => {
+        const category = note.category ?? 'Uncategorized';
+        const list = map.get(category) ?? [];
+        list.push(note);
+        map.set(category, list);
+        return map;
+    }, new Map<string, Array<NoteFrontmatter & { url: string }>>())
+);
+
+const statusLabel: Record<string, string> = {
+    complete: '✓',
+    wip: '~',
+    draft: '○',
+};
+
+function formatDate(date?: string) {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+}
+---
+
+<Layout pageTitle="Math Notes">
+    <div class="page-container">
+        <h1>Math Notes</h1>
+
+        <p class="intro-text">
+            Little notes I make when I study. This is a record of my learning history.
+        </p>
+
+        {groupedNotes.length ? (
+            groupedNotes.map(([category, items]) => (
+                <section>
+                    <h2>{category}</h2>
+                    <div class="blog-grid">
+                        {items.map(note => (
+                            <a href={note.url} class="blog-card">
+                                <div class="blog-card-inner">
+                                    <span class="blog-card-date">
+                                        {note.date ? formatDate(note.date) : statusLabel[note.status ?? 'draft']}
+                                    </span>
+                                    <div>
+                                        <h2 class="blog-card-title">{note.title}</h2>
+                                        {note.description && (
+                                            <p class="blog-card-description">{note.description}</p>
+                                        )}
+                                        {note.status && (
+                                            <div class="blog-card-tags">
+                                                <span class="tag">{statusLabel[note.status]} {note.status}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            ))
+        ) : (
+            <p class="intro-text">No math notes are available yet.</p>
+        )}
+    </div>
+</Layout>

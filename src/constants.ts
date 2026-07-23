@@ -6,7 +6,7 @@
 
 export const SITE_DATA = {
     // Your full name as you'd like it displayed
-    name: 'Jihee H',
+    name: "Jamon's blog",
 
     // A brief tagline describing your role or expertise (3-5 words/phrases)
     tagline: "I write random things about Finance & Math",
@@ -18,8 +18,8 @@ export const SITE_DATA = {
 
     // Bluesky handle (without the @)
     bluesky: "",
-    linkedin: "jihee-h",
-    github: "jadoonoona",
+    //linkedin: "jihee-h",
+    //github: "jadoonoona",
 
     // Google Scholar ID (found in your Scholar profile URL)
     // Example: https://scholar.google.com/citations?user=YOUR_ID_HERE

@@ -15,20 +15,14 @@ ABC와 BAC는 같은 경우라고 할 수 있을까? 파이썬으로 직접 경�
 ```python
 def factorial(n):
     result = 1
-
     for number in range(1, n + 1):
         result *= number
-
     return result
-
 
 def permutation_count(n, r):
     if r < 0 or r > n:
         return 0
-
     return factorial(n) // factorial(n - r)
-
-
 print(permutation_count(3, 2))
 ```
 
@@ -40,21 +34,15 @@ print(permutation_count(3, 2))
 ```python
 def factorial(n):
     result = 1
-
     for number in range(1, n + 1):
         result *= number
-
     return result
-
 
 def combination_count(n, r):
     if r < 0 or r > n:
         return 0
-
     return factorial(n) // (
         factorial(r) * factorial(n - r)
     )
-
-
 print(combination_count(3, 2))
 ```

@@ -35,6 +35,7 @@ print(permutation_count(3, 2))
 
 조합 개수 계산 함수
 
+```python
 def factorial(n):
     result = 1
 
@@ -54,3 +55,4 @@ def combination_count(n, r):
 
 
 print(combination_count(3, 2))
+```

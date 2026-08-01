@@ -7,6 +7,7 @@ interface Post {
     date: string;
     description?: string;
     tags?: string[];
+    category?: string;
     hidden?: boolean;
 }
 
@@ -39,6 +40,26 @@ const sortedPosts = Object.entries(sectionFiles)
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+const groupedPosts = section === 'math-notes'
+    ? Array.from(
+        sortedPosts.reduce((map, post) => {
+            const category = post.category ?? 'Uncategorized';
+            const list = map.get(category) ?? [];
+            list.push(post);
+            map.set(category, list);
+            return map;
+        }, new Map<string, typeof sortedPosts>())
+    )
+    : null;
+
+function formatCategory(category?: string) {
+    if (!category) return 'Uncategorized';
+    return category
+        .split(/\s+/)
+        .map(word => (word.toLowerCase() === 'and' ? 'and' : word.charAt(0).toUpperCase() + word.slice(1)))
+        .join(' ');
+}
+
 const currentTitle = frontmatter.title;
 
 const dateStr = new Date(frontmatter.date).toLocaleDateString('en-GB', {
@@ -52,23 +73,48 @@ const dateStr = new Date(frontmatter.date).toLocaleDateString('en-GB', {
     <div class="page-container post-layout">
         <aside class="post-sidebar">
             <h2>{sidebarHeading}</h2>
-            <ul class="sidebar-post-list">
-                {sortedPosts.map(post => (
-                    <li>
-                        <a
-                            href={post.url}
-                            class={`sidebar-post-link ${post.title === currentTitle ? 'current' : ''}`}
-                        >
-                            <span class="sidebar-post-title">{post.title}</span>
-                            <time>{new Date(post.date).toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                            })}</time>
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            {section === 'math-notes' && groupedPosts ? (
+                groupedPosts.map(([category, posts]) => (
+                    <div class="sidebar-category-group">
+                        <h3 class="sidebar-category-heading">{formatCategory(category)}</h3>
+                        <ul class="sidebar-post-list">
+                            {posts.map(post => (
+                                <li>
+                                    <a
+                                        href={post.url}
+                                        class={`sidebar-post-link ${post.title === currentTitle ? 'current' : ''}`}
+                                    >
+                                        <span class="sidebar-post-title">{post.title}</span>
+                                        <time>{new Date(post.date).toLocaleDateString('en-GB', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                            year: 'numeric',
+                                        })}</time>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            ) : (
+                <ul class="sidebar-post-list">
+                    {sortedPosts.map(post => (
+                        <li>
+                            <a
+                                href={post.url}
+                                class={`sidebar-post-link ${post.title === currentTitle ? 'current' : ''}`}
+                            >
+                                <span class="sidebar-post-title">{post.title}</span>
+                                <time>{new Date(post.date).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                })}</time>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </aside>
 
         <div class="post-content">

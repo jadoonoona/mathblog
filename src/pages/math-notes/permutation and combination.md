@@ -12,6 +12,7 @@ ABC와 BAC는 같은 경우라고 할 수 있을까? 파이썬으로 직접 경�
 순열: 다른 순서는 다른 경우의 수
 예시 - 발표순서를 정하는 경우의 수
 
+```python
 def factorial(n):
     result = 1
 
@@ -29,6 +30,7 @@ def permutation_count(n, r):
 
 
 print(permutation_count(3, 2))
+```
 
 조합: 다른 순서는 같은 경우의 수
 예시 - 두 명의 대표를 선출하는 경우

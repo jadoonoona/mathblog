@@ -3,6 +3,7 @@ layout: '../../layouts/BlogPost.astro'
 section: 'math-notes'
 title: 'Vectors - 동형사상'
 date: '2025-08-20'
+category: 'linear algebra'
 tags: ['linear-algebra']
 ---
 전사와 단사의 성질

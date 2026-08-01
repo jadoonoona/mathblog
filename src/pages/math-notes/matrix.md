@@ -3,6 +3,7 @@ layout: '../../layouts/BlogPost.astro'
 section: 'math-notes'
 title: "Matrix"
 date: "2026-05-16"
+category: 'linear algebra'
 ---
 
 A matrix is a collection of numbers, either real or complex, inside of a multi-dimensional object:

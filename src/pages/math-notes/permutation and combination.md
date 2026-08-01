@@ -3,6 +3,7 @@ layout: '../../layouts/BlogPost.astro'
 section: 'math-notes'
 title: '조합과 순열'
 date: '2026-08-01'
+category: 'probability and statistics'
 tags: ['조합','순열','Permutation','Combination','Python','Statistics']
 ---
 한 학기 배운 내용 복습 차원에서 정리하는 조합과 순열.

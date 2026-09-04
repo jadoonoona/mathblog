@@ -35,6 +35,14 @@
     margin-bottom: 2rem;
 }
 
+.intro-text p {
+    margin: 0 0 1rem;
+}
+
+.intro-text p:last-child {
+    margin-bottom: 0;
+}
+
 @media (min-width: 768px) {
     .about-intro-wrapper {
         flex-direction: row-reverse;

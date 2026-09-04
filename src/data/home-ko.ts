@@ -1,7 +1,7 @@
 import type { FeaturedProject, InterestArea } from './home';
 
 export const INTEREST_AREAS_KO: InterestArea[] = [
-    { number: '01', title: '수학과 통계', description: '배운 내용을 정리한 곳입니다', topics: ['선형대수', '확률', '회귀분석', '정량적 방법론'], link: 'math-notes/' },
+    { number: '01', title: '수학과 통계', description: '배운 내용을 정리한 곳입니다', topics: ['선형대수', '확률', '회귀분석', '정량적 방법론'], link: 'ko/math-notes/' },
     { number: '02', title: '금융과 투자', description: '금융과 관련된 내용들을 기록한 공간입니다', topics: ['주식', '부동산', '거시경제', '가치평가'], link: 'blog/' },
     { number: '03', title: '데이터와 리스크 분석', description: '현업을 바탕으로 이런 저런 내용을 다뤄봅니다.', topics: ['Python', 'SQL', '시장 리스크', '변동성', '자동화'], link: 'blog/' },
     { number: '04', title: '제품과 개발', description: '분석적 사고와 세심한 제품 설계가 만나는 유용한 도구를 만듭니다.', topics: ['모바일 개발', 'React Native', 'Supabase', '제품 설계'], link: '#projects' },

@@ -27,5 +27,5 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     { number: '01', title: 'Market Risk Analytics', description: 'A working space for exploring volatility, drawdown, and the risk behind market returns.', tags: ['Python', 'Risk', 'Data'], link: 'blog/', linkLabel: 'Explore writing', featured: true },
     { number: '02', title: 'Real Estate Investment Model', description: 'A practical framework for thinking through property cash flows, assumptions, and valuation.', tags: ['Property', 'Valuation'], link: 'blog/', linkLabel: 'Coming to the notebook' },
     { number: '03', title: 'Project Finance Case Study', description: 'Notes on structuring long-term projects, risk allocation, and the numbers that make them work.', tags: ['Project finance', 'Modelling'], link: 'blog/', linkLabel: 'Coming to the notebook' },
-    { number: '04', title: 'Our Trip Plan', description: 'A collaborative travel planning product built to make shared itineraries easier to manage.', tags: ['Mobile', 'React Native', 'Supabase'], link: '#our-trip-plan', linkLabel: 'View spotlight' },
+    { number: '04', title: 'Our Trip Plan', description: 'A collaborative travel planning product built to make shared itineraries easier to manage.', tags: ['Mobile', 'React Native', 'Supabase'], link: 'https://ourtripplan.com', linkLabel: 'View the project' },
 ];

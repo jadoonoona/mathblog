@@ -3,11 +3,10 @@ layout: '../../layouts/BlogPost.astro'
 section: 'math-notes'
 title: '조합과 순열'
 date: '2026-08-01'
-category: 'probability and statistics'
+category: 'Probability and statistics'
 tags: ['조합','순열','Permutation','Combination','Python','Statistics']
 ---
 한 학기 배운 내용 복습 차원에서 정리하는 조합과 순열.
-
 ABC와 BAC는 같은 경우라고 할 수 있을까? 파이썬으로 직접 경우의 수 만들어보자.
 
 순열: 다른 순서는 다른 경우의 수

@@ -357,6 +357,24 @@ body:has(.menu-toggle[aria-expanded="true"])::before {
     color: var(--color-accent);
 }
 
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+    margin-right: 0.25rem;
+    padding-right: 0.75rem;
+    border-right: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+}
+
+.language-active {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
 /* ==========================================================================
    Desktop Responsive Styles
    ========================================================================== */
@@ -381,7 +399,8 @@ body:has(.menu-toggle[aria-expanded="true"])::before {
         background: none;
         box-shadow: none;
         padding-top: 0;
-        display: block;
+        display: flex;
+        align-items: center;
         z-index: auto;
     }
 
@@ -410,6 +429,7 @@ body:has(.menu-toggle[aria-expanded="true"])::before {
         padding-left: 1rem;
         color: var(--color-accent);
     }
+
 }
 
 /* ==========================================================================

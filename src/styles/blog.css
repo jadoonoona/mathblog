@@ -46,6 +46,14 @@
     margin-top: 1rem;
 }
 
+.math-notes-index > .intro-text {
+    margin-bottom: 0.75rem;
+}
+
+.math-notes-index > .intro-text + section > h2 {
+    margin-top: 1rem;
+}
+
 .blog-card {
     display: block;
     padding: 1.8rem 0;

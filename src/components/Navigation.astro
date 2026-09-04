@@ -1,5 +1,8 @@
 ---
 const base = import.meta.env.BASE_URL;
+const isKorean = Astro.url.pathname.startsWith(`${base}ko`);
+const homePath = isKorean ? `${base}ko/` : base;
+const aboutPath = isKorean ? `${base}about/` : `${base}about/`;
 ---
 
 <div id="main-menu" class="navigation">
@@ -10,9 +13,14 @@ const base = import.meta.env.BASE_URL;
         </svg>
     </button>
     <div class="nav-links">
-        <a href={base}>Home</a>
-        <a href={`${base}about/`}>About</a>
-        <a href={`${base}math-notes/`}>Math Notes</a>
-        <a href={`${base}blog/`}>Blog</a>
+        <a href={homePath}>{isKorean ? '홈' : 'Home'}</a>
+        <a href={aboutPath}>{isKorean ? '소개' : 'About'}</a>
+        <a href={isKorean ? `${base}ko/#areas` : `${base}#areas`}>{isKorean ? '수학·통계' : 'Math & Stats'}</a>
+        <a href={isKorean ? `${base}ko/#areas` : `${base}#areas`}>{isKorean ? '데이터' : 'Data'}</a>
+        <a href={isKorean ? `${base}ko/#projects` : `${base}#projects`}>{isKorean ? '프로젝트' : 'Projects'}</a>
+        <a href={`${base}blog/`}>{isKorean ? '블로그' : 'Blog'}</a>
     </div>
+        <div class="language-switcher" aria-label="Language selector">
+            <a class:list={{ 'language-active': !isKorean }} href={base}>EN</a><span aria-hidden="true">|</span><a class:list={{ 'language-active': isKorean }} href={`${base}ko/`}>한국어</a>
+        </div>
 </div>

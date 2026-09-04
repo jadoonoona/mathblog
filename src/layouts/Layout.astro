@@ -5,12 +5,12 @@ import { SITE_DATA } from '../constants';
 
 import '../styles/global.css';
 
-const { pageTitle, description = SITE_DATA.description } = Astro.props;
+const { pageTitle, description = SITE_DATA.description, lang = 'en' } = Astro.props;
 const title = `${SITE_DATA.name}${pageTitle ? ` | ${pageTitle}` : ""}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />

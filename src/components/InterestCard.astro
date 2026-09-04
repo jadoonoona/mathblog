@@ -1,0 +1,12 @@
+---
+import type { InterestArea } from '../data/home';
+const { area } = Astro.props as { area: InterestArea };
+---
+
+<article class="interest-card">
+    <div class="card-kicker"><span>{area.number}</span><span class="card-arrow" aria-hidden="true">↗</span></div>
+    <h3>{area.title}</h3>
+    <p>{area.description}</p>
+    <ul class="topic-list">{area.topics.map(topic => <li>{topic}</li>)}</ul>
+    <a class="text-link" href={area.link}>Explore area <span aria-hidden="true">→</span></a>
+</article>

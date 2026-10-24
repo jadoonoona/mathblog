@@ -1,0 +1,42 @@
+---
+import { DEFAULT_SCENARIOS, SCENARIO_IDS } from '../lib/hotel-scenarios';
+const {lang='en'}=Astro.props;
+const ko=lang==='ko',t=(en:string,kr:string)=>ko?kr:en;
+const names={downside:t('Downside','하방'),base:t('Base','기준'),upside:t('Upside','상방')};
+const fields=[{key:'occupancy' as const,label:t('Post-renovation occupancy (%)','공사 후 점유율 (%)'),min:0,max:100,step:.1,scale:100},{key:'adr' as const,label:t('Post-renovation ADR (£)','공사 후 ADR (£)'),min:0,max:5000,step:.01,scale:1},{key:'capex' as const,label:t('Renovation capex (£)','리노베이션 투자 (£)'),min:0,max:100000000,step:1000,scale:1},{key:'costInflation' as const,label:t('Annual cost inflation (%)','연간 비용 상승률 (%)'),min:0,max:20,step:.1,scale:100}];
+---
+<section data-scenarios id="scenario-analysis" aria-labelledby="scenario-title">
+ <p class="hotel-eyebrow">{t('Phase 3 / Investment uncertainty','3단계 / 투자 불확실성')}</p>
+ <h2 id="scenario-title">{t('Scenario & Sensitivity Analysis','시나리오 및 민감도 분석')}</h2>
+ <aside class="hotel-notice">{t('Hypothetical scenarios · Pre-tax · Unlevered. These are illustrative assumption sets, not probabilities or statistically calibrated forecasts. Every result uses the Phase 2 investment model.','가상 시나리오 · 세전 · 무차입. 예시 가정이며 확률 또는 통계적으로 보정된 예측이 아닙니다. 모든 결과는 2단계 투자 모델을 사용합니다.')}</aside>
+ <div class="hotel-panel scenario-assumptions">
+  <div class="hotel-heading"><h3>{t('Scenario assumptions','시나리오 가정')}</h3><button type="button" data-scenario-reset>{t('Reset scenario defaults','시나리오 기본값 복원')}</button></div>
+  <p>{t('The four inputs below override the shared model for each scenario. All other operating and investment assumptions inherit the live settings above. Reset affects only these twelve inputs. Selecting a sensitivity reference changes no assumptions.','아래 네 가지 가정은 각 시나리오에 별도 적용됩니다. 다른 운영 및 투자 가정은 위의 현재 설정을 상속합니다. 복원은 아래 12개 입력값에만 적용됩니다. 민감도 기준 선택은 가정을 변경하지 않습니다.')}</p>
+  <form data-scenario-form novalidate><div class="scenario-input-grid">{SCENARIO_IDS.map(id=><fieldset class={`scenario-${id}`}><legend>{names[id]}</legend>{fields.map(field=><label>{field.label}<input name={`${id}-${field.key}`} aria-label={`${names[id]} ${field.label}`} type="number" required value={Number((DEFAULT_SCENARIOS[id][field.key]*field.scale).toFixed(4))} min={field.min} max={field.max} step={field.step}/><small>{field.min}–{field.max}</small></label>)}</fieldset>)}</div></form>
+  <details><summary>{t('Inherited settings','상속된 설정')}</summary><div data-scenario-inheritance></div></details>
+ </div>
+ <p role="status" class="scenario-validation" data-scenario-validation></p>
+ <div data-scenario-results>
+  <h3>{t('Scenario comparison','시나리오 비교')}</h3>
+  <div class="forecast-scroll" role="region" tabindex="0" aria-label={t('Scenario comparison, scroll horizontally','시나리오 비교, 가로 스크롤')} data-scenario-comparison></div>
+  <div class="hotel-charts" data-scenario-charts></div>
+  <div class="scenario-reference hotel-panel">
+   <label>{t('Active sensitivity reference','민감도 분석 기준')} <select data-scenario-reference>{SCENARIO_IDS.map(id=><option value={id} selected={id==='base'}>{names[id]}</option>)}</select></label>
+   <p data-scenario-reference-summary></p>
+  </div>
+  <h3>{t('NPV sensitivity heatmap','NPV 민감도 히트맵')}</h3>
+  <label>{t('Sensitivity variables','민감도 변수')} <select data-sensitivity-pair><option value="adr-occupancy">{t('ADR vs Occupancy','ADR / 점유율')}</option><option value="capex-adr">{t('Renovation Capex vs ADR','투자비 / ADR')}</option><option value="capex-occupancy">{t('Renovation Capex vs Occupancy','투자비 / 점유율')}</option><option value="discount-capex">{t('Discount Rate vs Renovation Capex','할인율 / 투자비')}</option></select></label>
+  <p class="forecast-note">{t('Each cell reruns the full investment model, changing only the two displayed variables. ADR tests £125–£175 by £10; occupancy tests 65%–90% by 5pp. Capex tests 80%–120% of the reference, capped at £100m (a £0–£1m range when capex is zero). Discount rate tests 6%–14% by 2pp. The horizon inherits Phase 2: 10 years by default.','각 셀은 표시된 두 변수만 변경하여 전체 투자 모델을 다시 계산합니다. ADR은 £125–£175, £10 간격이며 점유율은 65%–90%, 5pp 간격입니다. 투자비는 기준의 80%–120%, 최대 £100m (기준 0이면 £0–£1m), 할인율은 6%–14%, 2pp 간격입니다. 기간은 2단계에서 상속하며 기본값은 10년입니다.')}</p>
+  <p data-heatmap-reference></p>
+  <div class="forecast-scroll" role="region" tabindex="0" aria-label={t('NPV sensitivity heatmap, scroll horizontally','NPV 민감도 히트맵, 가로 스크롤')} data-sensitivity-heatmap></div>
+  <h3>{t('NPV tornado chart','NPV 토네이도 차트')}</h3>
+  <p class="forecast-note">{t('One variable changes at a time. Bars show change from reference NPV; rank uses maximum absolute impact. Low/high mean low/high input values, not favourable/unfavourable outcomes. The ranking depends on the chosen ranges and is not a statistical risk estimate.','변수를 하나씩 변경합니다. 막대는 기준 NPV 대비 변화이며 최대 절대 영향으로 순위를 정합니다. 낮음/높음은 입력값을 의미하며 유불리를 의미하지 않습니다. 순위는 테스트 범위에 따라 달라지며 통계적 위험 추정이 아닙니다.')}</p>
+  <div class="hotel-panel" data-scenario-tornado></div>
+  <h3>{t('Break-even analysis','손익분기 분석')}</h3>
+  <p class="forecast-note">{t('Bisection searches ADR £0–£5,000, occupancy 0%–100%, and capex £0–£100m. All other reference inputs stay fixed. A result requires an absolute NPV residual of £1 or less, with at most 200 iterations. Display values are rounded; residuals use the full-precision solution.','이분법으로 ADR £0–£5,000, 점유율 0%–100%, 투자비 £0–£100m 범위를 탐색합니다. 다른 가정은 기준값으로 고정합니다. 최대 200회 내 절대 NPV 잔차 £1 이하인 경우에만 결과를 표시합니다. 표시값은 반올림되며 잔차는 원래 정밀도 해를 사용합니다.')}</p>
+  <div class="hotel-kpis" data-scenario-breakeven></div>
+  <h3 class="scenario-commentary-title">{t('Investment risk commentary','투자 위험 해설')}</h3>
+  <div class="hotel-notice" data-scenario-commentary></div>
+  <details class="hotel-panel investment-method"><summary>{t('Sensitivity methodology & limitations','민감도 방법론 및 한계')}</summary><p>{t('The four scenario overrides are occupancy, ADR, capex and cost inflation. Changes to shared baseline operations, projected margin and ancillary revenue, horizon, discount rate, ADR growth, disruption, maintenance, residual benefit and fixed costs flow through all scenarios immediately. Scenario overrides persist until edited or reset. No scenario is assigned a likelihood.','시나리오별 변경 변수는 점유율, ADR, 투자비, 비용 상승률입니다. 공통 기준 운영값, 예상 마진과 부대 매출, 기간, 할인율, ADR 성장, 공사 차질, 유지 투자, 잔존 효익 및 고정비 변경은 모든 시나리오에 즉시 반영됩니다. 시나리오 값은 수정 또는 복원 전까지 유지됩니다. 발생 확률은 부여하지 않습니다.')}</p><p>{t('Phase 2 recalibrates initial renovated operating costs from the projected EBITDA margin whenever ADR or occupancy changes. These sensitivities therefore include that cost recalibration and do not represent a fixed-cost demand model. Cost inflation applies to both forecasts. The inherited simplified annual timing, tax exclusions and residual assumptions still apply. Root searches stay within feasible bounds and do not extrapolate occupancy beyond 100%. A flat or unbracketed NPV function produces no unique break-even result.','2단계는 ADR 또는 점유율 변경 시 예상 EBITDA 마진으로 리노베이션 초기 비용을 다시 보정합니다. 따라서 이 민감도는 비용 재보정을 포함하며 고정 비용 수요 모델이 아닙니다. 비용 상승률은 두 예측에 모두 적용됩니다. 연간 시점, 세금 제외 및 잔존 가정은 그대로 유지됩니다. 근 탐색은 한정된 범위에서만 수행하며 점유율 100%를 넘지 않습니다. NPV가 일정하거나 구간 내 부호 교차가 없으면 고유 손익분기를 표시하지 않습니다.')}</p></details>
+ </div>
+</section>

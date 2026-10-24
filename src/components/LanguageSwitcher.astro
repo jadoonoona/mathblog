@@ -5,12 +5,14 @@ const isKorean = pathname.startsWith(`${base}ko`);
 const isAbout = pathname.endsWith('/about/');
 const isMathNotes = pathname.endsWith('/math-notes/');
 
-const englishPath = isAbout
+const isPortfolio = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management/portfolio');
+const isHotel = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management');
+const englishPath = isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
     ? `${base}about/`
     : isMathNotes
         ? `${base}math-notes/`
         : base;
-const koreanPath = isAbout
+const koreanPath = isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
     ? `${base}ko/about/`
     : isMathNotes
         ? `${base}ko/math-notes/`

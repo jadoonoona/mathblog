@@ -1,0 +1,38 @@
+---
+import '../styles/hotel-memo.css';
+import { EVIDENCE_ITEMS } from '../lib/hotel-memo';
+const {lang='en'}=Astro.props;
+const ko=lang==='ko',t=(en:string,kr:string)=>ko?kr:en;
+---
+<section data-ic id="investment-committee" aria-labelledby="ic-title">
+ <div class="ic-controls">
+ <p class="hotel-eyebrow">{t('Phase 5 / Investment governance','5단계 / 투자 의사결정')}</p>
+ <h2 id="ic-title">{t('Investment Committee & Decision Support','투자위원회 및 의사결정 지원')}</h2>
+ <p>{t('Generate an English investment memo from a consistent snapshot of the live model. These are illustrative decision rules, not hotel-group investment policies.','현재 모델의 일관된 시점 자료로 영문 투자 메모를 생성합니다. 예시 의사결정 규칙이며 호텔 그룹의 투자 정책이 아닙니다.')}</p>
+ <form data-ic-form novalidate class="hotel-panel">
+ <div class="investment-fields">
+  <label>{t('Appraised investment case','평가 투자 사례')}<select name="caseId"><option value="base">{t('Base scenario — Phase 3','기준 시나리오 — 3단계')}</option><option value="downside">{t('Downside scenario — Phase 3','하방 시나리오 — 3단계')}</option><option value="upside">{t('Upside scenario — Phase 3','상방 시나리오 — 3단계')}</option><option value="custom">{t('Custom — current Phase 2 inputs','사용자 지정 — 현재 2단계 입력')}</option></select></label>
+  <label>{t('Analysis date','분석 기준일')}<input name="analysisDate" type="date" required /></label>
+  <label>{t('Minimum IRR (%)','최소 IRR (%)')}<input name="minIRR" type="number" required min="0" max="100" step=".1" value="10" /></label>
+  <label>{t('Minimum NPV (£; effective floor £0)','최소 NPV (£; 유효 하한 £0)')}<input name="minNPV" type="number" required min="-100000000" max="100000000" step="1000" value="0" /></label>
+  <label>{t('Maximum simple payback (years)','최대 단순 회수 기간 (년)')}<input name="maxPayback" type="number" required min="0" max="30" step=".1" value="8" /></label>
+  <label>{t('Maximum approved initial capex (£)','최대 승인 초기 투자 (£)')}<input name="maxCapex" type="number" required min="0" max="100000000" step="1000" value="5500000" /></label>
+ </div>
+ <div class="ic-checks"><label><input name="allowNegativeDownside" type="checkbox" />{t('Explicitly permit negative downside NPV','하방 NPV 음수를 명시적으로 허용')}</label><label><input name="materialFlagsBlock" type="checkbox" checked />{t('Material adverse execution findings block approval','중요 실행 위험 확인 시 승인 차단')}</label></div>
+ <p class="forecast-note">{t('Custom uses the live Phase 2 assumptions above. Scenario cases use the four edited Phase 3 overrides and inherit all other shared settings. Selecting a case does not change upstream inputs. A negative NPV can never receive unconditional approval. Financial suitability and execution readiness are assessed separately.','사용자 지정은 위 2단계 입력을 사용합니다. 시나리오는 3단계의 네 가지 별도 가정과 나머지 공통 설정을 사용합니다. 사례 선택은 상위 입력값을 바꾸지 않습니다. NPV가 음수이면 무조건 승인이 불가합니다. 재무 적합성과 실행 준비를 별도로 평가합니다.')}</p>
+ <details class="ic-evidence"><summary>{t('Illustrative analyst evidence & execution readiness','가상 분석가 근거 및 실행 준비')}</summary>
+ <p>{t('No documentary evidence is supplied by the project dataset. A supported status records a user-supplied analyst assertion only and requires a reference; it is not independent verification. Leave unknown where evidence is missing. All six items and a referenced clear risk review are required for unconditional approval.','프로젝트 자료에 증빙 문서가 없습니다. 근거 있음은 사용자가 입력한 분석가 진술만 기록하며 출처가 필요합니다. 독립 검증이 아닙니다. 근거가 없으면 미확인으로 유지하세요. 무조건 승인에는 6개 항목과 출처가 있는 위험 검토가 필요합니다.')}</p>
+ {EVIDENCE_ITEMS.map(item=><div class="ic-evidence-row"><label>{item.label}<select name={`evidence-${item.id}`}><option value="unknown">{t('Unknown / not reviewed','미확인 / 미검토')}</option><option value="supported">{t('Analyst assertion supported by reference','출처를 기록한 분석가 진술')}</option><option value="adverse">{t('Adverse / unresolved','부정적 / 미해결')}</option></select></label><label>{t('Evidence reference or review note','근거 출처 또는 검토 기록')}<input type="text" name={`reference-${item.id}`} maxlength="1000" /></label></div>)}
+ <label>{t('Material execution risk assessment','중요 실행 위험 평가')}<select name="riskState"><option value="unknown">{t('Unknown','미확인')}</option><option value="clear">{t('No material unresolved finding — analyst assertion','미해결 중요 사항 없음 — 분석가 진술')}</option><option value="material">{t('Material unresolved finding','미해결 중요 사항 있음')}</option></select></label>
+ <label>{t('Risk review reference','위험 검토 출처')}<input type="text" name="riskReference" maxlength="1000" /></label>
+ </details>
+ <div class="investment-fields ic-notes"><label>{t('Analyst comments (unverified user text)','분석가 의견 (미검증 사용자 문구)')}<textarea name="analystComments" rows="4" maxlength="10000"></textarea></label><label>{t('Additional open approval conditions (one per line)','추가 미해결 승인 조건 (한 줄에 하나)')}<textarea name="additionalConditions" rows="4" maxlength="10000"></textarea></label></div>
+ <fieldset class="ic-checks"><legend>{t('Supporting charts to include','포함할 보조 차트')}</legend><label><input name="chart-npv" type="checkbox" checked />{t('Scenario NPV','시나리오 NPV')}</label><label><input name="chart-cashFlow" type="checkbox" checked />{t('Incremental cash flow','증분 현금흐름')}</label><label><input name="chart-cumulative" type="checkbox" checked />{t('Cumulative cash flow','누적 현금흐름')}</label></fieldset>
+ <div class="ic-actions"><button type="submit" data-ic-generate>{t('Regenerate memo','메모 재생성')}</button><button type="button" data-ic-reset>{t('Reset memo settings','메모 설정 복원')}</button><button type="button" data-ic-print disabled>{t('Print / Save as PDF','인쇄 / PDF로 저장')}</button><button type="button" data-ic-csv disabled>{t('Download supporting CSV','보조 CSV 다운로드')}</button></div>
+ <p class="forecast-note">{t('PDF uses the browser print dialog: choose Save as PDF and A4. Exports use the same frozen memo shown below. No external AI or paid API is used.','PDF는 브라우저 인쇄 대화상자의 PDF 저장 및 A4를 사용합니다. 아래 표시된 동일한 고정 메모를 내보냅니다. 외부 AI 또는 유료 API는 사용하지 않습니다.')}</p>
+ </form>
+ </div>
+ <p role="status" data-ic-status class="ic-status"></p>
+ <div data-ic-output></div>
+ <noscript>{t('Enable JavaScript to generate the investment memo.','투자 메모를 생성하려면 JavaScript를 활성화하세요.')}</noscript>
+</section>

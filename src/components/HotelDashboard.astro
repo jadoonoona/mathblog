@@ -1,0 +1,47 @@
+---
+import '../styles/hotel.css';
+import HotelInvestment from './HotelInvestment.astro';
+import HotelScenarios from './HotelScenarios.astro';
+import HotelMemo from './HotelMemo.astro';
+const { lang = 'en' } = Astro.props;
+const ko = lang === 'ko';
+const t = (en: string, kr: string) => ko ? kr : en;
+const fields = [
+ ['rooms', t('Rooms','객실 수'),200,200,1,2000,1,false],
+ ['days',t('Days per year','연간 영업일'),365,365,1,366,1,false],
+ ['occupancy',t('Occupancy (%)','객실 점유율 (%)'),72,78,0,100,.1,true],
+ ['adr',t('ADR (£)','평균 객실 요금 (£)'),125,145,0,5000,.01,true],
+ ['ancillaryRate',t('Ancillary / room revenue (%)','부대 매출 / 객실 매출 (%)'),25,25,0,200,.1,true],
+ ['margin',t('EBITDA margin (%)','EBITDA 마진 (%)'),28,32,0,100,.1,true],
+];
+---
+<div class="hotel" data-hotel data-lang={lang}>
+ <a href={`${import.meta.env.BASE_URL}${ko ? 'ko/' : ''}#projects`}>← {t('All projects','전체 프로젝트')}</a>
+ <p class="hotel-eyebrow">{t('Finance & Investment / Phases 1–5','금융과 투자 / 1–5단계')}</p>
+ <h1>{t('Hotel Asset Management & Capex Investment Analysis','호텔 자산 관리 및 자본적 지출 투자 분석')}</h1>
+ <nav class="hotel-phase-nav" aria-label={t('Hotel analysis sections','호텔 분석 섹션')}><a href="#operating-performance">{t('Operating Performance','운영 실적')}</a><a href="#capex-underwriting">{t('Capex Underwriting','투자 분석')}</a><a href="#scenario-analysis">{t('Scenario Analysis','시나리오 분석')}</a><a href={`${import.meta.env.BASE_URL}${ko?'ko/':''}projects/hotel-asset-management/portfolio/`}>{t('Portfolio Oversight','포트폴리오 관리')}</a><a href="#investment-committee">{t('Investment Committee','투자위원회')}</a></nav><p class="hotel-lead">{t('Explore how room rates, occupancy and operating margins shape annual hotel performance.','객실 요금, 점유율, 영업 마진이 호텔의 연간 실적에 미치는 영향을 살펴봅니다.')}</p>
+ <aside class="hotel-notice">{t('Hypothetical & illustrative • No actual hotel, operator or market dataset is represented.','가상의 예시 데이터 • 실제 호텔, 운영사 또는 시장 데이터가 아닙니다.')}</aside>
+ <section class="hotel-scenario"><h2>{t('The scenario','분석 시나리오')}</h2><p>{t('An asset manager is considering a £5 million refurbishment of a 200-room upscale hotel to improve guest experience, room rates, occupancy, profitability and long-term value. The operating dashboard compares annual scenarios; the investment section forecasts incremental refurbishment cash flows. Projected assumptions are illustrative targets.','자산 관리자가 200개 객실을 보유한 고급 호텔의 고객 경험, 객실 요금, 점유율, 수익성과 장기 가치를 개선하기 위해 500만 파운드의 리노베이션을 검토합니다. 운영 대시보드는 연간 시나리오를 비교하고 투자 분석은 증분 현금흐름을 예측합니다. 예상 가정은 예시 목표입니다.')}</p></section>
+ <section class="hotel-panel" id="operating-performance"><div class="hotel-heading"><h2>{t('Operating assumptions','운영 가정')}</h2><button type="button" data-reset>{t('Reset defaults','기본값 복원')}</button></div>
+ <p>{t('Rooms and operating days apply to both scenarios. Ancillary revenue is optional: set it to zero to exclude it.','객실 수와 영업일은 두 시나리오에 공통 적용됩니다. 부대 매출은 0으로 설정하면 제외됩니다.')}</p>
+ <form novalidate data-assumptions><div class="assumption-head"><span>{t('Annual inputs','연간 입력값')}</span><span>{t('Current','현재')}</span><span>{t('Projected','예상')}</span></div>
+ {fields.map(([key,label,current,projected,min,max,step,separate]) => <div class="assumption-row"><label for={`current-${key}`}>{label}<small>{min}–{max}</small></label><input id={`current-${key}`} aria-label={`${label} ${t('current','현재')}`} name={`current-${key}`} type="number" value={current} min={min} max={max} step={step} required /><>{separate ? <input aria-label={`${label} ${t('projected','예상')}`} name={`projected-${key}`} type="number" value={projected} min={min} max={max} step={step} required /> : <span class="shared">{t('Shared assumption','공통 가정')}</span>}</></div>)}
+ </form><p class="hotel-validation" role="status" data-validation></p>
+ </section>
+ <section><h2>{t('Financial performance','재무 실적')}</h2><p>{t('Annual GBP · Current → Projected · Changes are projected minus current.','연간 GBP · 현재 → 예상 · 변화량은 예상에서 현재를 차감한 값입니다.')}</p><div class="hotel-kpis" data-kpis></div><p class="hotel-nights" data-nights></p><noscript>{t('Enable JavaScript to use the interactive model.','대화형 모델을 사용하려면 JavaScript를 활성화하세요.')}</noscript></section>
+ <section><h2>{t('Operating analysis','운영 분석')}</h2><p>{t('Hover, focus or tap a bar to inspect its value. Each comparison uses a zero baseline; ADR and occupancy have separate scales.','막대를 마우스로 가리키거나 선택하여 값을 확인하세요. 비교 기준은 0이며 ADR과 점유율은 별도 척도를 사용합니다.')}</p><div class="hotel-charts" data-charts></div></section>
+ <HotelInvestment lang={lang} />
+ <HotelScenarios lang={lang} />
+ <section class="hotel-panel"><p class="hotel-eyebrow">{t('Phase 4 / Portfolio reporting','4단계 / 포트폴리오 보고')}</p><h2>{t('Portfolio & Capex Oversight','포트폴리오 및 자본적 지출 관리')}</h2><p>{t('Explore a separate fictional five-hotel reporting archive: monthly expenditure control, forecast accuracy, risks and operating benchmarks. Portfolio approved budgets are separate from this single-hotel investment case.','별도의 가상 호텔 5곳에 대한 월간 지출 관리, 예측 정확도, 위험 및 운영 벤치마크를 살펴봅니다. 포트폴리오 승인 예산은 단일 호텔 투자 사례와 별개입니다.')}</p><a href={`${import.meta.env.BASE_URL}${ko?'ko/':''}projects/hotel-asset-management/portfolio/`}>{t('Open portfolio reporting →','포트폴리오 보고 열기 →')}</a></section>
+ <HotelMemo lang={lang} />
+ <section class="hotel-method"><h2>{t('Methodology & formulas','방법론 및 계산식')}</h2>
+ <dl>
+ <dt>{t('Capacity & occupancy','객실 공급 및 점유율')}</dt><dd>{t('Available room nights = rooms × days. Occupied room nights = available room nights × occupancy. Occupancy is the proportion of available room nights sold.','판매 가능 객실박 = 객실 수 × 영업일. 판매 객실박 = 판매 가능 객실박 × 점유율. 점유율은 판매 가능 객실박 중 판매된 비율입니다.')}</dd>
+ <dt>ADR & RevPAR</dt><dd>{t('ADR is average daily rate per sold room. Room revenue = occupied room nights × ADR. RevPAR = room revenue ÷ available room nights = ADR × occupancy.','ADR은 판매 객실의 평균 일일 요금입니다. 객실 매출 = 판매 객실박 × ADR. RevPAR = 객실 매출 ÷ 판매 가능 객실박 = ADR × 점유율.')}</dd>
+ <dt>{t('Revenue composition','매출 구성')}</dt><dd>{t('Ancillary revenue = room revenue × ancillary rate. Total revenue = room + ancillary revenue. Food, beverage and other operations are represented by a simple percentage, not a full departmental P&L.','부대 매출 = 객실 매출 × 부대 매출 비율. 총매출 = 객실 매출 + 부대 매출. 식음료 및 기타 영업은 단순 비율로 반영하며 부서별 손익계산서가 아닙니다.')}</dd>
+ <dt>EBITDA</dt><dd>{t('EBITDA = total revenue × EBITDA margin. Earnings before interest, tax, depreciation and amortisation are a simplified operating metric. RevPAR growth need not produce equivalent EBITDA growth: revenue mix, payroll, distribution costs and operating leverage change margins. Here the margin is an independent assumption; costs are not forecast individually.','EBITDA = 총매출 × EBITDA 마진. 이자, 세금, 감가상각 전 이익을 단순화된 운영 지표로 사용합니다. 매출 구성, 인건비, 유통 비용 및 영업 레버리지가 마진에 영향을 주므로 RevPAR와 EBITDA 성장률은 다를 수 있습니다. 마진은 독립 가정이며 개별 비용은 예측하지 않습니다.')}</dd>
+ <dt>{t('Changes','변화량')}</dt><dd>{t('Absolute change = projected − current. Relative change = absolute change ÷ |current|. A zero starting value is shown as N/A. Rate changes are also shown in percentage points (pp).','절대 변화 = 예상 − 현재. 상대 변화 = 절대 변화 ÷ |현재|. 현재 값이 0이면 N/A로 표시합니다. 비율의 차이는 퍼센트포인트(pp)로도 표시합니다.')}</dd>
+ </dl></section>
+ <aside class="hotel-notice"><h2>{t('Model limitations','모델의 한계')}</h2><p>{t('Illustrative assumptions only. This is not a complete USALI departmental profit or hotel cash-flow model. It excludes seasonality, room-type mix, renovation disruption, cost schedules, management fees, reserves, working capital, tax, financing and exit valuation. The investment section adds pre-tax, unlevered incremental cash flows. Scenario and sensitivity tests reuse the same investment model. Portfolio reporting is available as a separate demonstration archive; the Investment Committee memo uses a frozen appraisal snapshot.','예시 가정만 사용합니다. 완전한 USALI 부서별 손익 또는 호텔 현금흐름 모델이 아닙니다. 계절성, 객실 유형, 공사 중 영업 차질, 비용 명세, 관리 수수료, 적립금, 운전자본, 세금, 금융 및 매각 가치가 제외됩니다. 투자 분석은 세전 무차입 증분 현금흐름을 반영합니다. 시나리오 및 민감도 분석은 같은 투자 모델을 사용합니다. 포트폴리오 보고는 별도의 시연 자료로 제공하며 투자위원회 메모는 고정된 평가 시점 자료를 사용합니다.')}</p></aside>
+</div>
+<script>import '../scripts/hotel-dashboard';</script>

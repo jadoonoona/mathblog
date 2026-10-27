@@ -16,7 +16,7 @@ const fields = [
 ];
 ---
 <div class="hotel" data-hotel data-lang={lang}>
- <a href={`${import.meta.env.BASE_URL}${ko ? 'ko/' : ''}#projects`}>← {t('All projects','전체 프로젝트')}</a>
+ <a href={`${import.meta.env.BASE_URL}${ko ? 'ko/' : ''}projects/finance/`}>← {t('Finance projects','금융 프로젝트')}</a>
  <p class="hotel-eyebrow">{t('Finance & Investment / Phases 1–5','금융과 투자 / 1–5단계')}</p>
  <h1>{t('Hotel Asset Management & Capex Investment Analysis','호텔 자산 관리 및 자본적 지출 투자 분석')}</h1>
  <nav class="hotel-phase-nav" aria-label={t('Hotel analysis sections','호텔 분석 섹션')}><a href="#operating-performance">{t('Operating Performance','운영 실적')}</a><a href="#capex-underwriting">{t('Capex Underwriting','투자 분석')}</a><a href="#scenario-analysis">{t('Scenario Analysis','시나리오 분석')}</a><a href={`${import.meta.env.BASE_URL}${ko?'ko/':''}projects/hotel-asset-management/portfolio/`}>{t('Portfolio Oversight','포트폴리오 관리')}</a><a href="#investment-committee">{t('Investment Committee','투자위원회')}</a></nav><p class="hotel-lead">{t('Explore how room rates, occupancy and operating margins shape annual hotel performance.','객실 요금, 점유율, 영업 마진이 호텔의 연간 실적에 미치는 영향을 살펴봅니다.')}</p>

@@ -10,4 +10,5 @@ export const INTEREST_AREAS_KO: InterestArea[] = [
 export const FEATURED_PROJECTS_KO: FeaturedProject[] = [
     { number: '01', title: '호텔 자산 관리 및 자본적 지출 투자 분석', description: '객실 요금, 점유율, 매출과 EBITDA를 비교하는 인터랙티브 호텔 운영 모델입니다.', tags: ['금융', '호텔', '모델링'], link: 'ko/projects/hotel-asset-management/', linkLabel: '운영 모델 열기', category: 'finance', status: '1–5단계 공개' },
     { number: '02', title: 'Our Trip Plan', description: '함께하는 여행 일정을 더 쉽게 계획하고 관리할 수 있도록 만든 협업 여행 계획 서비스입니다.', tags: ['모바일', 'React Native', 'Travel app'], link: 'https://ourtripplan.com', linkLabel: '프로젝트 보기', category: 'app-web', status: '운영 중' },
+    { number: '03', title: '한국 금리 및 신용 스프레드 분석', description: '2024~2025년 조달 스프레드의 부트스트랩 분석과 부동산금융 스트레스 테스트입니다.', tags: ['금융', '부트스트랩', '신용 리스크'], link: 'projects/korean-interest-rate-credit-spread/', linkLabel: '연구 글 읽기', category: 'finance', status: '2024~2025년 CSV 분석' },
 ];

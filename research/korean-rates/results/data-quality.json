@@ -1,0 +1,31 @@
+{
+  "input_rows": 488,
+  "duplicate_dates": 0,
+  "weekend_rows": 0,
+  "retained_common_dates": 488,
+  "missing_by_column": {
+    "date": 0,
+    "corporate": 0,
+    "cd": 0,
+    "policy": 0
+  },
+  "source": "User-provided educational CSV; original provider, corporate rating and maturities unverified",
+  "sha256": "1cb84128d63807e06f0181b29673823602925b41ab3aaa4e33615e3ec4c4bac7",
+  "original_filename": "9\uc8fc\ucc28_\uc2e4\uc2b5bc\uc6a9_2024_2025.csv",
+  "imported_at_utc": "2026-11-02T17:17:21.178252+00:00",
+  "original_columns": [
+    "date",
+    "\ud68c\uc0ac\ucc44\uae08\ub9ac",
+    "CD\uae08\ub9ac",
+    "\uae30\uc900\uae08\ub9ac",
+    "CD-\uc815\ucc45\uae08\ub9ac",
+    "\ud68c\uc0ac\ucc44-\uc815\ucc45\uae08\ub9ac",
+    "\ud68c\uc0ac\ucc44-\uc815\ucc45\uae08\ub9ac"
+  ],
+  "derived_columns": "Ignored; duplicated/mislabeled headings; rebuilt from three rate columns",
+  "unavailable": [
+    "government yield",
+    "Spread D"
+  ],
+  "policy_alignment": "Same-row supplied policy value; effective-date correctness not externally verified"
+}

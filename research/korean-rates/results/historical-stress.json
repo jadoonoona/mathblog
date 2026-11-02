@@ -1,0 +1,11 @@
+{
+  "spread": "A",
+  "interpretation": "Corporate minus CD funding spread; includes maturity effects",
+  "start": "2024-12-16",
+  "end": "2025-03-19",
+  "observation_lag": 60,
+  "spread_start_bp": -16.79999999999997,
+  "spread_end_bp": 34.400000000000034,
+  "widening_bp": 51.2,
+  "note": "Historical sensitivity anchor; not a forecast or causal attribution"
+}

@@ -1,0 +1,31 @@
+{
+  "input_rows": 488,
+  "duplicate_dates": 0,
+  "weekend_rows": 0,
+  "retained_common_dates": 488,
+  "missing_by_column": {
+    "date": 0,
+    "corporate": 0,
+    "cd": 0,
+    "policy": 0
+  },
+  "source": "User-provided educational CSV; original provider, corporate rating and maturities unverified",
+  "sha256": "1cb84128d63807e06f0181b29673823602925b41ab3aaa4e33615e3ec4c4bac7",
+  "original_filename": "9주차_실습bc용_2024_2025.csv",
+  "imported_at_utc": "2026-11-02T17:17:21.178252+00:00",
+  "original_columns": [
+    "date",
+    "회사채금리",
+    "CD금리",
+    "기준금리",
+    "CD-정책금리",
+    "회사채-정책금리",
+    "회사채-정책금리"
+  ],
+  "derived_columns": "Ignored; duplicated/mislabeled headings; rebuilt from three rate columns",
+  "unavailable": [
+    "government yield",
+    "Spread D"
+  ],
+  "policy_alignment": "Same-row supplied policy value; effective-date correctness not externally verified"
+}

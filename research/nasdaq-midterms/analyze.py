@@ -152,7 +152,7 @@ def chart_all(study, medians, output):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    plt.rcParams.update({'font.size':13, 'svg.fonttype':'none', 'figure.facecolor':'white',
+    plt.rcParams.update({'font.size':15, 'svg.fonttype':'none', 'figure.facecolor':'white',
                          'axes.facecolor':'white', 'axes.spines.top':False, 'axes.spines.right':False})
     output.mkdir(parents=True, exist_ok=True)
     events = pd.DataFrame(study['events'])
@@ -169,7 +169,7 @@ def chart_all(study, medians, output):
     ax.hist(baseline, bins=15, color='#3b7f91', alpha=.8, label='Prior 60 valid returns')
     ax.axvline(current.abs_return_pct, color='#b24036', lw=2.5, label=f'2026 event: {current.abs_return_pct:.2f}%')
     ax.set(xlabel='Absolute daily return (%)', ylabel='Trading days', title='2026: size relative to recent moves')
-    ax.legend(fontsize=10)
+    ax.legend(fontsize=12)
     save(fig, '01-2026-context')
 
     fig, ax = plt.subplots(figsize=(6.2,5.2))
@@ -180,10 +180,11 @@ def chart_all(study, medians, output):
     j = list(events.year).index(2026)
     ax.scatter([j], [current.percentile], s=240, facecolors='none', edgecolors='#111111', lw=2, label='2026')
     ax.axhline(study['summary']['actual_median'], color='#555555', ls='--', lw=1)
-    ax.set(xticks=x, xticklabels=events.year.astype(str), ylim=(-3,103), yticks=[0,25,50,75,100],
+    ax.set(xticks=x, xticklabels=events.year.astype(str), ylim=(0,100), yticks=[0,25,50,75,100],
            xlabel='Midterm election year', ylabel='Prior-60-return percentile', title='Post-election magnitude, 1974–2026')
-    ax.tick_params(axis='x', labelrotation=90, labelsize=11)
-    ax.legend(ncol=3, fontsize=10, loc='upper center', bbox_to_anchor=(.5,1.0))
+    ax.tick_params(axis='x', labelrotation=90, labelsize=13)
+    ax.legend(ncol=3, fontsize=12, loc='lower center', bbox_to_anchor=(.5,1.01))
+    ax.set_title('Post-election magnitude, 1974–2026', pad=44)
     save(fig, '02-election-percentiles')
 
     fig, ax = plt.subplots(figsize=(5.8,4.6))
@@ -191,8 +192,8 @@ def chart_all(study, medians, output):
     point = study['summary']['actual_median']
     ax.axvline(point, color='#b24036', lw=2.5, label=f'Election median: {point:.2f}')
     ax.set(xlabel='Median percentile (one Wednesday / year)', ylabel='Simulations',
-           title='10,000 matched-Wednesday comparisons', xlim=(0,100))
-    ax.legend(fontsize=10)
+           title='Matched-Wednesday medians (10,000 runs)', xlim=(0,100))
+    ax.legend(fontsize=12)
     save(fig, '03-comparison-medians')
 
 

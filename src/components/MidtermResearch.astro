@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/Layout.astro';
+import study from '../../public/data/nasdaq-midterms/study.json';
+import '../styles/blog.css';
+
+const { lang = 'en' } = Astro.props;
+const ko = lang === 'ko';
+const t = (en: string, kr: string) => ko ? kr : en;
+const base = import.meta.env.BASE_URL;
+const summary = study.summary;
+const current = study.events.find(e => e.year === 2026)!;
+const influence = study.leave_one_out.find(e => e.excluded_year === summary.influential_year)!;
+const f = (n: number, digits = 2) => n.toLocaleString(ko ? 'ko-KR' : 'en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+const signed = (n: number, digits = 2) => `${n >= 0 ? '+' : '−'}${f(Math.abs(n), digits)}`;
+const percent = (n: number) => `${f(n * 100)}%`;
+const up = study.events.filter(e => e.return_pct > 0).length;
+const extended = study.events.filter(e => e.calendar_gap_days > 1);
+const title = t('How Unusual Is the Nasdaq’s Move After a U.S. Midterm Election?', '미국 중간선거 다음 날, 나스닥은 평소보다 크게 움직일까?');
+const mathUrl = `${base}${ko ? 'ko/' : ''}projects/mathematics/`;
+const figure = (name: string) => `${base}images/projects/nasdaq-midterms/${name}.svg`;
+const data = (name: string) => `${base}data/nasdaq-midterms/${name}`;
+---
+
+<Layout pageTitle={title} lang={lang} description={t('A reproducible NASDAQ Composite study of 14 midterms, using prior-60-return percentiles and matched-Wednesday simulations.', '14회 중간선거 이후 나스닥 변동 폭을 직전 60거래일 백분위와 수요일 무작위 비교로 분석합니다.')}>
+    <div class="page-container">
+        <div class="post-content">
+            <div class="post-header">
+                <a href={mathUrl} class="back-link">← {t('Mathematics & Statistics', '수학과 통계')}</a>
+                <h1 class="post-title">{title}</h1>
+                <div class="post-meta"><time datetime={study.provenance.as_of}>{study.provenance.as_of}</time><span class="tag">Probability & Statistics</span><span class="tag">Financial Risk</span></div>
+            </div>
+            <article class="post-body">
+                <p>{t(
+                    `On election day, ${current.election_date}, the Nasdaq Composite closed at ${f(current.election_close!)}. Its first subsequent observed close, on ${current.evaluation_date}, was ${f(current.evaluation_close)}: a ${signed(current.return_pct,4)}% move. How unusual was a move of this size in the market at the time?`,
+                    `2026년 미국 중간선거 당일(${current.election_date}) 나스닥 종합지수 종가는 ${f(current.election_close!)}포인트였다. 다음 거래일(${current.evaluation_date}) 종가는 ${f(current.evaluation_close)}포인트로, 수익률은 ${signed(current.return_pct,4)}%였다. 이 정도 움직임은 당시 시장에서 얼마나 이례적이었을까?`
+                )}</p>
+
+                <h2>{t('Start with the 2026 market context', '2026년 당시 시장에서 어느 정도였나')}</h2>
+                <p>{t(
+                    `A 1% move can be large in a calm market and ordinary in a volatile one. We therefore compare the absolute event-day return with the 60 valid daily absolute returns immediately before it, excluding the evaluation day itself. For 2026, ${current.less_count} of those days had strictly smaller moves and ${current.equal_count} had exactly equal moves. The percentile is 100 × ${current.less_equal_count}/60 = ${f(current.percentile)}: the share of recent days whose moves were smaller than or equal to the event move.`,
+                    `같은 1% 움직임도 조용한 시장과 변동성이 큰 시장에서는 의미가 다르다. 평가일 자체를 제외한 직전 60개 유효 거래일의 절대수익률과 비교했다. 2026년에는 그중 ${current.less_count}일의 움직임이 이번보다 작았고, 같은 날은 ${current.equal_count}일이었다. 백분위 ${f(current.percentile)}는 60일 중 이번 움직임보다 작거나 같았던 ${current.less_equal_count}일의 비율을 100 × ${current.less_equal_count}/60으로 표현한 값이다.`
+                )}</p>
+                <p>{t(`The reference returns are dated ${current.baseline_start} through ${current.baseline_end}. They are returns, rather than 60 closing-price levels, so one additional earlier close is needed to compute the first return.`, `기준 수익률의 날짜는 ${current.baseline_start}~${current.baseline_end}다. 종가 60개가 아니라 수익률 60개이므로 첫 수익률을 계산할 이전 종가도 한 개 더 필요하다.`)}</p>
+                <figure id="context-2026">
+                    <img src={figure('01-2026-context')} alt={t('Prior 60 absolute Nasdaq returns, with the 2026 event marked by a vertical line.', '직전 60개 절대수익률 분포와 2026년 선거 다음 거래일 절대수익률 세로선')} width="1102" height="874" />
+                    <figcaption>{t(`The ${f(current.abs_return_pct,4)}% absolute move exceeded ${current.less_count} of 60 prior moves; ${current.equal_count} were tied, giving a percentile of ${f(current.percentile)}.`, `절대수익률 ${f(current.abs_return_pct,4)}%는 이전 60일 중 ${current.less_count}일보다 컸고 동률은 ${current.equal_count}일로, 백분위는 ${f(current.percentile)}였다.`)}</figcaption>
+                </figure>
+
+                <h2>{t('Fourteen midterms, one definition of the return', '14회 중간선거에 같은 계산법 적용하기')}</h2>
+                <p>{t(
+                    'The sample is every U.S. midterm from 1974 through 2026, at four-year intervals. Presidential elections are excluded. Historical election dates were checked against the Los Angeles County official election returns archive, and 2026 against the California Secretary of State calendar. These are official records of the nationwide general-election dates, not assumptions based only on a calendar formula.',
+                    '표본은 1974~2026년의 4년 간격 중간선거 14회이며 대통령 선거는 제외했다. 과거 날짜는 로스앤젤레스 카운티의 공식 선거 기록, 2026년은 캘리포니아 주무장관 선거 일정과 대조했다. 달력 공식으로 날짜를 추정하는 데 그치지 않고 전국 일반선거일의 공식 기록을 확인했다.'
+                )}</p>
+                <p>{t(
+                    'Prices are the FRED NASDAQCOM daily closing observations, provided by Nasdaq, Inc.; neither Nasdaq-100 nor QQQ is used. The event is the first observed close strictly after election day. Its simple return is 100 × (event close / previous valid close − 1). Missing observations and holidays are dropped, with no forward filling. Dates are U.S. market observation dates, with no conversion to London calendar dates.',
+                    '가격은 Nasdaq, Inc.가 제공하는 FRED NASDAQCOM 일별 종가다. Nasdaq-100이나 QQQ로 대체하지 않았다. 선거일 이후 처음 관측된 종가를 직전 유효 종가와 비교하여 단순수익률 100 × (평가일 종가 / 이전 종가 − 1)을 계산했다. 결측·휴장일은 제외하고 전일 값으로 채우지 않았다. 날짜는 미국 시장 관측일이며 런던 날짜로 변환하지 않았다.'
+                )}</p>
+                <div class="research-table" role="region" aria-label={t('All 14 election observations', '14회 선거별 결과')} tabindex="0">
+                    <table>
+                        <thead><tr><th>{t('Election day', '선거일')}</th><th>{t('Previous date / close', '이전 종가일 / 종가')}</th><th>{t('First subsequent date / close', '다음 종가일 / 종가')}</th><th>{t('Return %', '수익률 %')}</th><th>{t('|Return| %', '절대수익률 %')}</th><th>{t('Percentile', '백분위')}</th><th>{t('Gap (days)', '간격(일)')}</th><th>{t('Election close observed?', '선거일 종가 존재')}</th></tr></thead>
+                        <tbody>{study.events.map(e => <tr class:list={{ 'current-event':e.year===2026 }}>
+                            <td><a href={e.election_source}>{e.election_date}</a></td><td>{e.previous_close_date}<br />{f(e.previous_close)}</td><td>{e.evaluation_date}<br />{f(e.evaluation_close)}</td><td>{signed(e.return_pct,4)}</td><td>{f(e.abs_return_pct,4)}</td><td>{f(e.percentile)}</td><td>{e.calendar_gap_days}{e.calendar_gap_days > 1 ? ' *' : ''}</td><td>{e.election_close_observed ? t('Yes','있음') : t('No *','없음 *')}</td>
+                        </tr>)}</tbody>
+                    </table>
+                </div>
+                <p>{t(`* An extended calendar gap or missing election-day close would be flagged above. In this snapshot, ${extended.length} events have a gap longer than one day, and all 14 election-day closes are observed. The calculation still uses actual valid dates rather than presuming a one-day interval.`, `* 종가 사이의 달력상 간격이 길거나 선거일 종가가 없으면 표에 표시한다. 이번 원자료에서 1일을 초과하는 간격은 ${extended.length}건이며, 14회 모두 선거일 종가가 있다. 계산은 하루 간격을 가정하지 않고 실제 관측일을 사용한다.`)}</p>
+                <figure id="election-percentiles">
+                    <img src={figure('02-election-percentiles')} alt={t('All 14 election percentiles, up and down returns shown with different colors and triangle shapes, 2026 circled.', '14회 선거별 백분위 점 차트. 상승·하락은 색과 삼각형 방향으로 구분하며 2026년을 원으로 강조')} width="1178" height="988" loading="lazy" />
+                    <figcaption>{t(`Across 14 events, the median percentile is ${f(summary.actual_median)}; 2026 is ${f(current.percentile)}. Returns were positive in ${up} cases and negative in ${14-up}.`, `14회 백분위 중앙값은 ${f(summary.actual_median)}, 2026년은 ${f(current.percentile)}였으며 상승은 ${up}회, 하락은 ${14-up}회였다.`)}</figcaption>
+                </figure>
+
+                <h2>{t('Compare with ordinary Wednesdays in the same years', '같은 해의 평소 수요일과 비교하기')}</h2>
+                <p>{t(
+                    `The latest FRED observation available in this snapshot is ${study.provenance.last_observation}; the analysis cutoff is ${study.provenance.as_of}. November 2026 is incomplete. To avoid giving earlier years more November information, every year uses the identical inclusive calendar window ${study.provenance.comparison_start_md} to ${study.provenance.comparison_end_md}. We retain only observed Wednesdays and exclude the election's Monday–Sunday week. This window is fixed by data availability, not by which dates produce a preferred result.`,
+                    `이번 스냅샷의 마지막 FRED 관측일은 ${study.provenance.last_observation}, 분석 기준일은 ${study.provenance.as_of}다. 2026년 11월이 진행 중이므로 모든 연도에 동일하게 ${study.provenance.comparison_start_md}~${study.provenance.comparison_end_md}(양 끝 포함)를 적용했다. 이 범위에서 종가가 관측된 수요일만 남기고 선거가 속한 월요일~일요일 주간은 제외했다. 비교 범위는 결과에 유리한 날짜가 아니라 데이터 가용일로 정했다.`
+                )}</p>
+                <div class="research-table" role="region" aria-label={t('Comparison candidates per year', '연도별 비교 후보 수')} tabindex="0"><table>
+                    <thead><tr><th>{t('Year','연도')}</th><th>{t('Eligible Wednesdays','수요일 후보 수')}</th></tr></thead>
+                    <tbody>{Object.entries(study.candidate_counts).map(([year,count]) => <tr><td>{year}</td><td>{count}</td></tr>)}</tbody>
+                </table></div>
+                <p>{t(
+                    `Each candidate has its own prior-60-return percentile, using only information before that date. One Wednesday is drawn uniformly from each year's candidates, and the median of the 14 selected percentiles is computed. This is repeated ${f(summary.replications,0)} times with NumPy seed ${summary.seed}; dates may be selected again in later repetitions. This is a year-stratified comparison, not an election-label permutation or a forecast model.`,
+                    `각 후보의 백분위도 그 날짜 직전의 수익률 60개만 사용해 계산했다. 각 연도에서 후보 수요일 하나를 균등하게 무작위 선택한 뒤 14개 백분위의 중앙값을 계산했다. NumPy seed ${summary.seed}로 ${f(summary.replications,0)}회 반복했으며 다른 반복에서는 같은 날짜가 다시 선택될 수 있다. 이는 연도별 층화 비교이며 선거 표지를 무작위로 바꾼 순열 검정이나 예측모형은 아니다.`
+                )}</p>
+                <p>{t(
+                    `The election median is ${f(summary.actual_median)}, and the center (median) of simulated medians is ${f(summary.simulation_center)}: a difference of ${signed(summary.difference_pp)} percentile points. Simulated medians met or exceeded the election value in ${f(summary.simulation_ge_count,0)} of ${f(summary.replications,0)} runs (${percent(summary.simulation_ge_fraction)}). A high upper-tail fraction gives no support here to unusually large post-midterm moves. It does not, by itself, establish that elections reduce volatility.`,
+                    `실제 선거 중앙값은 ${f(summary.actual_median)}, 모의 중앙값 분포의 중심(중앙값)은 ${f(summary.simulation_center)}로 차이는 ${signed(summary.difference_pp)} 백분위 포인트였다. 모의 중앙값이 실제값 이상인 경우는 ${f(summary.replications,0)}회 중 ${f(summary.simulation_ge_count,0)}회(${percent(summary.simulation_ge_fraction)})였다. 이 높은 비율은 이 비교에서 선거 다음 날이 유난히 크게 움직였다는 근거가 약함을 뜻한다. 선거가 변동성을 낮춘다고 입증하는 값은 아니다.`
+                )}</p>
+                <figure id="comparison-medians">
+                    <img src={figure('03-comparison-medians')} alt={t('Distribution of 10,000 year-matched Wednesday medians with actual election median marked.', '연도별 비교 수요일에서 얻은 중앙값 10,000개 분포와 실제 선거 중앙값')} width="1102" height="874" loading="lazy" />
+                    <figcaption>{t(`The actual median ${f(summary.actual_median)} is ${f(Math.abs(summary.difference_pp))} points below the comparison center ${f(summary.simulation_center)}; ${percent(summary.simulation_ge_fraction)} of simulations were at least as high as the actual value.`, `실제 중앙값 ${f(summary.actual_median)}는 비교 분포 중심 ${f(summary.simulation_center)}보다 ${f(Math.abs(summary.difference_pp))}포인트 낮았으며, 모의값의 ${percent(summary.simulation_ge_fraction)}가 실제값 이상이었다.`)}</figcaption>
+                </figure>
+
+                <h2>{t('Does one election drive the result?', '한 번의 선거가 결과를 좌우했을까?')}</h2>
+                <p>{t(
+                    `We remove one year at a time and recompute both the observed median and each comparison median from the remaining 13 years. The same year-level random draws are reused, so sensitivity changes do not arise simply from a different random seed. We define influence as the largest absolute change in the simulated-at-least-actual fraction; ties are broken by the change in the observed-minus-comparison difference, then by earlier year.`,
+                    '매번 한 연도씩 제외하고 남은 13개 실제 백분위와 13개 비교 백분위의 중앙값을 다시 계산했다. 기존 연도별 난수 추출을 재사용하여 시드 변경 때문에 생기는 차이를 줄였다. 영향력은 ‘모의값이 실제값 이상인 비율’의 절대 변화가 가장 큰 경우로 정의하고, 동률이면 실제−비교 차이의 변화량, 그다음 이른 연도 순으로 정했다.'
+                )}</p>
+                <p>{t(
+                    `Under this rule ${summary.influential_year} is most influential. Excluding it changes the observed median to ${f(influence.actual_median)}, the comparison center to ${f(influence.simulation_center)}, and the upper-tail fraction to ${percent(influence.simulation_ge_fraction)} (${signed(influence.fraction_change*100)} percentage points). Across all exclusions, that fraction ranges from ${percent(summary.loo_fraction_min)} to ${percent(summary.loo_fraction_max)}. The conclusion of no clear evidence for larger moves does not reverse.`,
+                    `이 기준에서 영향이 가장 큰 연도는 ${summary.influential_year}년이었다. 이를 제외하면 실제 중앙값은 ${f(influence.actual_median)}, 비교 중심은 ${f(influence.simulation_center)}, 실제값 이상 비율은 ${percent(influence.simulation_ge_fraction)}로 ${signed(influence.fraction_change*100)}%포인트 변한다. 모든 제외 분석의 비율 범위는 ${percent(summary.loo_fraction_min)}~${percent(summary.loo_fraction_max)}였으며, 유난히 큰 움직임의 근거가 약하다는 결론은 뒤집히지 않았다.`
+                )}</p>
+                <div class="research-table" role="region" aria-label={t('Leave-one-year-out sensitivity','한 연도 제외 민감도')} tabindex="0"><table>
+                    <thead><tr><th>{t('Excluded year','제외 연도')}</th><th>{t('Actual median','실제 중앙값')}</th><th>{t('Comparison center','비교 중심')}</th><th>{t('Difference (pp)','차이(pp)')}</th><th>{t('Simulation ≥ actual','모의값 ≥ 실제값')}</th></tr></thead>
+                    <tbody>{study.leave_one_out.map(r => <tr><td>{r.excluded_year}</td><td>{f(r.actual_median)}</td><td>{f(r.simulation_center)}</td><td>{signed(r.difference_pp)}</td><td>{percent(r.simulation_ge_fraction)}</td></tr>)}</tbody>
+                </table></div>
+
+                <h2>{t('What a risk analyst can conclude','리스크 분석에서 읽을 수 있는 결론')}</h2>
+                <p>{t(
+                    `The 2026 move was relatively large in its recent context, but the typical post-midterm event across 14 elections was not larger than the chosen ordinary-Wednesday comparison. ${summary.influential_year} has the largest influence under the declared sensitivity rule, without reversing that conclusion. The observed direction (${up} positive versus ${14-up} negative returns) is secondary and should not be treated as a trading rule.`,
+                    `2026년 하루의 움직임은 직전 시장 환경에서 비교적 컸다. 그러나 14회 전체의 전형적인 움직임은 선택한 평소 수요일 비교보다 크지 않았다. 명시한 민감도 기준에서는 ${summary.influential_year}년의 영향이 가장 컸지만 결론을 뒤집지는 않았다. 상승 ${up}회·하락 ${14-up}회라는 방향은 보조 결과이며 매매 규칙으로 해석할 수 없다.`
+                )}</p>
+                <p>{t(
+                    'Fourteen events are a small sample, and market composition, trading practices and volatility regimes changed substantially across five decades. The rolling rank adjusts for recent move size; it does not fully control market conditions. Ordinary Wednesdays are not randomized election days. Macro releases, earnings and other news can occur on the same day, and election outcomes may already be priced in. Unequal candidate counts, the short common seasonal window and the percentile’s 1/60 granularity also affect the comparison. No causal election effect is identified, and the upper-tail fraction is not the probability that an election caused the move.',
+                    '표본은 14회뿐이며 약 50년 사이 지수 구성·거래 관행·시장 체제가 달라졌다. 직전 60일의 순위는 최근 변동 폭을 조정할 뿐 시장 환경 전체를 통제하지 않는다. 평소 수요일이 무작위로 배정된 선거일인 것도 아니다. 같은 날의 거시지표·실적·다른 뉴스, 이미 반영된 선거 기대를 분리할 수 없다. 연도별 후보 수 차이, 짧은 공통 계절 범위, 1/60 단위의 이산적인 백분위도 비교에 영향을 준다. 선거의 인과 효과를 식별하지 않으며, 계산된 비율은 선거가 움직임을 일으켰을 확률이 아니다.'
+                )}</p>
+
+                <h2>{t('Sources and reproduction','데이터 출처와 재현 방법')}</h2>
+                <p>{t('Data source:','가격 출처:')} <a href={study.provenance.source_url}>Nasdaq, Inc., NASDAQ Composite [NASDAQCOM], retrieved from FRED, Federal Reserve Bank of St. Louis</a>. {t('Official dates:','공식 선거일:')} <a href="https://www.lavote.gov/official-election-returns">LA County Official Election Returns (1974–2022)</a>, <a href="https://www.sos.ca.gov/elections/upcoming-elections">California Secretary of State (2026)</a>.</p>
+                <p>{t('Analysis cutoff / last observed close:','분석 기준일 / 마지막 종가 관측일:')} {study.provenance.as_of} / {study.provenance.last_observation}. {t('Generated (UTC):','분석 실행 시각(UTC):')} {study.provenance.generated_at_utc}. {t('Seed:','난수 seed:')} {summary.seed}. {t('The downloadable JSON is the single source for article values, tables and charts. FRED data can be revised; the raw-file hash and retrieval metadata identify this snapshot.', '다운로드 가능한 JSON을 본문 수치·표·차트의 공통 원천으로 사용한다. FRED 자료는 수정될 수 있어 원본 해시와 조회 정보를 함께 기록했다.')}</p>
+                <ul>
+                    <li><a href={data('study.json')}>{t('Complete results and provenance (JSON)','전체 결과와 출처 기록(JSON)')}</a></li>
+                    <li><a href={data('elections.csv')}>{t('All election results (CSV)','선거별 결과(CSV)')}</a></li>
+                    <li><a href={data('comparison-wednesdays.csv')}>{t('Every comparison candidate (CSV)','비교 수요일 전체(CSV)')}</a></li>
+                    <li><a href={data('leave-one-out.csv')}>{t('Leave-one-out results (CSV)','한 연도 제외 결과(CSV)')}</a></li>
+                    <li><a href={data('simulation-medians.csv')}>{t('10,000 simulated medians (CSV)','모의 중앙값 10,000개(CSV)')}</a></li>
+                </ul>
+                <p>{t('From the repository root, with Python 3.11+:','저장소 루트에서 Python 3.11 이상으로 실행한다:')}</p>
+                <pre><code>{`python -m pip install -r research/nasdaq-midterms/requirements.txt
+python research/nasdaq-midterms/analyze.py --as-of 2026-11-06
+python -m pytest -q research/nasdaq-midterms
+# Refresh the FRED snapshot:
+python research/nasdaq-midterms/analyze.py --fetch --as-of 2026-11-06
+npm run build`}</code></pre>
+                <p>{t('Research code and methodology:','연구 코드와 방법론:')} <a href="https://github.com/jadoonoona/mathblog/tree/main/research/nasdaq-midterms">research/nasdaq-midterms</a>.</p>
+            </article>
+            <div class="post-footer"><a href={mathUrl} class="back-link">← {t('Mathematics & Statistics','수학과 통계')}</a></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .research-table { max-width: 100%; overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: .65rem .8rem; text-align: left; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    th { color: var(--color-primary); }
+    td { font-variant-numeric: tabular-nums; }
+    .current-event { background: var(--color-bg-alt); }
+    figure { margin: 2rem 0; }
+    figure img { display: block; width: 100%; height: auto; background: white; }
+    figcaption { margin-top: .75rem; font-size: .95rem; line-height: 1.7; color: var(--color-text-muted); }
+    @media (max-width: 600px) { th, td { padding: .5rem; } }
+</style>

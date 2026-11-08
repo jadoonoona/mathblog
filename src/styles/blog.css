@@ -382,6 +382,10 @@
     padding-left: 1.90rem;
 }
 
+.post-sidebar > .sidebar-post-list .sidebar-post-link {
+    padding-left: 0;
+}
+
 .sidebar-post-link:hover .sidebar-post-title,
 .sidebar-post-link:focus-visible .sidebar-post-title {
     color: var(--color-accent);

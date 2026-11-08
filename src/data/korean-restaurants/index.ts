@@ -46,7 +46,12 @@ export const restaurants: Restaurant[] = [
             },
         ],
         summary: 'First time when I felt the food was underpriced.',
-        photos: [],
+        photos: [
+            {
+                src: '/images/restaurants/Gajungjib_Gomtang.jpg',
+                alt: 'Ga Jung Jib의 고기와 파가 올라간 국물 요리, 김치와 소스',
+            },
+        ],
         // Optional:
         // mapUrl: 'https://...',
     },

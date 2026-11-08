@@ -1,0 +1,8 @@
+---
+import BlogPost from '../../../layouts/BlogPost.astro';
+import RestaurantJournal from '../../../components/RestaurantJournal.astro';
+import { koreanRestaurantPost } from '../../../data/korean-restaurants/post';
+---
+<BlogPost frontmatter={koreanRestaurantPost}>
+    <RestaurantJournal lang="ko" />
+</BlogPost>

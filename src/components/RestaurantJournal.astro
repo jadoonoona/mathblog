@@ -1,0 +1,61 @@
+---
+import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, stats, hasCoordinates, assetUrl } from '../data/korean-restaurants';
+import '../styles/restaurant-journal.css';
+import { journalText, type JournalLanguage } from '../data/korean-restaurants/i18n';
+const lang: JournalLanguage = Astro.props.lang ?? 'ko';
+const t = journalText(lang);
+const recommendations = recommendationSettings(lang);
+const rows = localizedRestaurants(uniqueRestaurants(restaurants), lang);
+const counts = stats(rows);
+const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries()].sort((a,b) => a[1].localeCompare(b[1]));
+---
+<section class="restaurant-journal" data-lang={lang} aria-label={t.journal}>
+    <dl class="journal-stats">
+        <div><dt>{t.countries}</dt><dd>{counts.countries}</dd></div>
+        <div><dt>{t.cities}</dt><dd>{counts.cities}</dd></div>
+        <div><dt>{t.restaurants}</dt><dd>{counts.restaurants}</dd></div>
+    </dl>
+    <p class="journal-note">{t.note}</p>
+    <form class="journal-filters" role="search" onsubmit="return false">
+        <label class="journal-search">{t.search}<input type="search" name="query" placeholder={t.placeholder} /></label>
+        <label>{t.country}<select name="country"><option value="">{t.allCountries}</option>{countries.map(([code, name]) => <option value={code}>{name}</option>)}</select></label>
+        <label>{t.recommendation}<select name="recommendation"><option value="">{t.allRecommendations}</option>{Object.entries(recommendations).map(([key, item]) => <option value={key}>{item.label}</option>)}</select></label>
+        <button type="reset">{t.reset}</button>
+    </form>
+    <p class="journal-results" role="status" aria-live="polite">{t.count(rows.length)}</p>
+    <section class="journal-map-section" aria-label={t.map}>
+        <div class="journal-map-toolbar"><span>{t.trail}</span><button type="button" data-fit disabled>{t.fit}</button></div>
+        <p data-map-message role="status">{rows.some(hasCoordinates) ? t.lazy : t.noLocations}</p>
+        <div id="restaurant-map" class="journal-map" role="region" aria-label={t.map} hidden></div>
+        <p class="journal-note">{t.wheel}</p>
+        <ul class="journal-legend" aria-label={t.legend}>{Object.values(recommendations).map(item => <li><span style={`color:${item.color}`} aria-hidden="true">{item.symbol}</span> {item.label}</li>)}</ul>
+    </section>
+    <h2>{t.records}</h2>
+    <p data-empty hidden={rows.length > 0}>{rows.length ? t.noResults : t.empty}</p>
+    <div class="journal-cards">
+        {rows.map(r => {
+            const status = recommendations[r.recommendation];
+            return <section id={`restaurant-${r.id}`} data-restaurant-id={r.id} class="journal-card" tabindex="-1" aria-label={r.name}>
+                <div class="journal-card-heading"><div><p class="journal-place">{r.country} · {r.city}</p><h3>{r.name}</h3></div><span class="journal-badge" style={`--status-color:${status.color}`}><span aria-hidden="true">{status.symbol}</span> {status.label}</span></div>
+                {r.address && <p>{r.address}</p>}
+                {r.summary && <p class="journal-summary">{r.summary}</p>}
+                {!!r.photos?.length && <div class="journal-photos">{r.photos.map(photo => <img src={assetUrl(photo.src)} alt={photo.alt} loading="lazy" decoding="async" width="640" height="420" />)}</div>}
+                {r.visits.map(visit => <div class="journal-visit">
+                    {visit.date && <p>{lang === 'en' && `${t.visited} `}<time datetime={visit.date}>{visit.date}</time>{lang === 'ko' && ` ${t.visited}`}</p>}
+                    {!!visit.menus?.length && <p>{t.menus}: {visit.menus.join(', ')}</p>}
+                    {visit.price && <p>{t.price}: {visit.price.amount.toLocaleString(lang === 'ko' ? 'ko-KR' : 'en-GB')} {visit.price.currency}</p>}
+                    {visit.review && <p class="journal-review">{visit.review}</p>}
+                </div>)}
+                <div class="journal-actions">
+                    {hasCoordinates(r) ? <button type="button" data-show-map={r.id} aria-label={t.action(r.name, t.showMap)}>{t.showMap}</button> : <span class="journal-note">{t.missingLocation}</span>}
+                    {r.mapUrl && <a href={r.mapUrl} target="_blank" rel="noopener noreferrer">{t.externalMap}</a>}
+                    {r.postUrl && <a href={assetUrl(r.postUrl)}>{t.post}</a>}
+                </div>
+            </section>;
+        })}
+    </div>
+    <noscript><p>{t.noscript}</p></noscript>
+</section>
+<script>
+    import '../scripts/restaurant-journal';
+</script>

@@ -2,6 +2,7 @@
 const base = import.meta.env.BASE_URL;
 const pathname = Astro.url.pathname;
 const isKorean = pathname.startsWith(`${base}ko`);
+const isRestaurantJournal = pathname.replace(/\/$/, '').endsWith('/blog/korean-restaurants');
 const isAbout = pathname.endsWith('/about/');
 const isMathNotes = pathname.endsWith('/math-notes/');
 
@@ -9,12 +10,12 @@ const isMidterm = pathname.replace(/\/$/, '').endsWith('/projects/nasdaq-after-u
 const isMathProjects = pathname.replace(/\/$/, '').endsWith('/projects/mathematics');
 const isPortfolio = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management/portfolio');
 const isHotel = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management');
-const englishPath = isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
+const englishPath = isRestaurantJournal ? `${base}blog/korean-restaurants/` : isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
     ? `${base}about/`
     : isMathNotes
         ? `${base}math-notes/`
         : base;
-const koreanPath = isMidterm ? `${base}ko/projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}ko/projects/mathematics/` : isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
+const koreanPath = isRestaurantJournal ? `${base}ko/blog/korean-restaurants/` : isMidterm ? `${base}ko/projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}ko/projects/mathematics/` : isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
     ? `${base}ko/about/`
     : isMathNotes
         ? `${base}ko/math-notes/`

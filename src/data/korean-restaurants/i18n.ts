@@ -1,0 +1,46 @@
+export type JournalLanguage = 'en' | 'ko';
+const ko = {
+    journal: '해외 한식당 여행 기록', countries: '방문 국가', cities: '방문 도시', restaurants: '방문 식당',
+    note: '모든 기록은 직접 방문한 식당입니다. 가격과 후기는 방문 당시 기준이며, 재방문은 한 식당의 기록으로 모읍니다.',
+    search: '기록 검색', placeholder: '식당명, 도시, 국가, 메뉴', country: '국가', allCountries: '모든 국가',
+    recommendation: '추천 상태', allRecommendations: '모든 추천 상태', reset: '전체 필터 초기화',
+    map: '방문 식당 지도', trail: '한 끼의 발자취', fit: '전체 보기',
+    lazy: '지도 영역이 보이면 지도를 불러옵니다.', noLocations: '아직 지도에 표시할 방문 위치가 없습니다.',
+    wheel: '휠 스크롤로는 지도를 확대하지 않습니다. 지도 안의 + / − 버튼이나 두 손가락 제스처를 사용하세요.',
+    legend: '추천 상태 색상 범례', records: '식당별 방문 기록', noResults: '검색 조건에 맞는 식당이 없습니다. 필터를 바꿔보세요.',
+    empty: '아직 등록한 식당이 없습니다. 여행에서 만난 한 끼를 차근차근 기록할 예정입니다.',
+    visited: '방문', menus: '먹었던 메뉴', price: '당시 지불한 가격', showMap: '지도에서 보기',
+    missingLocation: '위치 좌표를 아직 기록하지 않았습니다.', externalMap: '외부 지도', post: '상세 여행 글',
+    noscript: '방문 기록은 위 목록에서 읽을 수 있습니다. 검색과 지도는 JavaScript를 켜면 사용할 수 있습니다.',
+    noResultLocations: '이 결과에는 기록된 위치 좌표가 없습니다. 아래 목록에서 후기를 읽을 수 있습니다.',
+    noMapResults: '지도에 표시할 검색 결과가 없습니다.', review: '후기 보기', loading: '지도를 불러오는 중입니다…',
+    tileError: '배경 지도를 불러오지 못했습니다. 위치 마커와 아래 후기 목록을 이용해주세요.',
+    mapError: '지도를 불러오지 못했습니다. 아래 목록에서 모든 방문 기록을 읽을 수 있습니다. 페이지를 새로고침해 다시 시도할 수 있습니다.',
+    zoomIn: '지도 확대', zoomOut: '지도 축소',
+};
+const en: typeof ko = {
+    journal: 'Korean restaurants abroad: a travel journal', countries: 'Countries visited', cities: 'Cities visited', restaurants: 'Restaurants visited',
+    note: 'Every restaurant here is one I have visited. Prices and opinions reflect the time of each visit. Repeat visits are collected under the same restaurant.',
+    search: 'Search the journal', placeholder: 'Restaurant, city, country, or dish', country: 'Country', allCountries: 'All countries',
+    recommendation: 'Recommendation', allRecommendations: 'All recommendations', reset: 'Reset all filters',
+    map: 'Map of visited restaurants', trail: 'Meals along the way', fit: 'Show all',
+    lazy: 'The map will load when it comes into view.', noLocations: 'There are no recorded locations to show yet.',
+    wheel: 'Scrolling will not zoom the map. Use the + / − buttons or a two-finger pinch gesture.',
+    legend: 'Recommendation colour key', records: 'Restaurant visit notes', noResults: 'No restaurants match your search. Try changing the filters.',
+    empty: 'No restaurants have been added yet. I will collect notes on memorable meals from my travels here.',
+    visited: 'Visited', menus: 'What I ate', price: 'Price paid at the time', showMap: 'Show on map',
+    missingLocation: 'Location coordinates have not been recorded yet.', externalMap: 'External map', post: 'Full travel post',
+    noscript: 'All visit notes are available in the list above. Enable JavaScript to use search and the map.',
+    noResultLocations: 'These results have no recorded coordinates. You can read the reviews below.', noMapResults: 'No search results to show on the map.',
+    review: 'Read review', loading: 'Loading the map…', tileError: 'The background map could not load. Use the location markers and the reviews below.',
+    mapError: 'The map could not load. All visit notes are still available below. Refresh the page to try again.',
+    zoomIn: 'Zoom in', zoomOut: 'Zoom out',
+};
+export function journalText(lang: JournalLanguage) {
+    return { ...(lang === 'ko' ? ko : en),
+        count: (n: number) => lang === 'ko' ? `식당 ${n}곳` : `${n} restaurant${n === 1 ? '' : 's'}`,
+        results: (n: number, total: number) => lang === 'ko' ? `식당 ${n}곳 / 전체 ${total}곳` : `${n} of ${total} restaurants`,
+        locations: (n: number) => lang === 'ko' ? `${n}곳의 위치를 표시합니다. 마커를 선택해 후기를 읽어보세요.` : `Showing ${n} location${n === 1 ? '' : 's'}. Select a marker to read the review.`,
+        action: (name: string, action: string) => lang === 'ko' ? `${name} ${action}` : `${action}: ${name}`,
+    };
+}

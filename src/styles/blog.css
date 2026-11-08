@@ -352,6 +352,31 @@
     letter-spacing: 0.08em;
 }
 
+@media (min-width: 901px) {
+    main.blog-post-main {
+        max-width: none;
+    }
+
+    .blog-post-layout {
+        max-width: none;
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .blog-post-layout > .post-sidebar {
+        border-left: none;
+        border-right: 1px solid var(--color-border);
+        padding-left: 0;
+        padding-right: 1.5rem;
+    }
+
+    .blog-post-layout > .post-content {
+        width: 100%;
+        max-width: 632px;
+        margin-inline: auto;
+        min-width: 0;
+    }
+}
+
 .sidebar-category-group + .sidebar-category-group {
     margin-top: 1.25rem;
 }

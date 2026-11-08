@@ -39,7 +39,7 @@ export const restaurants: Restaurant[] = [
         visits: [
             {
                 date: '2026-10', // YYYY-MM or YYYY-MM-DD
-                menus: ['What you ate'],
+                menus: ['Gom Tang', 'Bibimbap'],
                 // Optional: Gom Tang, Bibimbap
                 // price: { amount: 25, currency: 'EUR' },
                 review: 'The best Korean restaurant in Paris!',

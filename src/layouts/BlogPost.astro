@@ -71,8 +71,8 @@ const dateStr = new Date(frontmatter.date).toLocaleDateString(frontmatter.lang =
 });
 ---
 
-<Layout pageTitle={frontmatter.title} description={frontmatter.description} lang={frontmatter.lang ?? 'en'}>
-    <div class="page-container post-layout">
+<Layout pageTitle={frontmatter.title} description={frontmatter.description} lang={frontmatter.lang ?? 'en'} mainClass={section === 'blog' ? 'blog-post-main' : undefined}>
+    <div class:list={['page-container', 'post-layout', { 'blog-post-layout': section === 'blog' }]}>
         <aside class="post-sidebar">
             <h2>{sidebarHeading}</h2>
             {section === 'math-notes' && groupedPosts ? (

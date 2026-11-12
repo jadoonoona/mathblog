@@ -27,7 +27,7 @@ const mathNoteFiles = import.meta.glob<{ frontmatter: Post }>(
 const sectionFiles = section === 'math-notes' ? mathNoteFiles : blogPostFiles;
 const sectionBase = section === 'math-notes' ? `${import.meta.env.BASE_URL}math-notes/` : `${import.meta.env.BASE_URL}blog/`;
 const sidebarHeading = section === 'math-notes' ? 'All Notes' : 'All Posts';
-const sectionLabel = section === 'math-notes' ? 'Math Notes' : 'Blog';
+const sectionLabel = section === 'math-notes' ? 'Study Notes' : 'Blog';
 const sectionFooterLabel = section === 'math-notes' ? 'all notes' : 'all posts';
 
 const sortedPosts = Object.entries(sectionFiles)

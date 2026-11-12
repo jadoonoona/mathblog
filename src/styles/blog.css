@@ -39,6 +39,43 @@
    Blog Index
    ========================================================================== */
 
+.blog-category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
+}
+
+.blog-category-nav a {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.blog-category-nav a:hover,
+.blog-category-nav a:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.blog-category-nav span {
+    margin-left: 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+#posts,
+#math-notes {
+    scroll-margin-top: 6rem;
+}
+
+#math-notes {
+    margin-top: 3rem;
+}
+
 .blog-grid {
     display: flex;
     flex-direction: column;

@@ -22,6 +22,14 @@ const sorted: Post[] = Object.entries(postFiles)
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 const allTags = [...new Set(sorted.flatMap(p => p.tags ?? []))].sort();
+const noteFiles = import.meta.glob<{ frontmatter: Omit<Post, 'url' | 'date'> & { date?: string; category?: string } }>('../math-notes/*.md', { eager: true });
+const notes = Object.entries(noteFiles)
+    .map(([path, mod]) => ({
+        ...mod.frontmatter,
+        url: `${import.meta.env.BASE_URL}math-notes/${path.replace('../math-notes/', '').replace('.md', '')}/`,
+    }))
+    .filter(note => !note.hidden)
+    .sort((a, b) => (b.date ? new Date(b.date).getTime() : 0) - (a.date ? new Date(a.date).getTime() : 0));
 
 function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString('en-GB', {
@@ -40,41 +48,69 @@ function formatDate(dateStr: string) {
             Occasional writing on finance, travel, and the experience of studying things.
         </p>
 
-        <div class="blog-tag-filters">
-            <button class="blog-tag-btn active" data-tag="all">All</button>
-            {allTags.map(tag => (
-                <button class="blog-tag-btn" data-tag={tag}>{tag}</button>
-            ))}
-        </div>
+        <nav class="blog-category-nav" aria-label="Blog categories">
+            <a href="#posts">Blog Posts <span>{sorted.length}</span></a>
+            <a href="#math-notes">Study Notes <span>{notes.length}</span></a>
+        </nav>
 
-        <div class="blog-grid" id="blog-grid">
-            {sorted.map(post => (
-                <a href={post.url} class="blog-card" data-tags={JSON.stringify(post.tags ?? [])}>
-                    <div class="blog-card-inner">
-                        <span class="blog-card-date">{formatDate(post.date)}</span>
-                        <div>
-                            <h2 class="blog-card-title">{post.title}</h2>
-                            {post.description && (
-                                <p class="blog-card-description">{post.description}</p>
-                            )}
-                            {post.tags && (
-                                <div class="blog-card-tags">
-                                    {post.tags.map((tag: string) => (
-                                        <span class="tag">{tag}</span>
-                                    ))}
-                                </div>
-                            )}
+        <section id="posts" aria-labelledby="posts-heading">
+            <h2 id="posts-heading">Blog Posts</h2>
+            <div class="blog-tag-filters">
+                <button class="blog-tag-btn active" data-tag="all">All</button>
+                {allTags.map(tag => (
+                    <button class="blog-tag-btn" data-tag={tag}>{tag}</button>
+                ))}
+            </div>
+            <div class="blog-grid" id="blog-grid">
+                {sorted.map(post => (
+                    <a href={post.url} class="blog-card" data-tags={JSON.stringify(post.tags ?? [])}>
+                        <div class="blog-card-inner">
+                            <span class="blog-card-date">{formatDate(post.date)}</span>
+                            <div>
+                                <h3 class="blog-card-title">{post.title}</h3>
+                                {post.description && (
+                                    <p class="blog-card-description">{post.description}</p>
+                                )}
+                                {post.tags && (
+                                    <div class="blog-card-tags">
+                                        {post.tags.map((tag: string) => (
+                                            <span class="tag">{tag}</span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </a>
-            ))}
-        </div>
+                    </a>
+                ))}
+            </div>
+        </section>
+
+        <section id="math-notes" aria-labelledby="math-notes-heading">
+            <h2 id="math-notes-heading">Study Notes</h2>
+            <p class="intro-text">수학·통계·컴퓨터 과학을 공부하며 정리한 노트입니다.</p>
+            <a href={`${import.meta.env.BASE_URL}math-notes/`}>View Study Notes by category →</a>
+            <div class="blog-grid">
+                {notes.map(note => (
+                    <a href={note.url} class="blog-card">
+                        <div class="blog-card-inner">
+                            <span class="blog-card-date">{note.date ? formatDate(note.date) : 'Undated'}</span>
+                            <div>
+                                <h3 class="blog-card-title">{note.title}</h3>
+                                {note.description && <p class="blog-card-description">{note.description}</p>}
+                                {note.category && <span class="tag">{note.category}</span>}
+                            </div>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </section>
+
     </div>
 </Layout>
 
 <script>
     const buttons = document.querySelectorAll<HTMLButtonElement>('.blog-tag-btn');
-    const cards = document.querySelectorAll<HTMLElement>('.blog-card');
+    const cards = document.querySelectorAll<HTMLElement>('#blog-grid .blog-card');
 
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {

@@ -21,7 +21,7 @@ export interface FeaturedProject {
 }
 
 export const INTEREST_AREAS: InterestArea[] = [
-    { number: '01', title: 'Mathematics & Statistics', description: 'Building the quantitative foundation for better questions and clearer decisions.', topics: ['Linear algebra', 'Probability', 'Regression', 'Quantitative methods'], link: 'projects/mathematics/', projectCategory: 'mathematics', linkLabel: 'Explore area' },
+    { number: '01', title: 'Mathematics & Statistics and Computer Science', description: 'Building the quantitative foundation for better questions and clearer decisions.', topics: ['Linear algebra', 'Probability', 'Regression', 'Quantitative methods'], link: 'projects/mathematics/', projectCategory: 'mathematics', linkLabel: 'Explore area' },
     { number: '02', title: 'Finance', description: 'Studying how capital, markets, and real-world constraints shape value.', topics: ['Equity', 'Property', 'Macro', 'Valuation'], link: 'projects/finance/', projectCategory: 'finance', linkLabel: 'View projects' },
     { number: '03', title: 'Data & Risk Analytics', description: 'Turning financial questions into measurable, repeatable analysis.', topics: ['Python', 'SQL', 'Market risk', 'Volatility', 'Automation'], link: 'projects/data-risk/', projectCategory: 'data-risk', linkLabel: 'Explore area' },
     { number: '04', title: 'App/Web development', description: 'Making useful tools where analysis meets thoughtful product design.', topics: ['Mobile development', 'React Native', 'Supabase', 'Product design'], link: 'projects/app-web/', projectCategory: 'app-web', linkLabel: 'View projects' },

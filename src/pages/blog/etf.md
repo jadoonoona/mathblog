@@ -2,6 +2,7 @@
 layout: '../../layouts/BlogPost.astro'
 title: '국내 ETF와 해외 ETF 차이'
 date: '2026-05-14'
+hidden: true
 description: '해외 ETF에 투자하고 싶은데 국내에서 출시된 해외 ETF와 해외 ETF중 어느 것에 투자할 지 모르겠을 때 참고하면 좋은 글'
 tags: ['해외주식', '해외주식etf', '해외주식세금', '국내상장해외etf']
 ---

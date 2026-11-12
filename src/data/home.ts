@@ -28,6 +28,7 @@ export const INTEREST_AREAS: InterestArea[] = [
 ];
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
+    { number: '05', title: '순전파와 역전파', description: 'A step-by-step Korean note on forward propagation, backpropagation and gradient descent, using a simple logistic regression example.', tags: ['Machine Learning', 'Calculus', 'Logistic Regression'], link: 'math-notes/forward-and-backpropagation/', linkLabel: 'Read note (Korean)', category: 'mathematics', status: 'Learning note · 12 Nov 2026' },
     { number: '01', title: 'Hotel Asset Management & Capex Investment Analysis', description: 'An interactive hotel operating model comparing room rates, occupancy, revenue and EBITDA.', tags: ['Finance', 'Hotel', 'Modelling'], link: 'projects/hotel-asset-management/', linkLabel: 'Open operating model', category: 'finance', status: 'Phases 1–5 available' },
     { number: '02', title: 'Our Trip Plan', description: 'A collaborative travel planning product built to make shared itineraries easier to manage.', tags: ['Mobile', 'React Native', 'Travel app'], link: 'https://ourtripplan.com', linkLabel: 'View the project', category: 'app-web', status: 'Live' },
     { number: '03', title: 'Korean Interest Rate & Credit Spread Analysis', description: 'Bootstrap analysis of 2024–2025 funding spreads and real estate financing stress tests. Research article in Korean.', tags: ['Finance', 'Bootstrap', 'Credit Risk'], link: 'projects/korean-interest-rate-credit-spread/', linkLabel: 'Read research', category: 'finance', status: '2024–2025 CSV analysis' },

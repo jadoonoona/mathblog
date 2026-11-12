@@ -21,7 +21,6 @@ const sorted: Post[] = Object.entries(postFiles)
     .concat([restaurantPost])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-const allTags = [...new Set(sorted.flatMap(p => p.tags ?? []))].sort();
 const noteFiles = import.meta.glob<{ frontmatter: Omit<Post, 'url' | 'date'> & { date?: string; category?: string } }>('../math-notes/*.md', { eager: true });
 const notes = Object.entries(noteFiles)
     .map(([path, mod]) => ({
@@ -49,21 +48,13 @@ function formatDate(dateStr: string) {
         </p>
 
         <nav class="blog-category-nav" aria-label="Blog categories">
-            <a href="#posts">Blog Posts <span>{sorted.length}</span></a>
             <a href="#math-notes">Study Notes <span>{notes.length}</span></a>
         </nav>
 
-        <section id="posts" aria-labelledby="posts-heading">
-            <h2 id="posts-heading">Blog Posts</h2>
-            <div class="blog-tag-filters">
-                <button class="blog-tag-btn active" data-tag="all">All</button>
-                {allTags.map(tag => (
-                    <button class="blog-tag-btn" data-tag={tag}>{tag}</button>
-                ))}
-            </div>
+        <section id="posts" aria-label="Blog posts">
             <div class="blog-grid" id="blog-grid">
                 {sorted.map(post => (
-                    <a href={post.url} class="blog-card" data-tags={JSON.stringify(post.tags ?? [])}>
+                    <a href={post.url} class="blog-card">
                         <div class="blog-card-inner">
                             <span class="blog-card-date">{formatDate(post.date)}</span>
                             <div>
@@ -108,20 +99,8 @@ function formatDate(dateStr: string) {
     </div>
 </Layout>
 
-<script>
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.blog-tag-btn');
-    const cards = document.querySelectorAll<HTMLElement>('#blog-grid .blog-card');
-
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const selected = btn.dataset.tag!;
-            cards.forEach(card => {
-                const tags: string[] = JSON.parse(card.dataset.tags ?? '[]');
-                card.style.display = (selected === 'all' || tags.includes(selected)) ? '' : 'none';
-            });
-        });
-    });
-</script>
+<style>
+    #blog-grid > .blog-card:first-child {
+        border-top: none;
+    }
+</style>

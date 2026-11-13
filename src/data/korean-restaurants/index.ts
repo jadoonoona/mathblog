@@ -55,6 +55,33 @@ export const restaurants: Restaurant[] = [
         // Optional:
         // mapUrl: 'https://...',
     },
+ {
+        id: 'approach-fr',
+        name: 'Approach',
+        countryCode: 'FR',
+        country: '프랑스',
+        city: '파리',
+        // Add verified numeric latitude and longitude here.
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-10', // YYYY-MM or YYYY-MM-DD
+                menus: ['Kimchi Fried Rice'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'The authentic Kimchi Fried Rice!',
+            },
+        ],
+        summary: 'The Kimchi Fried Rice was delicious than the ones in Korea.',
+        photos: [
+            {
+                src: '/images/restaurants/Approach.jpg',
+                alt: '김치볶음밥',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
 ];
 export const recommendations = {
     revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★' },

@@ -409,7 +409,7 @@
 
     .blog-post-layout > .post-content {
         width: 100%;
-        max-width: 1200px;
+        max-width: none;
         margin-inline: auto;
         min-width: 0;
     }

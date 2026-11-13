@@ -413,6 +413,11 @@
         margin-inline: auto;
         min-width: 0;
     }
+
+    .blog-post-layout .post-body,
+    .blog-post-layout .post-description {
+        max-width: none;
+    }
 }
 
 .sidebar-category-group + .sidebar-category-group {

@@ -1,5 +1,5 @@
 ---
-import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, stats, hasCoordinates, assetUrl } from '../data/korean-restaurants';
+import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, restaurantSymbol, stats, hasCoordinates, assetUrl } from '../data/korean-restaurants';
 import '../styles/restaurant-journal.css';
 import { journalText, type JournalLanguage } from '../data/korean-restaurants/i18n';
 const lang: JournalLanguage = Astro.props.lang ?? 'ko';
@@ -36,7 +36,7 @@ const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries
         {rows.map(r => {
             const status = recommendations[r.recommendation];
             return <section id={`restaurant-${r.id}`} data-restaurant-id={r.id} class="journal-card" tabindex="-1" aria-label={r.name}>
-                <div class="journal-card-heading"><div><p class="journal-place">{r.country} · {r.city}</p><h3>{r.name}</h3></div><span class="journal-badge" style={`--status-color:${status.color}`}><span aria-hidden="true">{status.symbol}</span> {status.label}</span></div>
+                <div class="journal-card-heading"><div><p class="journal-place">{r.country} · {r.city}</p><h3>{r.name}</h3></div><span class="journal-badge" style={`--status-color:${status.color}`}><span>{restaurantSymbol(r)}</span> {status.label}</span></div>
                 {r.address && <p>{r.address}</p>}
                 {r.summary && <p class="journal-summary">{r.summary}</p>}
                 {!!r.photos?.length && <div class="journal-photos">{r.photos.map(photo => <img src={assetUrl(photo.src)} alt={photo.alt} loading="lazy" decoding="async" width="640" height="420" />)}</div>}

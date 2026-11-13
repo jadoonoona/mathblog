@@ -1,4 +1,4 @@
-import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, filterRestaurants, hasCoordinates, tileProvider, assetUrl } from '../data/korean-restaurants';
+import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, restaurantSymbol, filterRestaurants, hasCoordinates, tileProvider, assetUrl } from '../data/korean-restaurants';
 import { journalText } from '../data/korean-restaurants/i18n';
 import type * as Leaflet from 'leaflet';
 const root = document.querySelector<HTMLElement>('.restaurant-journal');
@@ -63,7 +63,7 @@ if (root) {
             heading.textContent = r.name;
             popup.append(heading);
             const location = document.createElement('p');
-            location.textContent = `${r.country} · ${r.city} · ${state.label}`;
+            location.textContent = `${r.country} · ${r.city} · ${restaurantSymbol(r)} ${state.label}`;
             popup.append(location);
             const photo = r.photos?.[0];
             if (photo) {

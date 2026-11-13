@@ -20,6 +20,7 @@ export interface Restaurant {
     address?: string;
     visits: Visit[];
     recommendation: Recommendation;
+    stars?: 1 | 2 | 3 | 4 | 5;
     summary?: string;
     photos?: { src: string; alt: string }[];
     mapUrl?: string;
@@ -32,8 +33,8 @@ export const restaurants: Restaurant[] = [
         id: 'unique-restaurant-id',
         name: 'Ga Jung Jib',
         countryCode: 'FR',
-        country: '프랑스',
-        city: '파리',
+        country: 'France',
+        city: 'Paris',
         // Add verified numeric latitude and longitude here.
         recommendation: 'revisit',
         visits: [
@@ -59,8 +60,8 @@ export const restaurants: Restaurant[] = [
         id: 'approach-fr',
         name: 'Approach',
         countryCode: 'FR',
-        country: '프랑스',
-        city: '파리',
+        country: 'France',
+        city: 'Paris',
         latitude: 48.86946398677854,
         longitude: 2.3336214441768686,
         recommendation: 'revisit',
@@ -95,6 +96,11 @@ export const tileProvider = {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
 };
+export function restaurantSymbol(r: Restaurant): string {
+    if (r.recommendation !== 'revisit') return recommendations[r.recommendation].symbol;
+    const count = r.stars ?? 1;
+    return '★'.repeat(Number.isInteger(count) && count >= 1 && count <= 5 ? count : 1);
+}
 export function hasCoordinates(r: Restaurant): boolean {
     return typeof r.latitude === 'number' && Number.isFinite(r.latitude) && Math.abs(r.latitude) <= 90
         && typeof r.longitude === 'number' && Number.isFinite(r.longitude) && Math.abs(r.longitude) <= 180;

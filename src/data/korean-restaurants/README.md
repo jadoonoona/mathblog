@@ -9,6 +9,7 @@
 - `id`: 식당마다 고유하고 변하지 않는 영문 ID (예: `my-restaurant-01`). 재방문은 새 식당 대신 기존 객체의 `visits`에 추가합니다. 같은 id는 통계와 목록에서 하나로 처리됩니다.
 - `name`, `countryCode` (ISO 국가 코드), `country`, `city`, `recommendation`, `visits`를 채웁니다.
 - `recommendation`: `revisit`, `okay`, `disappointing`, `pending`. 모두 방문한 식당입니다.
+- `stars`: `revisit` 식당의 별 개수(1~5). 예: `recommendation: 'revisit', stars: 3`. 생략하면 별 하나를 표시합니다. 카드와 지도 팝업에 적용되며 지도 마커·범례는 추천 상태의 기본 기호를 사용합니다.
 - `latitude` / `longitude`: 직접 확인한 숫자 좌표. 모르면 두 필드를 생략하세요. 잘못된 좌표도 지도만 제외되며 카드는 표시됩니다. 주소 자동 지오코딩은 하지 않습니다.
 - `visits`: `{ date: '2026-05', menus: ['실제로 먹은 메뉴'], price: { amount: 12.5, currency: 'GBP' }, review: '방문 당시 개인 후기' }` 형태. 월만 알면 `YYYY-MM`, 날짜까지 알면 `YYYY-MM-DD`. 모르는 항목은 생략합니다. 가격은 실제 지불한 값과 통화 코드입니다.
 - `summary`, `address`, `mapUrl`, `postUrl`은 선택입니다. 링크에는 신뢰하는 HTTPS 주소 또는 사이트 내부 경로를 사용하세요.

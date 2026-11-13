@@ -392,6 +392,7 @@
 @media (min-width: 901px) {
     main.blog-post-main {
         max-width: none;
+        padding-left: 0;
     }
 
     .blog-post-layout {

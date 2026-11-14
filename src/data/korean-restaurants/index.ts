@@ -105,7 +105,7 @@ export const restaurants: Restaurant[] = [
         summary: 'They have a variety of dishes to choose from.',
         photos: [
             {
-                src: '/images/restaurants/samsun.jpg',
+                src: '/images/restaurants/samsun.jpeg',
                 alt: ' tofu stew',
             },
         ],

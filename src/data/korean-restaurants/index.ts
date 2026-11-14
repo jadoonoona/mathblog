@@ -41,7 +41,7 @@ export const restaurants: Restaurant[] = [
         visits: [
             {
                 date: '2026-10', // YYYY-MM or YYYY-MM-DD
-                menus: ['Gom Tang', 'Bibimbap'],
+                menus: ['Gom Tang', 'Beef Bibimbap'],
                 // Optional: Gom Tang, Bibimbap
                 // price: { amount: 25, currency: 'EUR' },
                 review: 'The best Korean restaurant in Paris!',
@@ -51,7 +51,7 @@ export const restaurants: Restaurant[] = [
         photos: [
             {
                 src: '/images/restaurants/Gajungjib_Gomtang.jpg',
-                alt: 'Ga Jung Jib의 고기와 파가 올라간 국물 요리, 김치와 소스',
+                alt: 'Gom Tang',
             },
         ],
         // Optional:

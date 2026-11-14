@@ -115,7 +115,7 @@ export const restaurants: Restaurant[] = [
     },
 {
         id: 'kimso-nl',
-        name: 'Kim's so',
+        name: "Kim's so",
         countryCode: 'NL',
         country: 'Netherlands',
         city: 'Amsterdam',

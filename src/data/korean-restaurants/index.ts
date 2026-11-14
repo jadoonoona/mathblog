@@ -114,13 +114,13 @@ export const restaurants: Restaurant[] = [
         // mapUrl: 'https://...',
     },
 {
-        id: 'kimso-fr',
+        id: 'kimso-nl',
         name: 'Kim's so',
         countryCode: 'NL',
         country: 'Netherlands',
         city: 'Amsterdam',
-        latitude: 48.86946398677854,
-        longitude: 2.3336214441768686,
+        latitude: 52.36199950777336,
+        longitude: 4.924415437348154,
         recommendation: 'revisit',
         visits: [
             {

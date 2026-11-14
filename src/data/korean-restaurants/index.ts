@@ -113,6 +113,34 @@ export const restaurants: Restaurant[] = [
         // Optional:
         // mapUrl: 'https://...',
     },
+{
+        id: 'kimso-fr',
+        name: 'Kim's so',
+        countryCode: 'NL',
+        country: 'Netherlands',
+        city: 'Amsterdam',
+        latitude: 48.86946398677854,
+        longitude: 2.3336214441768686,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-09', // YYYY-MM or YYYY-MM-DD
+                menus: ['Kimchi Jjigae'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Kimchi Jjigae, for people who miss Kimchi',
+            },
+        ],
+        summary: 'The hottest Korean restaurant in Amsterdam.',
+        photos: [
+            {
+                src: '/images/restaurants/kimso.jpeg',
+                alt: 'Kimchi Stew',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
 ];
 export const recommendations = {
     revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★★★★★' },

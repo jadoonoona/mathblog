@@ -25,7 +25,7 @@ const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries
     <p class="journal-results" role="status" aria-live="polite">{t.count(rows.length)}</p>
     <section class="journal-map-section" aria-label={t.map}>
         <div class="journal-map-toolbar"><span>{t.trail}</span><button type="button" data-fit disabled>{t.fit}</button></div>
-        <p data-map-message role="status">{rows.some(hasCoordinates) ? t.lazy : t.noLocations}</p>
+        <p data-map-message role="status">{rows.some(hasCoordinates) ? t.loading : t.noLocations}</p>
         <div id="restaurant-map" class="journal-map" role="region" aria-label={t.map} tabindex="-1" hidden></div>
         <p class="journal-note">{t.wheel}</p>
         <ul class="journal-legend" aria-label={t.legend}>{Object.values(recommendations).map(item => <li><span style={`color:${item.color}`} aria-hidden="true">{item.symbol}</span> {item.label}</li>)}</ul>
@@ -46,11 +46,10 @@ const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries
                     {visit.price && <p>{t.price}: {visit.price.amount.toLocaleString(lang === 'ko' ? 'ko-KR' : 'en-GB')} {visit.price.currency}</p>}
                     {visit.review && <p class="journal-review">{visit.review}</p>}
                 </div>)}
-                <div class="journal-actions">
-                    {hasCoordinates(r) ? <button type="button" data-show-map={r.id} aria-label={t.action(r.name, t.showMap)}>{t.showMap}</button> : <span class="journal-note">{t.missingLocation}</span>}
+                {(r.mapUrl || r.postUrl) && <div class="journal-actions">
                     {r.mapUrl && <a href={r.mapUrl} target="_blank" rel="noopener noreferrer">{t.externalMap}</a>}
                     {r.postUrl && <a href={assetUrl(r.postUrl)}>{t.post}</a>}
-                </div>
+                </div>}
             </section>;
         })}
     </div>

@@ -1,6 +1,7 @@
 import { restaurants, uniqueRestaurants, localizedRestaurants, recommendationSettings, restaurantSymbol, filterRestaurants, hasCoordinates, tileProvider, assetUrl } from '../data/korean-restaurants';
 import { journalText } from '../data/korean-restaurants/i18n';
 import type * as Leaflet from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 const root = document.querySelector<HTMLElement>('.restaurant-journal');
 if (root) {
     const lang = root.dataset.lang === 'en' ? 'en' : 'ko';
@@ -20,9 +21,7 @@ if (root) {
     let filtered = rows;
     let L: typeof Leaflet;
     let map: Leaflet.Map | undefined;
-    let cluster: Leaflet.MarkerClusterGroup | undefined;
     let loading: Promise<void> | undefined;
-    const markers = new Map<string, Leaflet.Marker>();
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function select(id: string, scroll = false) {
         cards.forEach(card => card.classList.toggle('is-selected', card.dataset.restaurantId === id));
@@ -34,15 +33,13 @@ if (root) {
     }
     function fitResults() {
         if (!map || !L) return;
-        const points = filtered.filter(hasCoordinates).map(r => [r.latitude!, r.longitude!] as [number, number]);
-        if (points.length) map.fitBounds(L.latLngBounds(points), { padding: [35, 35], maxZoom: 12, animate: false });
+        const points = rows.filter(hasCoordinates).map(r => [r.latitude!, r.longitude!] as [number, number]);
+        if (points.length) map.fitBounds(L.latLngBounds(points), { padding: [35, 35], maxZoom: 16, animate: false });
     }
     function updateMarkers() {
-        if (!map || !cluster) return;
+        if (!map) return;
         map.closePopup();
-        cluster.clearLayers();
-        markers.clear();
-        const located = filtered.filter(hasCoordinates);
+        const located = rows.filter(hasCoordinates);
         canvas.hidden = !located.length;
         fit.disabled = !located.length;
         if (!located.length) {
@@ -78,8 +75,7 @@ if (root) {
             popup.append(button);
             marker.bindPopup(popup, { maxWidth: 260, minWidth: 180, maxHeight: 290 });
             marker.on('click', () => select(r.id));
-            cluster!.addLayer(marker);
-            markers.set(r.id, marker);
+            marker.addTo(map!);
         });
         fitResults();
     }
@@ -92,20 +88,14 @@ if (root) {
                 // Browser-only import keeps Leaflet's window access out of SSR.
                 const module = await import('leaflet');
                 L = module.default ?? module;
-                // Markercluster augments the same Leaflet instance.
-                (window as Window & { L?: typeof Leaflet }).L = L;
-                await Promise.all([import('leaflet/dist/leaflet.css'), import('leaflet.markercluster/dist/MarkerCluster.css'), import('leaflet.markercluster/dist/MarkerCluster.Default.css')]);
-                await import('leaflet.markercluster');
                 canvas.hidden = false;
                 map = L.map(canvas, { scrollWheelZoom: false, maxZoom: tileProvider.maxZoom });
-                // Establish the view before adding layers that depend on map bounds.
+                // Set the view before attaching tiles and restaurant markers.
                 fitResults();
                 map.zoomControl.setPosition('topright');
                 const tiles = L.tileLayer(tileProvider.url, { attribution: tileProvider.attribution, maxZoom: tileProvider.maxZoom });
                 tiles.on('tileerror', () => { message.textContent = t.tileError; });
                 tiles.addTo(map);
-                cluster = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 48, animate: !reduced });
-                map.addLayer(cluster);
                 updateMarkers();
                 const zoomIn = canvas.querySelector('.leaflet-control-zoom-in');
                 const zoomOut = canvas.querySelector('.leaflet-control-zoom-out');
@@ -113,9 +103,7 @@ if (root) {
                 zoomOut?.setAttribute('aria-label', t.zoomOut);
             } catch (error) {
                 map?.remove(); map = undefined;
-                cluster = undefined;
-                markers.clear();
-                canvas.hidden = true; fit.disabled = true;
+                canvas.hidden = true; fit.disabled = false;
                 message.textContent = t.mapError;
                 console.error('Restaurant map could not load', error);
             }
@@ -133,31 +121,13 @@ if (root) {
         result.textContent = t.results(filtered.length, rows.length);
         empty.hidden = filtered.length > 0;
         if (rows.length) empty.textContent = t.noResults;
-        updateMarkers();
     }
     form.addEventListener('input', applyFilters);
     form.addEventListener('change', applyFilters);
     form.addEventListener('reset', () => { requestAnimationFrame(applyFilters); });
-    fit.addEventListener('click', fitResults);
-    root.querySelectorAll<HTMLButtonElement>('[data-show-map]').forEach(button => {
-        button.addEventListener('click', async () => {
-            root.querySelector('.journal-map-section')?.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'center' });
-            await loadMap();
-            const id = button.dataset.showMap!;
-            const marker = markers.get(id);
-            if (!map || !marker || !cluster) return;
-            select(id);
-            canvas.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'center' });
-            cluster.zoomToShowLayer(marker, () => {
-                marker.openPopup();
-                canvas.focus({ preventScroll: true });
-            });
-        });
+    fit.addEventListener('click', async () => {
+        await loadMap();
+        fitResults();
     });
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(entries => {
-            if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); void loadMap(); }
-        }, { rootMargin: '200px' });
-        observer.observe(root.querySelector('.journal-map-section')!);
-    } else { void loadMap(); }
+    void loadMap();
 }

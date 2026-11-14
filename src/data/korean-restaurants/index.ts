@@ -34,6 +34,8 @@ export const restaurants: Restaurant[] = [
         countryCode: 'FR',
         country: 'France',
         city: 'Paris',
+        latitude: 48.86247143536396,
+        longitude: 2.342875177003919,
         // Add verified numeric latitude and longitude here.
         recommendation: 'revisit',
         visits: [

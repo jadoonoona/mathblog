@@ -19,7 +19,7 @@
 
 추천 라벨·색상·기호는 `index.ts`의 `recommendations` 한 곳에서 범례·마커·카드·필터가 공유합니다. 국가별·여행별 방식으로 전환할 때 이 설정과 분류 키를 함께 변경하세요.
 
-지도 라이브러리: Leaflet 1.9.4 (BSD-2-Clause), Leaflet.markercluster 1.5.3 (MIT). npm으로 자체 번들하며 브라우저에서 지도 영역 근처에 도달한 뒤 불러옵니다. 지도 타일 공급자는 라이브러리와 별개로 `tileProvider`에서 설정합니다.
+지도 라이브러리: Leaflet 1.9.4 (BSD-2-Clause). npm으로 자체 번들하며 페이지를 열면 상단 지도에 좌표가 있는 모든 식당을 개별 마커로 표시합니다. 검색 필터는 아래 후기 목록에만 적용됩니다. 지도 타일 공급자는 라이브러리와 별개로 `tileProvider`에서 설정합니다.
 
 기본 타일은 https://tile.openstreetmap.org/{z}/{x}/{y}.png 이며 © OpenStreetMap contributors 출처를 지도에 표시합니다. https://operations.osmfoundation.org/policies/tiles/ 를 준수해야 합니다. 사전 다운로드·오프라인 저장·캐시 무효화를 하지 않으며 브라우저의 기본 Referer와 HTTP 캐시를 사용합니다. Referrer-Policy로 Referer를 차단하지 마세요. 대량 트래픽을 운영한다면 정책에 맞는 다른 공급자로 변경하세요. 별도 가입/API 키는 없습니다. 외부 타일 요청이 실패해도 정적 후기 목록은 유지됩니다.
 

@@ -15,7 +15,7 @@ const ko = {
     noResultLocations: '이 결과에는 기록된 위치 좌표가 없습니다. 아래 목록에서 후기를 읽을 수 있습니다.',
     noMapResults: '지도에 표시할 검색 결과가 없습니다.', review: '후기 보기', loading: '지도를 불러오는 중입니다…',
     tileError: '배경 지도를 불러오지 못했습니다. 위치 마커와 아래 후기 목록을 이용해주세요.',
-    mapError: '지도를 불러오지 못했습니다. 아래 목록에서 모든 방문 기록을 읽을 수 있습니다. 페이지를 새로고침해 다시 시도할 수 있습니다.',
+    mapError: '지도를 불러오지 못했습니다. 아래 목록에서 모든 방문 기록을 읽을 수 있습니다. 전체 보기 버튼을 눌러 다시 시도할 수 있습니다.',
     zoomIn: '지도 확대', zoomOut: '지도 축소',
 };
 const en: typeof ko = {
@@ -33,7 +33,7 @@ const en: typeof ko = {
     noscript: 'All visit notes are available in the list above. Enable JavaScript to use search and the map.',
     noResultLocations: 'These results have no recorded coordinates. You can read the reviews below.', noMapResults: 'No search results to show on the map.',
     review: 'Read review', loading: 'Loading the map…', tileError: 'The background map could not load. Use the location markers and the reviews below.',
-    mapError: 'The map could not load. All visit notes are still available below. Refresh the page to try again.',
+    mapError: 'The map could not load. All visit notes are still available below. Click Show all to try again.',
     zoomIn: 'Zoom in', zoomOut: 'Zoom out',
 };
 export function journalText(lang: JournalLanguage) {

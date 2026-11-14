@@ -17,42 +17,39 @@ function setup(failFirst = false) {
         scrollIntoView() { events.push('scroll'); }, focus() { events.push('focus'); },
     });
     const canvas = { ...element(), querySelector: () => element() };
-    const section = element();
     const message = element();
-    let click: () => Promise<void>;
-    const button = { ...element(), dataset: { showMap: row.id }, addEventListener(_event: string, handler: () => Promise<void>) { click = handler; } };
+    let retry: () => Promise<void>;
+    const fit = { ...element(), addEventListener(_event: string, handler: () => Promise<void>) { retry = handler; } };
     const form = { elements: { namedItem: () => ({ value: '' }) }, addEventListener() {} };
     const root = {
         dataset: { lang: 'en' },
         querySelector(selector: string) {
             if (selector === 'form') return form;
             if (selector === '#restaurant-map') return canvas;
-            if (selector === '.journal-map-section') return section;
+            if (selector === '[data-fit]') return fit;
             if (selector === '[data-map-message]') return message;
             return element();
         },
-        querySelectorAll: (selector: string) => selector === '[data-show-map]' ? [button] : [],
+        querySelectorAll: () => [],
     };
     let hasView = false;
     const map = {
         fitBounds() { hasView = true; },
         zoomControl: { setPosition() {} },
-        addLayer() { assert.ok(hasView, 'set the map view before attaching the cluster'); },
+
         closePopup() {}, invalidateSize() {}, remove() {},
     };
-    const marker = { bindPopup() {}, on() {}, openPopup() { events.push('popup'); } };
-    const cluster = { clearLayers() {}, addLayer() {}, zoomToShowLayer(_marker: unknown, done: () => void) { done(); } };
+    const marker = { bindPopup() { events.push('popup'); }, on() {}, addTo() { assert.ok(hasView); events.push('marker'); } };
     const leaflet = {
         map: () => map, latLngBounds: (points: unknown) => points,
         tileLayer: () => ({ on() {}, addTo() {} }),
-        markerClusterGroup: () => cluster, marker: () => marker, divIcon() {},
+        marker: () => marker, divIcon() {},
     };
     let attempts = 0;
     const dependencies = {
         document: { querySelector: () => root, createElement: element },
         window: { matchMedia: () => ({ matches: true }) },
-        IntersectionObserver: class { observe() {} disconnect() {} },
-        restaurants: [row], uniqueRestaurants: (rows: unknown) => rows, localizedRestaurants: (rows: unknown) => rows,
+        restaurants: [row, { ...row, id: 'second', latitude: 49 }], uniqueRestaurants: (rows: unknown) => rows, localizedRestaurants: (rows: unknown) => rows,
         recommendationSettings: () => ({ revisit: { label: 'Would go again', symbol: '★', color: '#25834b' } }),
         restaurantSymbol: () => '★', hasCoordinates: () => true,
         tileProvider: { maxZoom: 19, url: '', attribution: '' }, assetUrl: (path: string) => path,
@@ -68,23 +65,25 @@ function setup(failFirst = false) {
         },
     };
     new Function(...Object.keys(dependencies), source)(...Object.values(dependencies));
-    return { events, message, click: () => click!(), attempts: () => attempts };
+    return { events, message, retry: () => retry!(), attempts: () => attempts };
 }
 
-test('Show on map loads the map, scrolls and opens the selected restaurant popup', async () => {
+test('the top map loads automatically and displays every recorded location', async () => {
     const page = setup();
-    await page.click();
-    assert.equal(page.events[0], 'scroll');
-    assert.ok(page.events.includes('popup'));
-    assert.ok(page.events.includes('focus'));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(page.events.filter(event => event === 'marker').length, 2);
+    assert.equal(page.events.filter(event => event === 'popup').length, 2);
     assert.equal(page.attempts(), 1);
+    await page.retry();
+    assert.equal(page.attempts(), 1);
+    assert.equal(page.events.filter(event => event === 'marker').length, 2);
 });
 
-test('Show on map retries after a failed map import', async () => {
+test('Show all retries after a failed automatic map import', async () => {
     const page = setup(true);
-    await page.click();
+    await new Promise(resolve => setImmediate(resolve));
     assert.equal(page.message.textContent, 'error');
-    await page.click();
+    await page.retry();
     assert.equal(page.attempts(), 2);
-    assert.ok(page.events.includes('popup'));
+    assert.equal(page.events.filter(event => event === 'marker').length, 2);
 });

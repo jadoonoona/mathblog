@@ -20,7 +20,6 @@ export interface Restaurant {
     address?: string;
     visits: Visit[];
     recommendation: Recommendation;
-    stars?: 1 | 2 | 3 | 4 | 5;
     summary?: string;
     photos?: { src: string; alt: string }[];
     mapUrl?: string;
@@ -114,7 +113,7 @@ export const restaurants: Restaurant[] = [
     },
 ];
 export const recommendations = {
-    revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★' },
+    revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★★★★★' },
     okay: { labelEn: 'It was okay', label: '무난했던 곳', color: '#b95b16', symbol: '●' },
     disappointing: { labelEn: 'Disappointing', label: '아쉬웠던 곳', color: '#8653b7', symbol: '◆' },
     pending: { labelEn: 'Review to come', label: '후기 작성 전', color: '#6b7280', symbol: '…' },
@@ -125,9 +124,7 @@ export const tileProvider = {
     maxZoom: 19,
 };
 export function restaurantSymbol(r: Restaurant): string {
-    if (r.recommendation !== 'revisit') return recommendations[r.recommendation].symbol;
-    const count = r.stars ?? 1;
-    return '★'.repeat(Number.isInteger(count) && count >= 1 && count <= 5 ? count : 1);
+    return recommendations[r.recommendation].symbol;
 }
 export function hasCoordinates(r: Restaurant): boolean {
     return typeof r.latitude === 'number' && Number.isFinite(r.latitude) && Math.abs(r.latitude) <= 90

@@ -26,7 +26,7 @@ const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries
     <section class="journal-map-section" aria-label={t.map}>
         <div class="journal-map-toolbar"><span>{t.trail}</span><button type="button" data-fit disabled>{t.fit}</button></div>
         <p data-map-message role="status">{rows.some(hasCoordinates) ? t.lazy : t.noLocations}</p>
-        <div id="restaurant-map" class="journal-map" role="region" aria-label={t.map} hidden></div>
+        <div id="restaurant-map" class="journal-map" role="region" aria-label={t.map} tabindex="-1" hidden></div>
         <p class="journal-note">{t.wheel}</p>
         <ul class="journal-legend" aria-label={t.legend}>{Object.values(recommendations).map(item => <li><span style={`color:${item.color}`} aria-hidden="true">{item.symbol}</span> {item.label}</li>)}</ul>
     </section>

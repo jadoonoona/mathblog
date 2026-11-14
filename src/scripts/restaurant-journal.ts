@@ -55,7 +55,7 @@ if (root) {
             const state = recommendations[r.recommendation];
             const marker = L.marker([r.latitude!, r.longitude!], {
                 title: `${r.name} · ${state.label}`, alt: `${r.name} · ${state.label}`, keyboard: true,
-                icon: L.divIcon({ className: 'journal-marker', html: `<span class="journal-pin" style="background:${state.color}">${state.symbol}</span>`, iconSize: [30, 30], iconAnchor: [15, 15] }),
+                icon: L.divIcon({ className: 'journal-marker', html: `<span class="journal-pin" style="background:${state.color}">${state.symbol[0]}</span>`, iconSize: [30, 30], iconAnchor: [15, 15] }),
             });
             const popup = document.createElement('div');
             popup.className = 'journal-popup';
@@ -84,8 +84,8 @@ if (root) {
         fitResults();
     }
     async function loadMap() {
-        if (map || !rows.some(hasCoordinates)) return;
         if (loading) return loading;
+        if (map || !rows.some(hasCoordinates)) return;
         loading = (async () => {
             message.textContent = t.loading;
             try {
@@ -98,6 +98,8 @@ if (root) {
                 await import('leaflet.markercluster');
                 canvas.hidden = false;
                 map = L.map(canvas, { scrollWheelZoom: false, maxZoom: tileProvider.maxZoom });
+                // Establish the view before adding layers that depend on map bounds.
+                fitResults();
                 map.zoomControl.setPosition('topright');
                 const tiles = L.tileLayer(tileProvider.url, { attribution: tileProvider.attribution, maxZoom: tileProvider.maxZoom });
                 tiles.on('tileerror', () => { message.textContent = t.tileError; });
@@ -111,12 +113,18 @@ if (root) {
                 zoomOut?.setAttribute('aria-label', t.zoomOut);
             } catch (error) {
                 map?.remove(); map = undefined;
+                cluster = undefined;
+                markers.clear();
                 canvas.hidden = true; fit.disabled = true;
                 message.textContent = t.mapError;
                 console.error('Restaurant map could not load', error);
             }
         })();
-        return loading;
+        try {
+            await loading;
+        } finally {
+            loading = undefined;
+        }
     }
     function applyFilters() {
         filtered = filterRestaurants(rows, query.value, country.value, recommendation.value);
@@ -133,6 +141,7 @@ if (root) {
     fit.addEventListener('click', fitResults);
     root.querySelectorAll<HTMLButtonElement>('[data-show-map]').forEach(button => {
         button.addEventListener('click', async () => {
+            root.querySelector('.journal-map-section')?.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'center' });
             await loadMap();
             const id = button.dataset.showMap!;
             const marker = markers.get(id);

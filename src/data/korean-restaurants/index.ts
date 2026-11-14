@@ -84,6 +84,34 @@ export const restaurants: Restaurant[] = [
         // Optional:
         // mapUrl: 'https://...',
     },
+{
+        id: 'samsun-fr',
+        name: 'Sam Sun',
+        countryCode: 'FR',
+        country: 'France',
+        city: 'Paris',
+        latitude: 48.86595853655047,
+        longitude: 2.3367329678786324,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-10', // YYYY-MM or YYYY-MM-DD
+                menus: ['Tofu Stew'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Must try their Tofu Stew!!',
+            },
+        ],
+        summary: 'They have a variety of dishes to choose from.',
+        photos: [
+            {
+                src: '/images/restaurants/samsun.jpg',
+                alt: ' tofu stew',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
 ];
 export const recommendations = {
     revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★' },

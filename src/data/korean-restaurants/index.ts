@@ -147,8 +147,8 @@ export const restaurants: Restaurant[] = [
         countryCode: 'FR',
         country: 'France',
         city: 'Paris',
-        latitude: 52.36199950777336,
-        longitude: 4.924415437348154,
+        latitude: 48.85899326795374,
+        longitude: 2.2852886085960744,
         recommendation: 'revisit',
         visits: [
             {

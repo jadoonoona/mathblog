@@ -215,11 +215,39 @@ export const restaurants: Restaurant[] = [
                 review: 'Seolongtang, for people who miss traditional Korean soup',
             },
         ],
-        summary: 'The authentic Korean food in Singapore.',
+        summary: 'The authentic Korean food in Australia.',
         photos: [
             {
                 src: '/images/restaurants/seolongtang.jpeg',
                 alt: 'Seolongtang, a traditional Korean soup made from ox bones, brisket and other cuts.',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
+{
+        id: 'ondo-au',
+        name: "Ondo",
+        countryCode: 'AU',
+        country: 'Australia',
+        city: 'Melbourne',
+        latitude: -37.80919621790794,
+        longitude: 144.9685132134913,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-09', // YYYY-MM or YYYY-MM-DD
+                menus: ['Tongdak'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Tongdak, for people who miss traditional Korean stew',
+            },
+        ],
+        summary: 'The authentic Korean food in Australia.',
+        photos: [
+            {
+                src: '/images/restaurants/tongdak.jpeg',
+                alt: 'Tongdak, a traditional Korean stew made with beef and vegetables.',
             },
         ],
         // Optional:

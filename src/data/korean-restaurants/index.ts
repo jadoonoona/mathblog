@@ -142,7 +142,7 @@ export const restaurants: Restaurant[] = [
         // mapUrl: 'https://...',
     },
     {
-        id: 'woojung-nl',
+        id: 'woojung-fr',
         name: "Woo Jung",
         countryCode: 'FR',
         country: 'France',
@@ -164,6 +164,34 @@ export const restaurants: Restaurant[] = [
             {
                 src: '/images/restaurants/bulgogi.jpeg',
                 alt: 'Bulgogi Jeongol',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
+ {
+        id: 'gwangjang-fr',
+        name: "Gwangjang GAON",
+        countryCode: 'SG',
+        country: 'Singapore',
+        city: 'Changi',
+        latitude: 1.3600438984849135,
+        longitude: 103.98966633439701,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-09', // YYYY-MM or YYYY-MM-DD
+                menus: ['Chogye Guksu'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Chogye Guksu, for people who miss traditional Korean noodles',
+            },
+        ],
+        summary: 'The authentic Korean food in Singapore.',
+        photos: [
+            {
+                src: '/images/restaurants/chogye.jpeg',
+                alt: 'Chogye Guksu',
             },
         ],
         // Optional:

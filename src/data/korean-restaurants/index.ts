@@ -197,6 +197,34 @@ export const restaurants: Restaurant[] = [
         // Optional:
         // mapUrl: 'https://...',
     },
+{
+        id: 'sot-au',
+        name: "SOT",
+        countryCode: 'AU',
+        country: 'Australia',
+        city: 'Melbourne',
+        latitude: 1.3600438984849135,
+        longitude: 103.98966633439701,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-09', // YYYY-MM or YYYY-MM-DD
+                menus: ['Seolongtang'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Seolongtang, for people who miss traditional Korean soup',
+            },
+        ],
+        summary: 'The authentic Korean food in Singapore.',
+        photos: [
+            {
+                src: '/images/restaurants/seolongtang.jpeg',
+                alt: 'Seolongtang, a traditional Korean soup made from ox bones, brisket and other cuts.',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
 ];
 export const recommendations = {
     revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★★★★★' },

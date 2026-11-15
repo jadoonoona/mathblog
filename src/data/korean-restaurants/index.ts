@@ -141,6 +141,34 @@ export const restaurants: Restaurant[] = [
         // Optional:
         // mapUrl: 'https://...',
     },
+    {
+        id: 'woojung-nl',
+        name: "Woo Jung",
+        countryCode: 'FR',
+        country: 'France',
+        city: 'Paris',
+        latitude: 52.36199950777336,
+        longitude: 4.924415437348154,
+        recommendation: 'revisit',
+        visits: [
+            {
+                date: '2026-10', // YYYY-MM or YYYY-MM-DD
+                menus: ['Bulgogi Jeongol'],
+                // Optional: Gom Tang, Bibimbap
+                // price: { amount: 25, currency: 'EUR' },
+                review: 'Bulgogi jeongol, for people who miss Bulgogi',
+            },
+        ],
+        summary: 'The authentic Korean food in Paris.',
+        photos: [
+            {
+                src: '/images/restaurants/bulgogi.jpeg',
+                alt: 'Bulgogi Jeongol',
+            },
+        ],
+        // Optional:
+        // mapUrl: 'https://...',
+    },
 ];
 export const recommendations = {
     revisit: { labelEn: 'Would go again', label: '다시 가고 싶은 곳', color: '#25834b', symbol: '★★★★★' },

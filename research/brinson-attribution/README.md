@@ -1,17 +1,19 @@
 # Brinson Attribution interactive post
 
-Local articles: `/mathblog/blog/brinson-attribution/` (English), `/mathblog/ko/blog/brinson-attribution/` (Korean). EN / 한국어 links switch between the two versions. Both share the same calculations; English uses `pp` for percentage points, Korean uses `%p`.
+Local articles: `/mathblog/projects/brinson-attribution/` (English), `/mathblog/ko/projects/brinson-attribution/` (Korean). EN / 한국어 links switch between the two versions. Both share the same calculations; English uses `pp` for percentage points, Korean uses `%p`.
 No new runtime dependencies. Astro + TypeScript + SVG, following the existing blog layout and theme variables.
 
 ## Source map
 
-- `src/pages/blog/brinson-attribution.astro` and `src/pages/ko/blog/brinson-attribution.astro`: English/Korean article, labels, controls and initial server-rendered results.
-- `src/data/brinson-post.ts`: metadata registered in the blog list and All Posts sidebar.
+- `src/pages/projects/brinson-attribution.astro` and `src/pages/ko/projects/brinson-attribution.astro`: English/Korean article, labels, controls and initial server-rendered results.
+- `src/data/brinson-post.ts`: bilingual Finance project metadata.
 - `src/lib/brinson.ts`: validated pure calculations, proportional rebalancing, scenarios, full-precision Python/CSV generation. UI inputs use percent, computations use decimals.
 - `src/lib/brinson-view.ts`: presentation only: tables, waterfall, Korean interpretation, microscope and model comparison.
 - `src/scripts/brinson-attribution.ts`: input/error handling, state updates, clipboard and downloads.
 - `src/styles/brinson.css`: scoped theme styles and responsive layout; minimum-width correction applies only to this article.
-- `src/pages/blog/index.astro` and `src/layouts/BlogPost.astro`: register the post in the Blog list and select the appropriate sidebar translation.
+- `src/data/home.ts` and `src/data/home-ko.ts`: register the project in Finance (and the shared project lists).
+- `src/layouts/FinancePost.astro`: bilingual Finance article layout.
+- `src/pages/blog/brinson-attribution.astro` and `src/pages/ko/blog/brinson-attribution.astro`: redirects from the former blog URLs.
 - `src/components/LanguageSwitcher.astro`: link English and Korean routes.
 - `tests/brinson.test.ts` and `scripts/check-brinson-browser.mjs`: pure-model/Python parity checks and real-browser QA.
 - `research/brinson-attribution/README.md`: this implementation and verification guide.
@@ -20,7 +22,7 @@ No new runtime dependencies. Astro + TypeScript + SVG, following the existing bl
 
 ```sh
 npm run dev
-# http://localhost:4321/mathblog/blog/brinson-attribution/
+# http://localhost:4321/mathblog/projects/brinson-attribution/
 npm run build
 npm test
 ```

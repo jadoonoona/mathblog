@@ -1,5 +1,8 @@
 .brinson-article { --ba-surface: color-mix(in srgb,var(--color-bg) 94%,var(--color-text) 6%); --ba-positive: #217a65; --ba-negative: #bd633d; }
-.blog-post-layout:has(.brinson-article) > .post-content { min-width: 0; }
+.finance-interactive-main { max-width: 1200px; }
+.finance-interactive { max-width: none; }
+.finance-interactive > .post-content { min-width: 0; }
+.finance-interactive .post-body, .finance-interactive .post-description { max-width: none; }
 .brinson-article [hidden] { display: none !important; }
 .brinson-article .ba-kicker { color: var(--color-text-muted); font-size: .78rem; letter-spacing: .12em; margin-bottom: 1rem; }
 .brinson-article .ba-lead { font-size: 1.3rem; line-height: 1.8; }

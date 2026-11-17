@@ -1,0 +1,102 @@
+---
+import FinancePost from '../../../layouts/FinancePost.astro';
+import { koreanBrinsonPost as brinsonPost } from '../../../data/brinson-post';
+import { initial, calculate, percent, pythonCode } from '../../../lib/brinson';
+import { metrics, interpretation, sectorTable, waterfall, microscope, comparison, preview } from '../../../lib/brinson-view';
+import '../../../styles/brinson.css';
+const r = calculate(initial);
+---
+<FinancePost frontmatter={{ ...brinsonPost, interactive: true }}>
+<div class="brinson-article" data-brinson data-lang="ko">
+    <p class="ba-kicker">PORTFOLIO LAB / 01 · 단일 기간 성과 분석</p>
+    <p class="ba-lead">포트폴리오가 <strong>10.1%</strong>, 벤치마크가 <strong>8.2%</strong> 올랐다면 무엇을 잘한 것일까? 잘 오른 섹터에 돈을 더 넣었을까, 같은 섹터 안에서 더 나은 종목을 골랐을까?</p>
+    <p>차이는 <strong>+1.9%p</strong>다. 이 숫자는 결과를 알려주지만 이유까지 알려주지는 않는다. 세 섹터로 구성한 가상의 포트폴리오를 직접 바꾸며 그 차이를 분해해 보자. 모든 숫자는 실제 투자 실적이 아닌 교육용 예제다.</p>
+    <nav class="ba-toc" aria-label="글 목차"><a href="#ba-questions">세 가지 질문</a><a href="#ba-intuition">세 효과의 직관</a><a href="#ba-lab">실험하기</a><a href="#ba-lens">계산 돋보기</a><a href="#ba-python">Python 재현</a><a href="#ba-limits">가정과 한계</a></nav>
+    <h2 id="ba-questions">1. 성과를 안다는 것은 세 가지 질문에 답하는 일</h2>
+    <div class="ba-concepts">
+        <section><h3>얼마나 벌었나?</h3><p><strong>성과 측정</strong>은 전체 수익률을 구한다. 이 예제에서는 포트폴리오의 10.1%가 출발점이다.</p></section>
+        <section><h3>어디에서 벌었나?</h3><p><strong>수익 기여도</strong>는 비중 × 수익률이다. Energy의 50% × 18%는 전체 수익률에 <strong>+9.0%p</strong>를 보탠다. 큰 기여도가 곧 벤치마크 대비 좋은 결정이라는 뜻은 아니다.</p></section>
+        <section><h3>왜 더 벌었나?</h3><p><strong>성과 요인 분석</strong>은 벤치마크와의 차이를 분해한다. 섹터별 비중과 섹터 내부 수익률을 비교해 +1.9%p가 어떤 결정에서 나왔는지 묻는다.</p></section>
+    </div>
+    <p>초기 입력을 그대로 계산하면 0.50 × 0.18 + 0.30 × (−0.03) + 0.20 × 0.10 = 0.101이다. 벤치마크는 0.50 × 0.10 + 0.20 × (−0.02) + 0.30 × 0.12 = 0.082다. <strong>10.1% − 8.2% = 1.9%p</strong>이며, 1.9%의 상대 성장률이라고 쓰지 않는다.</p>
+    <h2 id="ba-intuition">2. 더 담은 것, 더 잘 고른 것, 두 결정의 겹침</h2>
+    <p><strong>Allocation · 배분</strong>은 벤치마크와 다르게 배분한 비중을 평가한다. 초기에는 Healthcare를 10%p 더 담고 Financials를 10%p 덜 담았다. 각각의 벤치마크 수익률이 −2%, +12%였으므로 두 결정은 배분 효과를 낮춘다.</p>
+    <p><strong>Selection · 선택</strong>은 벤치마크 비중을 기준으로 섹터 내부 상대수익률을 평가한다. Energy는 비중이 같아도 18% 대 10%로 앞섰다. 종목별 자료가 없으므로 여기서는 섹터 내부 운용 결과의 차이까지만 관찰한다.</p>
+    <p><strong>Interaction · 상호작용</strong>은 비중 차이와 섹터 내부 상대수익률 차이가 동시에 있을 때 생기는 교차항이다. 세 효과를 함께 더해야 초과수익률과 정확히 맞는다.</p>
+    <aside class="ba-callout">초기 해석: 배분 −1.4%p를 선택 +3.2%p가 만회했고, 상호작용 +0.1%p를 더해 +1.9%p가 됐다. 이제 아래에서 Energy 비중을 바꿔 보자. 선택 효과가 그대로여도 배분과 상호작용은 바뀔 수 있다.</aside>
+    <h2 id="ba-lab">3. 직접 바꿔 보는 성과 분석</h2>
+    <p>포트폴리오 비중 슬라이더를 움직이면 나머지 두 섹터는 <strong>기존 비율</strong>로 재배분해 합계 100%를 유지한다. 나머지가 모두 0%이면 남는 비중을 균등 배분한다. 벤치마크 비중은 초기값 50%·20%·30%로 고정한다.</p>
+    <div class="ba-scenarios" role="group" aria-label="원문 초기값을 기준으로 한 시나리오">
+        <button type="button" data-scenario="original" aria-pressed="true">원문 예제</button>
+        <button type="button" data-scenario="allocation" aria-pressed="false">배분만 다르게</button>
+        <button type="button" data-scenario="selection" aria-pressed="false">선택만 다르게</button>
+        <button type="button" data-scenario="identical" aria-pressed="false">벤치마크와 동일</button>
+        <button type="button" data-reset>초기화</button>
+    </div>
+    <p data-scenario-note class="ba-note" role="status">원문 예제: 초기 비중과 섹터 수익률을 사용합니다. 모든 시나리오는 현재 수정값이 아닌 원문 초기값에서 시작합니다.</p>
+    <div class="ba-workspace">
+        <section class="ba-inputs" aria-labelledby="ba-input-title">
+            <h3 id="ba-input-title">기간 초 비중과 섹터 수익률</h3>
+            <p class="ba-note">입력 단위: %. 수익률 허용 범위: −100%~1,000% (이 실험의 입력 범위). 빈 값은 0으로 처리하지 않습니다.</p>
+            {initial.map((s,i)=><fieldset><legend>{s.name}</legend>
+                <label for={`ba-w-${i}`}>포트폴리오 비중 <output data-weight={i} for={`ba-w-${i}`}>{percent(s.wp/100)}</output></label>
+                <input id={`ba-w-${i}`} type="range" min="0" max="100" step="any" value={s.wp} data-index={i} data-field="wp" />
+                <p class="ba-note">벤치마크 비중: {s.wb}%</p>
+                <div class="ba-return-inputs">{(['rp','rb'] as const).map(field=><div>
+                    <label for={`ba-${field}-${i}`}>{field==='rp'?'포트폴리오':'벤치마크'} 수익률 (%)</label>
+                    <input id={`ba-${field}-${i}`} type="number" step="any" min="-100" max="1000" value={s[field]} data-index={i} data-field={field} aria-describedby={`ba-err-${field}-${i}`} />
+                    <span class="ba-error" id={`ba-err-${field}-${i}`} data-error={`${i}-${field}`}></span>
+                </div>)}</div>
+            </fieldset>)}
+            <p data-weight-sum class="ba-note">포트폴리오 비중 합계 100.00% · 벤치마크 비중 합계 100.00%</p>
+        </section>
+        <section class="ba-results" aria-labelledby="ba-result-title">
+            <h3 id="ba-result-title">현재 분석</h3>
+            <label for="ba-model">분해 모형</label><select id="ba-model"><option value="BHB">BHB · 기본 모형</option><option value="BF">BF · 벤치마크 전체 수익률 기준</option></select>
+            <p data-input-status role="status" aria-live="polite" class="ba-error"></p>
+            <div data-live-results>
+                <div data-metrics set:html={metrics(r)} />
+                <p data-interpretation class="ba-callout" aria-live="polite">{interpretation(r)}</p>
+                <p data-check class="ba-check">검산 통과: 세 효과 합계 {percent(r.attributed,true)} = 초과수익 {percent(r.active,true)}.</p>
+            </div>
+        </section>
+    </div>
+    <div data-valid-output>
+        <h3>벤치마크에서 포트폴리오까지</h3>
+        <div data-waterfall set:html={waterfall(r)} />
+        <div data-sectors set:html={sectorTable(r)} />
+        <h2 id="ba-lens">4. 계산 돋보기: 이 섹터는 왜 이런 결과가 나왔을까?</h2>
+        <p>이제 공식을 보자. w는 기간 초 비중, r은 섹터 수익률이다. P는 포트폴리오, B는 벤치마크를 뜻한다. 대문자 RP·RB는 각각 전체 수익률이다. 모든 곱셈은 소수 단위로 계산하고, 효과를 표시할 때 100을 곱해 %p로 나타낸다.</p>
+        <label for="ba-sector">살펴볼 섹터</label><select id="ba-sector">{initial.map((s,i)=><option value={i}>{s.name}</option>)}</select>
+        <details open><summary>선택한 섹터의 세 효과 펼쳐보기</summary><div data-microscope set:html={microscope(r,0)} /></details>
+        <p><code>RP = Σ(wPᵢ × rPᵢ)</code>, <code>RB = Σ(wBᵢ × rBᵢ)</code></p>
+        <p><code>RP − RB = Σ Allocationᵢ + Σ Selectionᵢ + Σ Interactionᵢ</code></p>
+        <h3>BHB와 BF: 전체는 같아도 섹터별 이야기는 다르다</h3>
+        <p>BF의 배분 공식은 <code>(wPᵢ − wBᵢ) × (rBᵢ − RB)</code>다. Selection과 Interaction은 그대로 둔다. 두 비중 합계가 각각 100%이면 <code>Σ(wPᵢ − wBᵢ) = 0</code>이므로, BF에서 추가로 빼는 <code>RB × Σ(wPᵢ − wBᵢ)</code>도 0이다. 따라서 전체 배분 합계와 전체 초과수익률은 같다. 섹터별 합계는 모형에 따라 달라질 수 있으며 BF의 섹터별 효과 합계는 단순 기여도 차이와 항상 같지는 않다.</p>
+        <div data-comparison set:html={comparison(initial,'BHB')} />
+        <h2 id="ba-python">5. 같은 실험을 Python으로 재현하기</h2>
+        <p>아래 코드는 <strong>현재의 유효한 입력값과 모형</strong>을 반영한다. pandas가 설치된 Python 환경에서 실행하면 입력 변환, 비중 합계 확인, 섹터별 효과, 전체 합계와 잔차를 독립적으로 계산한다. 브라우저는 Python을 실행하지 않는다.</p>
+        <div class="ba-export-actions"><button type="button" data-copy>Python 복사</button><button type="button" data-python-download>Python 다운로드</button><button type="button" data-csv-download>입력·분석 CSV 다운로드</button></div>
+        <p data-export-status role="status" aria-live="polite"></p>
+        <pre class="ba-code" tabindex="0" aria-label="현재 입력의 pandas 재현 코드"><code data-python>{pythonCode(initial,'BHB')}</code></pre>
+        <h3>브라우저 계산 출력 미리보기</h3>
+        <p class="ba-note">JavaScript 계산 결과이며 실제 Python 실행 결과가 아닙니다. 다운로드한 코드를 실행해 출력과 비교하세요. CSV는 비중·수익률 입력을 %, 기여도·효과를 %p로 내보냅니다.</p>
+        <pre tabindex="0"><code data-preview>{preview(r)}</code></pre>
+    </div>
+    <noscript><p>초기 예제와 설명은 읽을 수 있지만, 값을 바꾸는 실험·복사·다운로드에는 JavaScript가 필요합니다.</p></noscript>
+    <h2 id="ba-limits">6. 이 분석이 설명하는 것과 남겨 두는 것</h2>
+    <ul>
+        <li>같은 기간, 같은 통화의 수익률과 기간 초 비중을 비교하는 단일 기간 예제다.</li>
+        <li>기간 중 거래·입출금·수수료·환율효과는 별도로 모델링하지 않는다. 숏 포지션과 레버리지 비중도 다루지 않는다.</li>
+        <li>섹터 구분과 벤치마크 선택이 분석의 해석에 영향을 준다. 여기서는 섹터가 전체 포트폴리오를 빠짐없이, 중복 없이 구성한다고 가정한다.</li>
+        <li>실제 보유 비중은 기간 중 가격 변화로 달라진다. 기간 초 비중 × 섹터 수익률이라는 이 예제의 가정이 실제 매매를 모두 설명하지는 못한다.</li>
+        <li>여러 기간의 효과를 단순 합산하면 복리 수익률과 일치하지 않을 수 있다. 다기간 분석에는 별도의 연결 방법이 필요하다.</li>
+        <li>양의 Selection이 지속적인 운용 능력을 입증하지 않는다. 위험, 우연, 거래 비용과 반복 가능성은 따로 평가해야 한다.</li>
+    </ul>
+    <h2>출처와 구현 노트</h2>
+    <p>숫자 예제와 학습 출발점: Tal Sansani, <a href="https://medium.com/off-script-systems/brinson-attribution-in-python-5e5a6265e708">Brinson Attribution in Python</a>, Off-Script Systems, 2023-04-13. 원문의 예제를 바탕으로 설명과 TypeScript·Python 코드를 새로 작성했다.</p>
+    <p>공식과 해석 교차 확인: CFA Institute Research Foundation, <a href="https://rpc.cfainstitute.org/sites/default/files/-/media/documents/book/rf-lit-review/2019/rflr-performance-attribution.pdf">Performance Attribution (2019)</a>; 성과 평가의 구분과 한계: CFA Institute, <a href="https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/portfolio-performance-evaluation">Portfolio Performance Evaluation</a>.</p>
+    <p class="ba-note">구현: 순수 계산 함수 → 입력 검증 → 화면 렌더링 → 동일 입력의 Python·CSV 내보내기. 반올림은 표시할 때만 적용한다. 소수 단위 잔차의 절댓값이 10⁻¹⁰ 이하면 검산 통과로 판정한다.</p>
+</div>
+</FinancePost>
+<script>import '../../../scripts/brinson-attribution';</script>

@@ -27,11 +27,11 @@ try {
     const local=(en,ko)=>lang==='en'?en:ko;
     for(const name of ['brinson-attribution.py','brinson-attribution.csv']) await rm(out+'/'+name,{force:true});
     await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1050,deviceScaleFactor:1,mobile:false});
-    await send('Page.navigate',{url:`http://127.0.0.1:4321/mathblog/${lang==='ko'?'ko/':''}blog/brinson-attribution/`});
+    await send('Page.navigate',{url:`http://127.0.0.1:4321/mathblog/${lang==='ko'?'ko/':''}projects/brinson-attribution/`});
     await waitFor(`document.querySelector('[data-check]')?.textContent.includes(${JSON.stringify(local('Residual','잔차'))})`);
     assert.equal(await evaluate(`document.documentElement.lang`),lang);
     assert.equal(await evaluate(`document.querySelector('.language-active').textContent`),local('EN','한국어'));
-    assert.deepEqual(await evaluate(`[...document.querySelectorAll('.language-switcher a')].map(a=>a.getAttribute('href'))`),['/mathblog/blog/brinson-attribution/','/mathblog/ko/blog/brinson-attribution/']);
+    assert.deepEqual(await evaluate(`[...document.querySelectorAll('.language-switcher a')].map(a=>a.getAttribute('href'))`),['/mathblog/projects/brinson-attribution/','/mathblog/ko/projects/brinson-attribution/']);
     assert.deepEqual(await metric(),['10.10%','8.20%','+1.90%p','-1.40%p','+3.20%p','+0.10%p']);
     assert.equal(await evaluate(`document.documentElement.scrollWidth<=innerWidth`),true);
     await writeFile(out+'/'+lang+'-desktop.png',Buffer.from((await send('Page.captureScreenshot',{captureBeyondViewport:true})).data,'base64'));

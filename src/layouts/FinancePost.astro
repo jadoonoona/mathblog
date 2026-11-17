@@ -3,17 +3,19 @@ import Layout from './Layout.astro';
 import '../styles/blog.css';
 
 const { frontmatter } = Astro.props;
-const financeUrl = `${import.meta.env.BASE_URL}ko/projects/finance/`;
-const dateStr = new Date(frontmatter.date).toLocaleDateString('ko-KR', {
+const lang = frontmatter.lang ?? 'ko';
+const ko = lang === 'ko';
+const financeUrl = `${import.meta.env.BASE_URL}${ko ? 'ko/' : ''}projects/finance/`;
+const dateStr = new Date(frontmatter.date).toLocaleDateString(ko ? 'ko-KR' : 'en-GB', {
     year: 'numeric', month: 'long', day: 'numeric',
 });
 ---
 
-<Layout lang="ko" pageTitle={frontmatter.title} description={frontmatter.description}>
-    <div class="page-container">
+<Layout lang={lang} pageTitle={frontmatter.title} description={frontmatter.description} mainClass={frontmatter.interactive ? 'finance-interactive-main' : undefined}>
+    <div class:list={['page-container', { 'finance-interactive': frontmatter.interactive }]}>
         <div class="post-content">
             <div class="post-header">
-                <a href={financeUrl} class="back-link">← Finance 프로젝트</a>
+                <a href={financeUrl} class="back-link">← {ko ? 'Finance 프로젝트' : 'Finance projects'}</a>
                 <h1 class="post-title">{frontmatter.title}</h1>
                 <div class="post-meta">
                     <time datetime={frontmatter.date}>{dateStr}</time>
@@ -27,7 +29,7 @@ const dateStr = new Date(frontmatter.date).toLocaleDateString('ko-KR', {
             </div>
             <article class="post-body"><slot /></article>
             <div class="post-footer">
-                <a href={financeUrl} class="back-link">← Finance 프로젝트로 돌아가기</a>
+                <a href={financeUrl} class="back-link">← {ko ? 'Finance 프로젝트로 돌아가기' : 'Back to Finance projects'}</a>
             </div>
         </div>
     </div>

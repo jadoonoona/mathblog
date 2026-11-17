@@ -29,3 +29,26 @@
 @media (max-width: 800px) { .portfolio-hero { min-height: auto; padding: 5rem 1.5rem 5.5rem; }.hero-copy h1 { font-size: 4.0rem; }.home-section { padding-right: 1.5rem; padding-left: 1.5rem; } }
 @media (max-width: 600px) { .home-page h2 { font-size: 2rem; }.hero-copy h1 { font-size: 3.0rem; }.hero-lede { font-size: 1.05rem; }.hero-actions { align-items: flex-start; flex-direction: column; }.heading-row, .journey-grid { display: block; }.section-index { display: block; margin-top: 0.5rem; }.journey-grid { margin-top: 2.5rem; }.journey-copy { margin-top: 2rem; }.principle-line { margin-top: 3rem; }.interest-grid, .project-grid { grid-template-columns: 1fr; margin-top: 2.5rem; }.project-card-featured { grid-column: auto; }.interest-card, .project-card { min-height: 300px; } }
 @media (prefers-reduced-motion: reduce) { .button, .interest-card, .project-card { transition: none; }.button:hover, .interest-card:hover, .project-card:hover { transform: none; } }
+
+/* Hero disclosure: one shared row keeps all three cards and their content aligned. */
+.hero-actions button { font-family: inherit; cursor: pointer; }
+.project-toggle-icon { font-size: 1.1rem; transition: transform var(--transition-fast); }
+[data-project-toggle][aria-expanded="true"] .project-toggle-icon { transform: rotate(180deg); }
+.project-explorer[hidden] { display: none; }
+.project-explorer { margin-top: 2.5rem; text-align: left; width: 100%; }
+.project-explorer h2 { margin: 0; font-size: .8rem; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: var(--home-muted); }
+.project-explorer .interest-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: .9rem 1rem; margin-top: 1rem; }
+.project-explorer .interest-card { display: grid; grid-template-rows: subgrid; grid-row: span 5; min-height: 360px; padding: 1.5rem; }
+.project-explorer .interest-card h3 { margin: 1rem 0 0; font-size: 1.45rem; line-height: 1.2; }
+.project-explorer .interest-card p { margin: 0; }
+.project-explorer .topic-list { margin: .4rem 0; align-content: start; }
+.project-explorer .text-link { margin-top: 0; align-self: end; }
+.portfolio-hero:has([data-project-toggle][aria-expanded="true"]) { min-height: auto; padding-top: 4rem; padding-bottom: 3rem; }
+@media (max-width: 900px) {
+    .project-explorer .interest-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .project-explorer .interest-card { display: flex; grid-row: auto; min-height: 0; gap: 1rem; }
+    .project-explorer .interest-card h3 { margin: 0; }
+    .project-explorer .topic-list { margin: 0; }
+    .project-explorer .text-link { align-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { .project-toggle-icon { transition: none; } }

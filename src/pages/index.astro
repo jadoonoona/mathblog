@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import InterestCard from '../components/InterestCard.astro';
+import ProjectExplorer from '../components/ProjectExplorer.astro';
 import { INTEREST_AREAS } from '../data/home';
 import '../styles/home.css';
 
@@ -14,13 +14,13 @@ const base = import.meta.env.BASE_URL;
 				<h1 id="hero-title">Hi, I’m Jihee.<br />Welcome to my blog.</h1>
 				<p class="hero-lede">A place where I share what I learn, explore, and build.</p>
 				<p class="hero-intro">Finance by profession, curious about numbers, data, and technology.</p>
-				<div class="hero-actions"><a class="button button-primary" href="#areas">Explore projects <span aria-hidden="true">↗</span></a><a class="button button-secondary" href={`${base}blog/`}>Read the blog <span aria-hidden="true">→</span></a><a class="quiet-link" href={`${base}about/`}>About me</a></div>
+				<div class="hero-actions"><button type="button" class="button button-primary" data-project-toggle aria-expanded="false" aria-controls="areas">Explore projects <span class="project-toggle-icon" aria-hidden="true">⌄</span></button><a class="button button-secondary" href={`${base}blog/`}>Read the blog <span aria-hidden="true">→</span></a><a class="quiet-link" href={`${base}about/`}>About me</a></div>
+				<ProjectExplorer areas={INTEREST_AREAS} />
 			</div>
 		</section>
 
 		<section class="home-section journey-section" id="journey" aria-labelledby="journey-title"><div class="section-heading"><h2 id="journey-title"></h2></div><div class="journey-grid"><p class="section-lede">My work starts with finance and risk, and keeps expanding through the questions that sit underneath them.</p><div class="journey-copy"><p>I study mathematics and statistics to understand the structure of a problem, use Python, SQL, and data analysis to test it, then build practical tools that make the result useful.</p><p>That takes me from investment and property to equity, macroeconomics, and project finance. It also led me to build <a href="https://ourtripplan.com" target="_blank" rel="noopener noreferrer">Our Trip Plan</a>, a mobile product for making shared travel simpler.</p></div></div></section>
 
-		<section class="home-section areas-section" id="areas" aria-labelledby="areas-title"><div class="section-heading heading-row"><div><p class="eyebrow">Areas I explore</p><h2 id="areas-title"></h2></div></div><div class="interest-grid">{INTEREST_AREAS.map(area => <InterestCard area={{ ...area, link: `${base}${area.link}` }} />)}</div></section>
 
 	</div>
 </Layout>

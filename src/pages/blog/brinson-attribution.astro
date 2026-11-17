@@ -1,0 +1,103 @@
+---
+import BlogPost from '../../layouts/BlogPost.astro';
+import { brinsonPost } from '../../data/brinson-post';
+import { initial, calculate, percent, pythonCode } from '../../lib/brinson';
+import { metrics, interpretation, sectorTable, waterfall, microscope, comparison, preview } from '../../lib/brinson-view';
+import '../../styles/brinson.css';
+const r = calculate(initial);
+const pp = (v: number) => percent(v,true).replace('%p',' pp');
+---
+<BlogPost frontmatter={brinsonPost}>
+<div class="brinson-article" data-brinson data-lang="en">
+    <p class="ba-kicker">PORTFOLIO LAB / 01 · SINGLE-PERIOD ATTRIBUTION</p>
+    <p class="ba-lead">Your portfolio returned <strong>10.1%</strong> while its benchmark returned <strong>8.2%</strong>. What did you get right? Did you invest more in the right sectors, or choose better securities within those sectors?</p>
+    <p>The difference is <strong>+1.9 percentage points (pp)</strong>. That tells us the outcome, but not what produced it. We will change the weights and returns of a hypothetical three-sector portfolio to investigate. All figures are educational examples, not actual investment results.</p>
+    <nav class="ba-toc" aria-label="Article contents"><a href="#ba-questions">Three questions</a><a href="#ba-intuition">Three effects</a><a href="#ba-lab">Experiment</a><a href="#ba-lens">Calculation explorer</a><a href="#ba-python">Python reproduction</a><a href="#ba-limits">Assumptions and limits</a></nav>
+    <h2 id="ba-questions">1. Understanding performance means asking three questions</h2>
+    <div class="ba-concepts">
+        <section><h3>How much did we earn?</h3><p><strong>Performance measurement</strong> establishes the total return. Here, the portfolio's 10.1% return is our starting point.</p></section>
+        <section><h3>Where did we earn it?</h3><p><strong>Return contribution</strong> is weight × return. Energy's 50% × 18% contributes <strong>+9.0 pp</strong> to the portfolio's total return. A large contribution does not necessarily mean a good decision relative to the benchmark.</p></section>
+        <section><h3>Why did we earn more?</h3><p><strong>Performance attribution</strong> decomposes the difference from the benchmark. It compares sector weights and within-sector returns to explain which decisions account for the extra 1.9 pp.</p></section>
+    </div>
+    <p>With the initial inputs, the portfolio earns 0.50 × 0.18 + 0.30 × (−0.03) + 0.20 × 0.10 = 0.101. The benchmark earns 0.50 × 0.10 + 0.20 × (−0.02) + 0.30 × 0.12 = 0.082. Thus <strong>10.1% − 8.2% = 1.9 pp</strong>. This is an arithmetic return difference, not a 1.9% relative increase.</p>
+    <h2 id="ba-intuition">2. Different weights, different selections, and their overlap</h2>
+    <p><strong>Allocation</strong> evaluates sector weights that differ from the benchmark. Initially, Healthcare is overweight by 10 pp and Financials is underweight by 10 pp. Their benchmark sector returns are −2% and +12%, respectively, so both decisions reduce the BHB allocation effect.</p>
+    <p><strong>Selection</strong> evaluates within-sector return differences at benchmark weights. Energy has the same weight in both portfolios, but its portfolio return of 18% beats the sector benchmark's 10%. Without security-level holdings, we can observe only the difference in sector-level investment outcomes.</p>
+    <p><strong>Interaction</strong> is the cross-product that arises when both the weight and the within-sector return differ. We need all three effects to reconcile exactly to active return.</p>
+    <aside class="ba-callout">Initially, selection of +3.2 pp offsets allocation of −1.4 pp. Adding interaction of +0.1 pp gives +1.9 pp. Try changing the Energy weight below: allocation and interaction can change even while selection stays the same.</aside>
+    <h2 id="ba-lab">3. Experiment with the portfolio</h2>
+    <p>Moving a portfolio-weight slider redistributes the remaining weight between the other two sectors <strong>in their existing proportions</strong>, keeping the total at 100%. If both other weights are zero, the remaining weight is split equally. Benchmark weights stay fixed at 50%, 20% and 30%.</p>
+    <div class="ba-scenarios" role="group" aria-label="Scenarios based on the original example">
+        <button type="button" data-scenario="original" aria-pressed="true">Original example</button>
+        <button type="button" data-scenario="allocation" aria-pressed="false">Allocation only</button>
+        <button type="button" data-scenario="selection" aria-pressed="false">Selection only</button>
+        <button type="button" data-scenario="identical" aria-pressed="false">Match benchmark</button>
+        <button type="button" data-reset>Reset</button>
+    </div>
+    <p data-scenario-note class="ba-note" role="status">Original example: use the original weights and sector returns. Every scenario starts from the original example, not your current edits.</p>
+    <div class="ba-workspace">
+        <section class="ba-inputs" aria-labelledby="ba-input-title">
+            <h3 id="ba-input-title">Beginning weights and sector returns</h3>
+            <p class="ba-note">Inputs are in %. Return range: −100% to 1,000%, the bounds chosen for this experiment. Empty inputs are not treated as zero.</p>
+            {initial.map((s,i)=><fieldset><legend>{s.name}</legend>
+                <label for={`ba-w-${i}`}>Portfolio weight <output data-weight={i} for={`ba-w-${i}`}>{percent(s.wp/100)}</output></label>
+                <input id={`ba-w-${i}`} type="range" min="0" max="100" step="any" value={s.wp} data-index={i} data-field="wp" />
+                <p class="ba-note">Benchmark weight: {s.wb}%</p>
+                <div class="ba-return-inputs">{(['rp','rb'] as const).map(field=><div>
+                    <label for={`ba-${field}-${i}`}>{field==='rp'?'Portfolio':'Benchmark'} return (%)</label>
+                    <input id={`ba-${field}-${i}`} type="number" step="any" min="-100" max="1000" value={s[field]} data-index={i} data-field={field} aria-describedby={`ba-err-${field}-${i}`} />
+                    <span class="ba-error" id={`ba-err-${field}-${i}`} data-error={`${i}-${field}`}></span>
+                </div>)}</div>
+            </fieldset>)}
+            <p data-weight-sum class="ba-note">Portfolio weight total 100.00% · Benchmark weight total 100.00%</p>
+        </section>
+        <section class="ba-results" aria-labelledby="ba-result-title">
+            <h3 id="ba-result-title">Current analysis</h3>
+            <label for="ba-model">Attribution model</label><select id="ba-model"><option value="BHB">BHB · default model</option><option value="BF">BF · relative to total benchmark return</option></select>
+            <p data-input-status role="status" aria-live="polite" class="ba-error"></p>
+            <div data-live-results>
+                <div data-metrics set:html={metrics(r,'en')} />
+                <p data-interpretation class="ba-callout" aria-live="polite">{interpretation(r,'en')}</p>
+                <p data-check class="ba-check">Reconciliation passed: total effects {pp(r.attributed)} = active return {pp(r.active)}.</p>
+            </div>
+        </section>
+    </div>
+    <div data-valid-output>
+        <h3>From benchmark to portfolio</h3>
+        <div data-waterfall set:html={waterfall(r,'en')} />
+        <div data-sectors set:html={sectorTable(r,'en')} />
+        <h2 id="ba-lens">4. Calculation explorer: why did this sector produce that effect?</h2>
+        <p>Now for the formulas. w is a beginning-of-period weight; r is a sector return. P denotes the portfolio and B the benchmark. Uppercase RP and RB are their total returns. All products use decimal ratios; multiply an effect by 100 to express it in percentage points.</p>
+        <label for="ba-sector">Sector to explore</label><select id="ba-sector">{initial.map((s,i)=><option value={i}>{s.name}</option>)}</select>
+        <details open><summary>Explore the selected sector's three effects</summary><div data-microscope set:html={microscope(r,0,'en')} /></details>
+        <p><code>RP = Σ(wPᵢ × rPᵢ)</code>, <code>RB = Σ(wBᵢ × rBᵢ)</code></p>
+        <p><code>RP − RB = Σ Allocationᵢ + Σ Selectionᵢ + Σ Interactionᵢ</code></p>
+        <h3>BHB and BF: the same total, a different sector-level story</h3>
+        <p>Brinson–Hood–Beebower (BHB), the default model, uses <code>(wPᵢ − wBᵢ) × rBᵢ</code> for allocation. Brinson–Fachler (BF) changes this to <code>(wPᵢ − wBᵢ) × (rBᵢ − RB)</code>. Selection and interaction stay unchanged. When each portfolio's weights sum to 100%, <code>Σ(wPᵢ − wBᵢ) = 0</code>, so the additional term subtracted by BF, <code>RB × Σ(wPᵢ − wBᵢ)</code>, is also zero. Total allocation and total active return therefore agree. Sector allocations and total sector effects can differ; under BF, a sector's total effect need not equal its simple contribution difference.</p>
+        <div data-comparison set:html={comparison(initial,'BHB','en')} />
+        <h2 id="ba-python">5. Reproduce the experiment in Python</h2>
+        <p>The code below reflects <strong>your current valid inputs and selected model</strong>. Run it in a Python environment with pandas installed to independently convert units, validate weights, calculate sector effects and totals, and check reconciliation. The browser does not execute Python.</p>
+        <div class="ba-export-actions"><button type="button" data-copy>Copy Python</button><button type="button" data-python-download>Download Python</button><button type="button" data-csv-download>Download inputs and results as CSV</button></div>
+        <p data-export-status role="status" aria-live="polite"></p>
+        <pre class="ba-code" tabindex="0" aria-label="Pandas reproduction code for current inputs"><code data-python>{pythonCode(initial,'BHB','en')}</code></pre>
+        <h3>Browser-calculated output preview</h3>
+        <p class="ba-note">These are JavaScript results, not output from executing Python. Run the downloaded code to compare them. CSV exports use % for weight and return inputs, and percentage points for contributions and effects.</p>
+        <pre tabindex="0"><code data-preview>{preview(r,'en')}</code></pre>
+    </div>
+    <noscript><p>You can read the original example and explanations without JavaScript. Changing inputs, copying code and downloading files require JavaScript.</p></noscript>
+    <h2 id="ba-limits">6. What this analysis explains—and what it leaves open</h2>
+    <ul>
+        <li>This is a single-period example using beginning-of-period weights and returns for the same period and currency.</li>
+        <li>Intra-period trades, cash flows, fees and currency effects are not separately modelled. Short positions and leveraged weights are outside this experiment.</li>
+        <li>Sector definitions and benchmark choice affect interpretation. We assume sectors are mutually exclusive and cover the entire portfolio.</li>
+        <li>Actual weights drift as prices change. Beginning weight × sector return, the assumption used here, does not account for every trade in a real portfolio.</li>
+        <li>Simply adding effects across periods may not reconcile to compounded returns. Multi-period attribution requires a separate linking method.</li>
+        <li>Positive selection does not establish persistent investment skill. Risk, chance, trading costs and repeatability require further analysis.</li>
+    </ul>
+    <h2>Sources and implementation notes</h2>
+    <p>Numerical example and learning starting point: Tal Sansani, <a href="https://medium.com/off-script-systems/brinson-attribution-in-python-5e5a6265e708">Brinson Attribution in Python</a>, Off-Script Systems, April 13, 2023. The explanations and TypeScript and Python implementations here were written independently using that example.</p>
+    <p>Formula and interpretation cross-check: CFA Institute Research Foundation, <a href="https://rpc.cfainstitute.org/sites/default/files/-/media/documents/book/rf-lit-review/2019/rflr-performance-attribution.pdf">Performance Attribution (2019)</a>. For the performance-evaluation framework and its limitations: CFA Institute, <a href="https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/portfolio-performance-evaluation">Portfolio Performance Evaluation</a>.</p>
+    <p class="ba-note">Implementation: pure calculations → input validation → rendering → Python and CSV exports of the same inputs. Rounding is applied only for display. Reconciliation passes when the absolute residual is at most 10⁻¹⁰ in decimal units.</p>
+</div>
+</BlogPost>
+<script>import '../../scripts/brinson-attribution';</script>

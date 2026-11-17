@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/blog.css';
 import { restaurantPost } from '../../data/korean-restaurants/post';
+import { brinsonPost } from '../../data/brinson-post';
 
 interface Post {
     title: string;
@@ -18,7 +19,7 @@ const sorted: Post[] = Object.entries(postFiles)
         ...mod.frontmatter,
         url: `${import.meta.env.BASE_URL}blog/` + path.replace('./', '').replace('.md', '') + '/',
     }))
-    .concat([restaurantPost])
+    .concat([restaurantPost, brinsonPost])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 const noteFiles = import.meta.glob<{ frontmatter: Omit<Post, 'url' | 'date'> & { date?: string; category?: string } }>('../math-notes/*.md', { eager: true });

@@ -3,8 +3,7 @@ import type { FeaturedProject, InterestArea } from './home';
 export const INTEREST_AREAS_KO: InterestArea[] = [
     { number: '01', title: '수학과 통계', description: '더 나은 질문과 명확한 판단을 위한 정량적 기반을 공부합니다.', topics: ['선형대수', '확률', '회귀분석', '정량적 방법론'], link: 'ko/projects/mathematics/', projectCategory: 'mathematics', linkLabel: '분야 살펴보기' },
     { number: '02', title: '금융', description: '자본과 시장, 현실적인 제약이 가치에 미치는 영향을 살펴봅니다.', topics: ['주식', '부동산', '거시경제', '가치평가'], link: 'ko/projects/finance/', projectCategory: 'finance', linkLabel: '프로젝트 보기' },
-    { number: '03', title: '데이터 및 리스크 분석', description: '금융 관련 질문을 측정하고 반복 가능한 분석으로 바꿉니다.', topics: ['Python', 'SQL', '시장 리스크', '변동성', '자동화'], link: 'ko/projects/data-risk/', projectCategory: 'data-risk', linkLabel: '분야 살펴보기' },
-    { number: '04', title: '앱/웹 개발', description: '분석과 세심한 제품 설계가 만나는 유용한 도구를 만듭니다.', topics: ['모바일 앱 개발', 'React Native', 'Supabase', '제품 설계'], link: 'ko/projects/app-web/', projectCategory: 'app-web', linkLabel: '프로젝트 보기' },
+    { number: '03', title: '앱/웹 개발', description: '분석과 세심한 제품 설계가 만나는 유용한 도구를 만듭니다.', topics: ['모바일 앱 개발', 'React Native', 'Supabase', '제품 설계'], link: 'ko/projects/app-web/', projectCategory: 'app-web', linkLabel: '프로젝트 보기' },
 ];
 
 export const FEATURED_PROJECTS_KO: FeaturedProject[] = [

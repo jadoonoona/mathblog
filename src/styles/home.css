@@ -32,7 +32,8 @@
 
 /* Hero disclosure: one shared row keeps all three cards and their content aligned. */
 .hero-actions button { font-family: inherit; cursor: pointer; }
-.project-toggle-icon { font-size: 1.1rem; transition: transform var(--transition-fast); }
+[data-project-toggle] { position: relative; padding-right: 2rem; }
+.project-toggle-icon { position: absolute; top: 5px; right: 7px; font-size: 1.1rem; line-height: 1; transition: transform var(--transition-fast); }
 [data-project-toggle][aria-expanded="true"] .project-toggle-icon { transform: rotate(180deg); }
 .project-explorer[hidden] { display: none; }
 .project-explorer { margin-top: 2.5rem; text-align: left; width: 100%; }

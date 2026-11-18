@@ -12,12 +12,12 @@ const base = import.meta.env.BASE_URL;
 <script>
     const toggle = document.querySelector<HTMLButtonElement>('[data-project-toggle]');
     const panel = document.querySelector<HTMLElement>('#areas');
-    if (toggle && panel) {
+    if (panel) {
         const setOpen = (open: boolean) => {
             panel.hidden = !open;
-            toggle.setAttribute('aria-expanded', String(open));
+            toggle?.setAttribute('aria-expanded', String(open));
         };
-        toggle.addEventListener('click', () => setOpen(panel.hidden));
+        toggle?.addEventListener('click', () => setOpen(panel.hidden));
         const openFromHash = () => {
             if (window.location.hash === '#areas') setOpen(true);
         };

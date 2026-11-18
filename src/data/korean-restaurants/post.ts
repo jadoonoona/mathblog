@@ -8,7 +8,7 @@ export const koreanRestaurantPost = {
 
 export const restaurantPost = {
     ...koreanRestaurantPost,
-    title: 'Korean Restaurants Abroad',
+    title: 'Restaurants around the world',
     description: 'For the moments when I crave Korean food on the road. A personal record of Korean restaurants I have visited abroad and the meals I had there.',
     tags: ['Travel', 'Korean food'], lang: 'en',
     url: `${import.meta.env.BASE_URL}blog/korean-restaurants/`,

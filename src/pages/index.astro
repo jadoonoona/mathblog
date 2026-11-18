@@ -4,7 +4,6 @@ import ProjectExplorer from '../components/ProjectExplorer.astro';
 import { INTEREST_AREAS } from '../data/home';
 import '../styles/home.css';
 
-const base = import.meta.env.BASE_URL;
 ---
 
 <Layout pageTitle="" description="Finance, mathematics, data, and technology explored through practical notes, projects, and quantitative thinking.">
@@ -14,7 +13,7 @@ const base = import.meta.env.BASE_URL;
 				<h1 id="hero-title">Hi, I’m Jihee.<br />Welcome to my blog.</h1>
 				<p class="hero-lede">A place where I share what I learn, explore, and build.</p>
 				<p class="hero-intro">Finance by profession, curious about numbers, data, and technology.</p>
-				<div class="hero-actions"><button type="button" class="button button-primary" data-project-toggle aria-expanded="false" aria-controls="areas">Explore projects <span class="project-toggle-icon" aria-hidden="true">⌄</span></button><a class="button button-secondary" href={`${base}blog/`}>Read the blog <span aria-hidden="true">→</span></a><a class="quiet-link" href={`${base}about/`}>About me</a></div>
+
 				<ProjectExplorer areas={INTEREST_AREAS} />
 			</div>
 		</section>

@@ -1,4 +1,4 @@
-# 해외에서 만난 한식당
+# 다시가고 싶은 맛집들 - 세계 여행 기록
 
 영어 글: `/mathblog/blog/korean-restaurants/`, 한국어 글: `/mathblog/ko/blog/korean-restaurants/`. 기존 Blog 목록의 Travel 태그와 글 사이드바에서 접근합니다. 상단 EN / 한국어 버튼으로 같은 글의 언어를 전환합니다.
 

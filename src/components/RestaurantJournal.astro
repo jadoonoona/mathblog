@@ -24,7 +24,7 @@ const countries = [...new Map(rows.map(r => [r.countryCode, r.country])).entries
     </form>
     <p class="journal-results" role="status" aria-live="polite">{t.count(rows.length)}</p>
     <section class="journal-map-section" aria-label={t.map}>
-        <div class="journal-map-toolbar"><span>{t.trail}</span><button type="button" data-fit disabled>{t.fit}</button></div>
+        <div class="journal-map-toolbar"><button type="button" data-fit disabled>{t.fit}</button></div>
         <p data-map-message role="status">{rows.some(hasCoordinates) ? t.loading : t.noLocations}</p>
         <div id="restaurant-map" class="journal-map" role="region" aria-label={t.map} tabindex="-1" hidden></div>
         <p class="journal-note">{t.wheel}</p>

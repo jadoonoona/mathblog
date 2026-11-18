@@ -1,5 +1,5 @@
 export const koreanRestaurantPost = {
-    title: '해외에서 만난 한식당',
+    title: '전세계 맛집들만 기록합니다',
     date: '2026-11-08',
     description: '전섹계를 여행하며 방문한 식당들과 그곳에서 먹었던 한 끼를 기록합니다.',
     tags: ['Travel', 'food'], category: 'Travel', lang: 'ko',

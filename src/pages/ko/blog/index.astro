@@ -1,0 +1,102 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/blog.css';
+import { koreanRestaurantPost } from '../../../data/korean-restaurants/post';
+
+interface Post {
+    title: string;
+    date: string;
+    description?: string;
+    tags?: string[];
+    url: string;
+    hidden?: boolean;
+}
+
+const postFiles = import.meta.glob<{ frontmatter: Post }>('../../blog/*.md', { eager: true });
+const sorted: Post[] = Object.entries(postFiles)
+    .map(([path, mod]) => ({
+        ...mod.frontmatter,
+        url: `${import.meta.env.BASE_URL}blog/` + path.replace('../../blog/', '').replace('.md', '') + '/',
+    }))
+    .concat([koreanRestaurantPost])
+    .filter(post => !post.hidden)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const noteFiles = import.meta.glob<{ frontmatter: Omit<Post, 'url' | 'date'> & { date?: string; category?: string } }>('../../math-notes/*.md', { eager: true });
+const notes = Object.entries(noteFiles)
+    .map(([path, mod]) => ({
+        ...mod.frontmatter,
+        url: `${import.meta.env.BASE_URL}math-notes/${path.replace('../../math-notes/', '').replace('.md', '')}/`,
+    }))
+    .filter(note => !note.hidden)
+    .sort((a, b) => (b.date ? new Date(b.date).getTime() : 0) - (a.date ? new Date(a.date).getTime() : 0));
+
+function formatDate(dateStr: string) {
+    return new Date(dateStr).toLocaleDateString('ko-KR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+}
+---
+
+<Layout pageTitle="블로그" lang="ko" description="금융, 여행, 공부하며 배운 내용을 기록합니다.">
+    <div class="page-container">
+        <h1>블로그</h1>
+
+        <p class="intro-text">
+            Occasional writing on random things.
+        </p>
+
+        <section id="posts" aria-label="블로그 글">
+            <div class="blog-grid" id="blog-grid">
+                {sorted.map(post => (
+                    <a href={post.url} class="blog-card">
+                        <div class="blog-card-inner">
+                            <span class="blog-card-date">{formatDate(post.date)}</span>
+                            <div>
+                                <h3 class="blog-card-title">{post.title}</h3>
+                                {post.description && (
+                                    <p class="blog-card-description">{post.description}</p>
+                                )}
+                                {post.tags && (
+                                    <div class="blog-card-tags">
+                                        {post.tags.map((tag: string) => (
+                                            <span class="tag">{tag}</span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </section>
+
+        <section id="math-notes" aria-labelledby="math-notes-heading">
+            <h2 id="math-notes-heading">학습 노트</h2>
+            <p class="intro-text">수학·통계·컴퓨터 공학을 공부하며 정리한 노트입니다.</p>
+            <a href={`${import.meta.env.BASE_URL}ko/math-notes/`}>분야별 학습 노트 보기</a>
+            <div class="blog-grid">
+                {notes.map(note => (
+                    <a href={note.url} class="blog-card">
+                        <div class="blog-card-inner">
+                            <span class="blog-card-date">{note.date ? formatDate(note.date) : '날짜 미상'}</span>
+                            <div>
+                                <h3 class="blog-card-title">{note.title}</h3>
+                                {note.description && <p class="blog-card-description">{note.description}</p>}
+                                {note.category && <span class="tag">{note.category}</span>}
+                            </div>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </section>
+
+    </div>
+</Layout>
+
+<style>
+    #blog-grid > .blog-card:first-child {
+        border-top: none;
+    }
+</style>

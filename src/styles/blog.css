@@ -322,6 +322,38 @@
     font-size: 0.9em;
 }
 
+.post-body .note-table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.post-body .note-table-scroll:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+.post-body .note-table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.post-body .note-table-scroll th,
+.post-body .note-table-scroll td {
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.post-body .note-table-scroll th {
+    background: var(--color-bg-alt);
+}
+
+.post-body .note-table-scroll code {
+    white-space: nowrap;
+}
+
 .post-body img {
     width: 100%;
     border-radius: 6px;

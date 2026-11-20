@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectExplorer from '../../components/ProjectExplorer.astro';
+import { INTEREST_AREAS } from '../../data/home';
+import '../../styles/home.css';
+---
+
+<Layout pageTitle="Projects" lang="en" description="Explore projects and practical work by area.">
+    <div class="home-page">
+        <section class="home-section projects-section" aria-labelledby="projects-title">
+            <div class="section-heading">
+                <h1 id="projects-title">Projects</h1>
+                <p>Explore projects and practical work by area.</p>
+            </div>
+            <ProjectExplorer areas={INTEREST_AREAS} lang="en" />
+        </section>
+    </div>
+</Layout>

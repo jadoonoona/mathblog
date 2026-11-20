@@ -2,7 +2,7 @@ import type { FeaturedProject, InterestArea } from './home';
 
 export const INTEREST_AREAS_KO: InterestArea[] = [
     { number: '01', title: '응용수학과 통계 & 컴퓨터공학', description: '현재 공부중인 주제들을 정리하는 곳입니다.', topics: ['선형대수', '확률', '회귀분석'], link: 'ko/projects/mathematics/', projectCategory: 'mathematics', linkLabel: '프로젝트 보기' },
-    { number: '02', title: '금융', description: '금융과 관련된 다양한 주제를 다룹니다..', topics: ['주식', '부동산', '거시경제'], link: 'ko/projects/finance/', projectCategory: 'finance', linkLabel: '프로젝트 보기' },
+    { number: '02', title: '금융', description: '금융과 관련된 다양한 주제를 다룹니다.', topics: ['주식', '부동산', '거시경제'], link: 'ko/projects/finance/', projectCategory: 'finance', linkLabel: '프로젝트 보기' },
     { number: '03', title: '앱/웹 개발', description: '평소 필요로 하던 것들을 앱으로 만들고 있습니다.', topics: ['모바일 앱 개발', 'React Native', 'Supabase'], link: 'ko/projects/app-web/', projectCategory: 'app-web', linkLabel: '프로젝트 보기' },
 ];
 

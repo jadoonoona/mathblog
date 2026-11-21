@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { mathematicsArticles } from '../../data/mathematics';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { FEATURED_PROJECTS, INTEREST_AREAS } from '../../data/home';
 import '../../styles/home.css';
@@ -9,7 +10,10 @@ export function getStaticPaths() {
         params: { category: area.projectCategory },
         props: {
             area,
-            projects: FEATURED_PROJECTS.filter(project => project.category === area.projectCategory),
+            projects: [
+                ...FEATURED_PROJECTS.filter(project => project.category === area.projectCategory && !project.link.startsWith('projects/mathematics/')),
+                ...(area.projectCategory === 'mathematics' ? mathematicsArticles('en') : []),
+            ],
         },
     }));
 }

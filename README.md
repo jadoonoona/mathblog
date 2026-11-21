@@ -8,7 +8,7 @@
 ## 현재 구성
 
 - **Home / About**: 관심 분야, 프로젝트 소개와 프로필.
-- **Blog**: 여행·식당 방문 기록과 지도. 수학 학습 노트도 블로그 목록에서 접근할 수 있습니다.
+- **Blog**: 여행·식당 방문 기록과 지도. 수학·통계·컴퓨터공학 글은 Projects의 Mathematics 카테고리에 있습니다.
 - **Projects**: Mathematics / Finance / App-Web 분야별 프로젝트 탐색.
 - **주요 분석 도구**: Brinson 성과 귀속(BHB/BF), 호텔 운영·Capex 투자·포트폴리오 분석.
 - **연구 글**: 한국 금리·신용 스프레드 부트스트랩 분석, 미국 중간선거 이후 Nasdaq 수익률 분석.
@@ -66,7 +66,7 @@ tags: ['finance']
 본문을 작성합니다.
 ```
 
-수학 노트는 `src/pages/math-notes/`에 같은 형식으로 추가하고 `section: 'math-notes'`, `category: 'Linear algebra'` 등의 메타데이터를 지정합니다.
+수학·통계·컴퓨터공학 글은 `src/pages/projects/mathematics/`에 추가합니다. `layout: '../../../layouts/BlogPost.astro'`, `section: 'mathematics'`, `category: 'Linear algebra'` 등의 메타데이터를 지정하면 영어·한국어 프로젝트 카테고리 목록에 자동으로 표시됩니다. 기존 `/math-notes/` 주소는 새 프로젝트 주소로 연결됩니다.
 
 `hidden: true`는 목록과 사이드바에서만 제외합니다. 해당 페이지는 계속 빌드되어 URL로 접근할 수 있으므로 비공개 자료 보관 용도로 사용하지 않습니다.
 
@@ -110,8 +110,7 @@ src/
 ├── lib/                 # 성과 귀속·호텔 분석 모델
 ├── pages/
 │   ├── blog/            # 일반 글과 식당 기록
-│   ├── math-notes/      # 학습 노트
-│   ├── projects/        # 프로젝트·연구 페이지
+│   ├── projects/        # 프로젝트·연구·mathematics 학습 글
 │   └── ko/              # 한국어 페이지
 ├── scripts/             # 브라우저 상호작용
 └── styles/              # 공통·페이지별 스타일

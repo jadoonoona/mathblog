@@ -1,6 +1,6 @@
 ---
-layout: '../../layouts/BlogPost.astro'
-section: 'math-notes'
+layout: '../../../layouts/BlogPost.astro'
+section: 'mathematics'
 title: '원-핫 인코딩 두 가지 방법: OneHotEncoder와 to_categorical'
 date: '2026-11-20'
 description: '가입·미가입 예제로 OneHotEncoder와 to_categorical의 입력 형태와 변환 과정을 비교한다.'

@@ -1,6 +1,6 @@
 ---
-layout: '../../layouts/BlogPost.astro'
-section: 'math-notes'
+layout: '../../../layouts/BlogPost.astro'
+section: 'mathematics'
 title: 'Vectors - 동형사상'
 date: '2025-08-20'
 category: 'linear algebra'

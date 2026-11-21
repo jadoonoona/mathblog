@@ -1,0 +1,9 @@
+---
+export function getStaticPaths() {
+    // Keep existing bookmarks working after moving the source Markdown files.
+    return Object.keys(import.meta.glob('../projects/mathematics/*.md')).map(path => ({
+        params: { slug: path.split('/').pop()!.replace(/\.md$/, '') },
+    }));
+}
+return Astro.redirect(`${import.meta.env.BASE_URL}projects/mathematics/${Astro.params.slug}/`);
+---

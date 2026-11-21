@@ -5,7 +5,6 @@ const isBrinson = pathname.replace(/\/$/, '').endsWith('/projects/brinson-attrib
 const isKorean = pathname.startsWith(`${base}ko`);
 const isRestaurantJournal = pathname.replace(/\/$/, '').endsWith('/blog/korean-restaurants');
 const isAbout = pathname.endsWith('/about/');
-const isMathNotes = pathname.endsWith('/math-notes/');
 const isProjects = pathname.replace(/\/$/, '').endsWith('/projects');
 const isBlog = pathname.replace(/\/$/, '').endsWith('/blog');
 
@@ -17,13 +16,9 @@ const isHotel = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-mana
 // Unmapped pages fall back to the destination language's home. Add new translated routes here.
 const englishPath = isBrinson ? `${base}projects/brinson-attribution/` : isRestaurantJournal ? `${base}blog/korean-restaurants/` : isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
     ? `${base}about/`
-    : isMathNotes
-        ? `${base}math-notes/`
         : isProjects ? `${base}projects/` : isBlog ? `${base}blog/` : base;
 const koreanPath = isBrinson ? `${base}ko/projects/brinson-attribution/` : isRestaurantJournal ? `${base}ko/blog/korean-restaurants/` : isMidterm ? `${base}ko/projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}ko/projects/mathematics/` : isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
     ? `${base}ko/about/`
-    : isMathNotes
-        ? `${base}ko/math-notes/`
         : isProjects ? `${base}ko/projects/` : isBlog ? `${base}ko/blog/` : `${base}ko/`;
 ---
 

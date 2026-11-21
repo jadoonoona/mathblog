@@ -1,6 +1,6 @@
 ---
-layout: '../../layouts/BlogPost.astro'
-section: 'math-notes'
+layout: '../../../layouts/BlogPost.astro'
+section: 'mathematics'
 title: '조합과 순열'
 date: '2026-08-01'
 category: 'Probability and statistics'

@@ -20,29 +20,29 @@ const blogPostFiles = import.meta.glob<{ frontmatter: Post }>(
     { eager: true }
 );
 const mathNoteFiles = import.meta.glob<{ frontmatter: Post }>(
-    '../pages/math-notes/*.md',
+    '../pages/projects/mathematics/*.md',
     { eager: true }
 );
 
-const sectionFiles = section === 'math-notes' ? mathNoteFiles : blogPostFiles;
-const sectionBase = section === 'math-notes' ? `${import.meta.env.BASE_URL}math-notes/` : `${import.meta.env.BASE_URL}blog/`;
-const sidebarHeading = section === 'math-notes' ? 'All Notes' : 'All Posts';
-const sectionLabel = section === 'math-notes' ? 'Study Notes' : 'Blog';
-const sectionFooterLabel = section === 'math-notes' ? 'all notes' : 'all posts';
+const sectionFiles = section === 'mathematics' ? mathNoteFiles : blogPostFiles;
+const sectionBase = section === 'mathematics' ? `${import.meta.env.BASE_URL}projects/mathematics/` : `${import.meta.env.BASE_URL}blog/`;
+const sidebarHeading = section === 'mathematics' ? 'All Notes' : 'All Posts';
+const sectionLabel = section === 'mathematics' ? 'Mathematics & Statistics and Computer Science' : 'Blog';
+const sectionFooterLabel = section === 'mathematics' ? 'Mathematics projects' : 'all posts';
 
 const sortedPosts = Object.entries(sectionFiles)
     .map(([path, mod]) => ({
         ...mod.frontmatter,
         url:
-            section === 'math-notes'
-                ? sectionBase + path.replace('../pages/math-notes/', '').replace('.md', '') + '/'
+            section === 'mathematics'
+                ? sectionBase + path.replace('../pages/projects/mathematics/', '').replace('.md', '') + '/'
                 : sectionBase + path.replace('../pages/blog/', '').replace('.md', '') + '/',
     }))
     .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost] : [])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-const groupedPosts = section === 'math-notes'
+const groupedPosts = section === 'mathematics'
     ? Array.from(
         sortedPosts.reduce((map, post) => {
             const category = post.category ?? 'Uncategorized';
@@ -75,7 +75,7 @@ const dateStr = new Date(frontmatter.date).toLocaleDateString(frontmatter.lang =
     <div class:list={['page-container', 'post-layout', { 'blog-post-layout': section === 'blog' }]}>
         <aside class="post-sidebar">
             <h2>{sidebarHeading}</h2>
-            {section === 'math-notes' && groupedPosts ? (
+            {section === 'mathematics' && groupedPosts ? (
                 groupedPosts.map(([category, posts]) => (
                     <div class="sidebar-category-group">
                         <h3 class="sidebar-category-heading">{formatCategory(category)}</h3>

@@ -21,15 +21,6 @@ const sorted: Post[] = Object.entries(postFiles)
     .concat([restaurantPost])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-const noteFiles = import.meta.glob<{ frontmatter: Omit<Post, 'url' | 'date'> & { date?: string; category?: string } }>('../math-notes/*.md', { eager: true });
-const notes = Object.entries(noteFiles)
-    .map(([path, mod]) => ({
-        ...mod.frontmatter,
-        url: `${import.meta.env.BASE_URL}math-notes/${path.replace('../math-notes/', '').replace('.md', '')}/`,
-    }))
-    .filter(note => !note.hidden)
-    .sort((a, b) => (b.date ? new Date(b.date).getTime() : 0) - (a.date ? new Date(a.date).getTime() : 0));
-
 function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -72,25 +63,7 @@ function formatDate(dateStr: string) {
             </div>
         </section>
 
-        <section id="math-notes" aria-labelledby="math-notes-heading">
-            <h2 id="math-notes-heading">Study Notes</h2>
-            <p class="intro-text">수학·통계·컴퓨터 공학을 공부하며 정리한 노트입니다.</p>
-            <a href={`${import.meta.env.BASE_URL}math-notes/`}>View Study Notes by category →</a>
-            <div class="blog-grid">
-                {notes.map(note => (
-                    <a href={note.url} class="blog-card">
-                        <div class="blog-card-inner">
-                            <span class="blog-card-date">{note.date ? formatDate(note.date) : 'Undated'}</span>
-                            <div>
-                                <h3 class="blog-card-title">{note.title}</h3>
-                                {note.description && <p class="blog-card-description">{note.description}</p>}
-                                {note.category && <span class="tag">{note.category}</span>}
-                            </div>
-                        </div>
-                    </a>
-                ))}
-            </div>
-        </section>
+
 
     </div>
 </Layout>

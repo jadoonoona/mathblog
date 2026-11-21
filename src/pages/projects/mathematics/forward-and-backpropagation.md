@@ -1,6 +1,6 @@
 ---
-layout: '../../layouts/BlogPost.astro'
-section: 'math-notes'
+layout: '../../../layouts/BlogPost.astro'
+section: 'mathematics'
 title: '순전파와 역전파'
 date: '2026-11-12'
 category: 'Machine learning'

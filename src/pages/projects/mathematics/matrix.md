@@ -1,6 +1,6 @@
 ---
-layout: '../../layouts/BlogPost.astro'
-section: 'math-notes'
+layout: '../../../layouts/BlogPost.astro'
+section: 'mathematics'
 title: "Matrix"
 date: "2026-05-16"
 category: 'linear algebra'

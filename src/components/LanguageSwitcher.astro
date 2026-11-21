@@ -13,6 +13,8 @@ const isMidterm = pathname.replace(/\/$/, '').endsWith('/projects/nasdaq-after-u
 const isMathProjects = pathname.replace(/\/$/, '').endsWith('/projects/mathematics');
 const isPortfolio = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management/portfolio');
 const isHotel = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management');
+// Pair translated routes explicitly: replacing a language prefix can lead to nonexistent pages.
+// Unmapped pages fall back to the destination language's home. Add new translated routes here.
 const englishPath = isBrinson ? `${base}projects/brinson-attribution/` : isRestaurantJournal ? `${base}blog/korean-restaurants/` : isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
     ? `${base}about/`
     : isMathNotes

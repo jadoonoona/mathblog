@@ -19,12 +19,15 @@ export const ratio = (numerator:number,denominator:number):number|null => denomi
 export const monthEnd = (month:string) => new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7)),0)).toISOString().slice(0,10);
 export const previousMonth = (month:string) => new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7))-2,1)).toISOString().slice(0,7);
 export const dayDifference = (a:string,b:string) => Math.round((Date.parse(a+'T00:00:00Z')-Date.parse(b+'T00:00:00Z'))/86400000);
+// Actual is cumulative spend; committed/uncommitted are remaining costs, not total contract values.
+// ETC = estimate to complete; EAC = estimate at completion. Positive variance means overspend.
 export function expenditureMetrics(s:Pick<ProjectSnapshot,'actual'|'committed'|'uncommitted'|'revisedBudget'>) {
  const etc=s.committed+s.uncommitted,eac=s.actual+etc,variance=eac-s.revisedBudget;
  return {etc,eac,variance,varianceRate:ratio(variance,s.revisedBudget),grossOverspend:Math.max(0,variance)};
 }
 export function forecastAccuracy(current:ProjectSnapshot,previous:ProjectSnapshot|undefined) {
  if(!previous)return {forecast:null,actual:null,error:null,errorRate:null,absoluteError:null,material:false,reason:'No previous-month snapshot'};
+ // Compare last month's forecast with this month's spend, derived from cumulative actuals.
  const forecast=previous.nextMonthForecast,actual=current.actual-previous.actual,error=actual-forecast;
  return {forecast,actual,error,errorRate:ratio(error,forecast),absoluteError:Math.abs(error),material:Math.abs(error)>25000 && (forecast===0||Math.abs(error/forecast)>.2),reason:current.deviationReason};
 }
@@ -67,6 +70,7 @@ export type ProjectReportRow = ReturnType<typeof selectProjects>[number];
 export function programmeTotals(rows:readonly ProjectReportRow[]) {
  const sum=(fn:(r:ProjectReportRow)=>number)=>rows.reduce((s,r)=>s+fn(r),0);
  const originalBudget=sum(r=>r.snapshot.originalBudget),revisedBudget=sum(r=>r.snapshot.revisedBudget),actual=sum(r=>r.snapshot.actual),committed=sum(r=>r.snapshot.committed),uncommitted=sum(r=>r.snapshot.uncommitted),eac=sum(r=>r.metrics.eac);
+ // Gross overspend does not net off savings from projects that are under budget.
  return {originalBudget,revisedBudget,actual,committed,uncommitted,etc:committed+uncommitted,eac,variance:eac-revisedBudget,varianceRate:ratio(eac-revisedBudget,revisedBudget),grossOverspend:sum(r=>r.metrics.grossOverspend),overBudget:rows.filter(r=>r.metrics.variance>0).length,atRisk:rows.filter(r=>r.flags.length||r.risk==='High').length,projectCount:rows.length};
 }
 export function accuracyTotals(rows:readonly ProjectReportRow[]) {
@@ -82,6 +86,8 @@ export function portfolioPerformance(data:PortfolioDataset,month:string,hotelId=
   return {hotel,snapshot:s,metrics,benchmarkRevpar,revparIndex:ratio(metrics.revpar*100,benchmarkRevpar),occupancyGap:metrics.occupancy-s.benchmark.occupancy,adrGap:metrics.adr-s.benchmark.adr,revparGap:metrics.revpar-benchmarkRevpar,marginGap:metrics.margin-s.benchmark.margin,marginChange:previous?metrics.margin-previous.assumptions.margin:null};
  });
  const sum=(key:'available'|'occupied'|'roomRevenue'|'totalRevenue'|'ebitda')=>properties.reduce((s,p)=>s+p.metrics[key],0);
+ // Derive portfolio ratios from totals to weight by capacity, occupied nights or revenue as appropriate.
+ // Simple averages of hotel occupancy, ADR, RevPAR or margins would misstate the portfolio.
  const available=sum('available'),occupied=sum('occupied'),roomRevenue=sum('roomRevenue'),revenue=sum('totalRevenue'),ebitda=sum('ebitda');
  return {properties,aggregate:{rooms:properties.reduce((s,p)=>s+p.hotel.rooms,0),available,occupied,roomRevenue,revenue,ebitda,occupancy:ratio(occupied,available),adr:ratio(roomRevenue,occupied),revpar:ratio(roomRevenue,available),margin:ratio(ebitda,revenue)}};
 }

@@ -29,6 +29,8 @@ export function calculate(rows: readonly Sector[], model: Model = 'BHB') {
     const portfolio = sum(decimal.map(s => s.wp * s.rp));
     const benchmark = sum(decimal.map(s => s.wb * s.rb));
     const sectors = decimal.map(s => {
+        // BF uses sector return relative to the total benchmark; BHB uses sector return directly.
+        // Since both weight sums are one, aggregate allocation is unchanged between the models.
         const allocation = (s.wp - s.wb) * (s.rb - (model === 'BF' ? benchmark : 0));
         const selection = s.wb * (s.rp - s.rb);
         const interaction = (s.wp - s.wb) * (s.rp - s.rb);
@@ -52,6 +54,8 @@ export function rebalance(rows: readonly Sector[], index: number, weight: number
     const next = rows.map(s => ({ ...s }));
     next[index].wp = weight;
     let allocated = 0;
+    // Preserve other sectors' relative weights, or split equally when their previous total is zero.
+    // Give the final sector the remainder to avoid drift in the 100% weight constraint.
     other.forEach((i, j) => {
         next[i].wp = j === other.length - 1 ? 100 - weight - allocated : (100 - weight) * (total === 0 ? 1 / other.length : rows[i].wp / total);
         allocated += next[i].wp;

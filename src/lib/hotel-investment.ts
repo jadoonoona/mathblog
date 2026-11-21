@@ -1,6 +1,7 @@
 import { calculateOperatingMetrics, type OperatingAssumptions } from './hotel-model.ts';
 export interface InvestmentAssumptions { capex: number; horizon: number; discountRate: number; adrGrowth: number; costInflation: number; renovationMonths: number; unavailableRooms: number; maintenance: number; residual: number; fixedCostShare: number }
 export const DEFAULT_INVESTMENT: InvestmentAssumptions = { capex: 5000000, horizon: 10, discountRate: .10, adrGrowth: .025, costInflation: .02, renovationMonths: 6, unavailableRooms: .20, maintenance: 50000, residual: 0, fixedCostShare: .60 };
+/** flows[0] is at time zero; later flows are year-end. Rate is a decimal. */
 export function calculateNPV(flows: number[], rate: number): number {
  if (!Number.isFinite(rate) || rate <= -1 || flows.some(x => !Number.isFinite(x))) throw new RangeError('Invalid cash flows or discount rate');
  return flows.reduce((sum, flow, year) => sum + flow / (1 + rate) ** year, 0);
@@ -34,11 +35,13 @@ export function forecastInvestment(current: OperatingAssumptions, projected: Ope
  const forecast=(seed: typeof base,year: number,availability=1)=>{
   const growth=(1+p.adrGrowth)**(year-1), inflation=(1+p.costInflation)**(year-1);
   const revenue=calculateOperatingMetrics({rooms:current.rooms*availability,days:current.days,occupancy:seed.occupancy,adr:seed.adr*growth,ancillaryRate:seed.roomRevenue ? seed.ancillaryRevenue/seed.roomRevenue : 0,margin:0});
+  // Fixed costs persist during closures; only variable costs scale with room availability.
   const costs=(seed.totalRevenue-seed.ebitda)*inflation*(p.fixedCostShare+(1-p.fixedCostShare)*availability);
   return {...revenue,costs,ebitda:revenue.totalRevenue-costs,margin:revenue.totalRevenue ? (revenue.totalRevenue-costs)/revenue.totalRevenue : 0};
  };
  const flows=[-p.capex];let cumulative=-p.capex;
  const years=Array.from({length:p.horizon},(_,i)=>{
+  // Blend renovation months at reduced baseline capacity with months at target performance.
   const year=i+1, fraction=Math.max(0,Math.min(1,p.renovationMonths/12-i));
   const without=forecast(base,year), during=forecast(base,year,1-p.unavailableRooms), after=forecast(target,year);
   const withRenovation={...after};
@@ -50,6 +53,8 @@ export function forecastInvestment(current: OperatingAssumptions, projected: Ope
   const incrementalEBITDA=withRenovation.ebitda-without.ebitda;
   const disruptionLoss=(without.ebitda-during.ebitda)*fraction;
   const residual=year===p.horizon?p.residual:0;
+  // Disruption is already included in incremental EBITDA; do not deduct it again.
+  // Maintenance is annual and residual is terminal; taxes, financing and working capital are omitted.
   const fcf=incrementalEBITDA-p.maintenance+residual;
   const discountFactor=1/(1+p.discountRate)**year;
   cumulative+=fcf;flows.push(fcf);

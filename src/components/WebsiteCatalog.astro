@@ -1,0 +1,70 @@
+---
+import { websites } from '../data/websites';
+import { websiteDomain } from '../lib/websites';
+import '../styles/websites.css';
+const base = import.meta.env.BASE_URL;
+const categories = [...new Set(websites.map(site => site.category))].sort((a, b) => a.localeCompare(b, 'ko'));
+const tags = [...new Set(websites.flatMap(site => site.tags))].sort((a, b) => a.localeCompare(b, 'ko'));
+---
+<div class="website-catalog" data-catalog>
+    <header class="catalog-heading">
+        <a href={`${base}ko/blog/`} class="catalog-back">블로그</a>
+        <h1>웹사이트 모음</h1>
+        <p>유용한 웹사이트와 도구를 한곳에서 찾아보세요.</p>
+    </header>
+    <div class="catalog-toolbar" data-controls hidden>
+        <div class="catalog-search">
+            <label for="website-search">사이트 검색</label>
+            <input id="website-search" type="search" placeholder="이름, 설명, 도메인, 태그 검색" autocomplete="off" />
+        </div>
+        <label class="catalog-sort" for="website-sort">정렬
+            <select id="website-sort"><option value="newest">최신 등록순</option><option value="name">이름순</option></select>
+        </label>
+    </div>
+    <div class="catalog-counts"><span>전체 <strong>{websites.length}</strong>개</span><span role="status" aria-live="polite" aria-atomic="true" data-result-count>검색 결과 {websites.length}개</span></div>
+    <div class="catalog-workspace">
+        <aside class="catalog-sidebar" aria-label="웹사이트 필터" data-controls hidden>
+            <details class="catalog-filters" open>
+                <summary>필터 <span aria-hidden="true">＋</span></summary>
+                <div class="catalog-filter-body">
+                    <fieldset><legend>카테고리</legend>
+                        <label class="catalog-option"><input type="radio" name="website-category" value="" checked /> 전체 <span>{websites.length}</span></label>
+                        {categories.map(category => <label class="catalog-option"><input type="radio" name="website-category" value={category} />{category}<span>{websites.filter(site => site.category === category).length}</span></label>)}
+                    </fieldset>
+                    <fieldset><legend>태그</legend><p class="catalog-hint">선택한 태그를 모두 포함</p>
+                        <div class="catalog-tag-options">{tags.map(tag => <label><input type="checkbox" name="website-tag" value={tag} /><span>{tag}</span></label>)}</div>
+                    </fieldset>
+                    <label class="catalog-option catalog-favorites"><input id="website-favorites" type="checkbox" /> 즐겨찾기만 보기</label>
+                    <button type="button" class="catalog-reset" data-reset>초기화</button>
+                </div>
+            </details>
+        </aside>
+        <section class="catalog-results" aria-label="웹사이트 목록">
+            <div class="catalog-chips" aria-label="선택한 필터" data-chips hidden></div>
+            <noscript><p>모든 사이트를 표시합니다. 검색·필터·즐겨찾기는 JavaScript를 켜면 사용할 수 있습니다.</p></noscript>
+            <div class="catalog-grid" data-grid>
+                {websites.map(site => <article class="website-card" data-site-id={site.id}>
+                    <a class="website-preview" href={site.url} target="_blank" rel="noopener noreferrer" aria-label={`${site.title} 미리보기 — 새 탭에서 열기`}>
+                        <div class="website-placeholder"><span aria-hidden="true">{site.title.slice(0, 1)}</span><strong>{site.title}</strong><small>{websiteDomain(site.url)}</small></div>
+                        {site.thumbnail && <img src={site.thumbnail.startsWith('http') ? site.thumbnail : `${base}${site.thumbnail.replace(/^\//, '')}`} alt={`${site.title} 웹사이트 미리보기`} width="1280" height="800" loading="lazy" decoding="async" />}
+                    </a>
+                    <div class="website-card-body">
+                        <div class="website-card-title">
+                            <h2><a href={site.url} target="_blank" rel="noopener noreferrer">{site.title}<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3h7v7M21 3 10 14M10 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-6" /></svg><span class="catalog-sr-only"> (새 탭에서 열기)</span></a></h2>
+                            <button type="button" class="website-save" data-favorite={site.id} aria-label={`${site.title} 즐겨찾기`} aria-pressed="false" data-controls hidden><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z" /></svg></button>
+                        </div>
+                        <p class="website-domain">{websiteDomain(site.url)}</p>
+                        <p class="website-description">{site.description}</p>
+                        <ul class="website-labels" aria-label="카테고리와 태그"><li class="website-category">{site.category}</li>{site.tags.map(tag => <li>{tag}</li>)}</ul>
+                    </div>
+                </article>)}
+            </div>
+            <div class="catalog-empty" data-empty hidden><h2>조건에 맞는 웹사이트가 없습니다.</h2><p>검색어를 바꾸거나 필터를 초기화해 보세요.</p><button type="button" class="catalog-reset" data-reset>초기화</button></div>
+        </section>
+    </div>
+    <p class="catalog-storage" role="status" data-storage-status></p>
+    <p class="catalog-footnote">교체·추가할 수 있는 시작용 목록입니다. 즐겨찾기는 이 브라우저에 저장됩니다.</p>
+</div>
+<script>
+    import '../scripts/websites';
+</script>

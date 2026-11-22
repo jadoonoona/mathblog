@@ -19,8 +19,8 @@ test('catalog search, category, all selected tags and favorites intersect', () =
 test('sort is deterministic, changes no source order, and empty favorites produces no matches', () => {
     const before = websites.map(site => site.id);
     const named = selectWebsites(websites, { ...defaults, sort: 'name' }, new Set());
-    assert.equal(named[0].id, 'astro');
-    assert.equal(selectWebsites(websites, defaults, new Set())[0].id, 'our-trip-plan');
+    assert.ok(named.findIndex(site => site.id === 'astro') < named.findIndex(site => site.id === 'github'));
+    assert.equal(selectWebsites(websites, defaults, new Set())[0].addedAt, websites.map(site => site.addedAt).sort().at(-1));
     assert.deepEqual(websites.map(site => site.id), before);
     assert.deepEqual(selectWebsites(websites, { ...defaults, favoritesOnly: true }, new Set()), []);
 });

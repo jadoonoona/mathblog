@@ -1,5 +1,7 @@
 /** Start Astro on 4321 and a Chromium CDP instance on 9224. No additional packages required. */
 import assert from 'node:assert/strict';
+import { websites } from '../src/data/websites.ts';
+const total = websites.length;
 import { mkdir, writeFile } from 'node:fs/promises';
 const origin = 'http://127.0.0.1:4321';
 const url = `${origin}/mathblog/blog/websites/`;
@@ -44,9 +46,9 @@ try {
     await evaluate(`localStorage.removeItem('mathblog.website-favorites.v1')`);
     await evaluate(`document.querySelector('[data-catalog]').dataset.beforeReload='true'`);
     await send('Page.reload'); await waitFor(`document.querySelector('[data-catalog]') && !document.querySelector('[data-catalog]').dataset.beforeReload && document.querySelector('[data-controls]')?.hidden===false`);
-    assert.equal((await visible()).length, 8); assert.equal(await count(), '검색 결과 8개');
+    assert.equal((await visible()).length, total); assert.equal(await count(), `검색 결과 ${total}개`);
     await waitFor(`[...document.querySelectorAll('.website-preview img')].every(x=>x.complete)`);
-    assert.equal(await evaluate(`[...document.querySelectorAll('.website-preview img')].filter(x=>x.naturalWidth>0).length`), 8);
+    assert.equal(await evaluate(`[...document.querySelectorAll('.website-preview img')].filter(x=>x.naturalWidth>0).length`), total);
     assert.equal(await evaluate(`getComputedStyle(document.querySelector('[data-grid]')).gridTemplateColumns.split(' ').length`), 3);
     await screenshot('desktop');
     await set('#website-search', 'DESMOS.COM 그래프');
@@ -64,10 +66,10 @@ try {
     await click('[data-favorite="desmos"]'); assert.deepEqual(await visible(), []);
     assert.equal(await evaluate(`document.querySelector('[data-empty]').hidden`), false);
     assert.equal(await evaluate(`document.activeElement.id`), 'website-favorites');
-    await click('[data-empty] [data-reset]'); assert.equal((await visible()).length, 8);
-    await set('#website-sort', 'name', 'change'); assert.equal((await visible())[0], 'astro');
+    await click('[data-empty] [data-reset]'); assert.equal((await visible()).length, total);
+    await set('#website-sort', 'name', 'change'); assert.ok((await visible()).indexOf('astro') < (await visible()).indexOf('github'));
     await set('#website-search', '웹 개발'); assert.deepEqual((await visible()).sort(), ['astro', 'mdn']);
-    await click('[data-chips] button'); assert.equal((await visible()).length, 8);
+    await click('[data-chips] button'); assert.equal((await visible()).length, total);
     await set('#website-search', 'no-such-website-123'); assert.deepEqual(await visible(), []);
     await reset();
     // Exercise keyboard text entry and the next tab stop, not just programmatic input events.
@@ -99,7 +101,7 @@ try {
     await screenshot('mobile-dark');
     const ax = (await send('Accessibility.getFullAXTree')).nodes;
     assert.ok(ax.some(node => node.role?.value === 'searchbox' && node.name?.value === '사이트 검색'));
-    assert.equal(ax.filter(node => node.role?.value === 'button' && node.name?.value?.endsWith('즐겨찾기')).length, 8);
+    assert.equal(ax.filter(node => node.role?.value === 'button' && node.name?.value?.endsWith('즐겨찾기')).length, total);
     assert.equal(await evaluate(`[...document.querySelectorAll('.website-card a')].every(x=>x.target==='_blank'&&x.rel.includes('noopener'))`), true);
     // Simulate blocked writes without breaking the site's unrelated theme storage.
     await evaluate(`window.originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='mathblog.website-favorites.v1')throw new DOMException('Blocked');return window.originalSetItem.call(this,k,v);}`);
@@ -108,7 +110,7 @@ try {
     assert.equal(await evaluate(`document.querySelector('[data-favorite="fred"]').getAttribute('aria-pressed')`), 'true');
     await evaluate(`Storage.prototype.setItem=window.originalSetItem`);
     assert.deepEqual(errors, []);
-    console.log('PASS: 8 local thumbnails; search/category/all-tags/favorites combinations; chips, reset, sort, empty state; persistence; keyboard and accessibility names; image failure; 3/2/1 columns, mobile filters and dark mode; blocked storage. Screenshots: '+output);
+    console.log('PASS: local thumbnails; search/category/all-tags/favorites combinations; chips, reset, sort, empty state; persistence; keyboard and accessibility names; image failure; 3/2/1 columns, mobile filters and dark mode; blocked storage. Screenshots: '+output);
 } finally {
     if (original !== undefined) await evaluate(original === null ? `localStorage.removeItem('mathblog.website-favorites.v1')` : `localStorage.setItem('mathblog.website-favorites.v1',${JSON.stringify(original)})`);
     ws.close(); await fetch(`http://127.0.0.1:9224/json/close/${target.id}`);

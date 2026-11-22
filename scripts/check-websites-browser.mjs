@@ -32,8 +32,8 @@ const set = (selector, value, event = 'input') => evaluate(`(()=>{const x=docume
 const visible = () => evaluate(`[...document.querySelectorAll('[data-site-id]:not([hidden])')].map(x=>x.dataset.siteId)`);
 const count = () => evaluate(`document.querySelector('[data-result-count]').textContent`);
 const reset = () => click('[data-reset]');
-const screenshot = async name => writeFile(`${output}/${name}.png`, Buffer.from((await send('Page.captureScreenshot', { captureBeyondViewport: true })).data, 'base64'));
-const resize = (width, height = 1000) => send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 700 });
+const screenshot = async name => { await evaluate(`document.querySelector('astro-dev-toolbar')?.remove();window.scrollTo(0,0)`); return writeFile(`${output}/${name}.png`, Buffer.from((await send('Page.captureScreenshot', { captureBeyondViewport: true })).data, 'base64')); };
+const resize = async (width, height = 1000) => { await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 700 }); await new Promise(r=>setTimeout(r,400)); };
 let original;
 try {
     await send('Runtime.enable'); await send('Page.enable');
@@ -42,7 +42,8 @@ try {
     await waitFor(`document.querySelector('[data-controls]')?.hidden===false`);
     original = await evaluate(`localStorage.getItem('mathblog.website-favorites.v1')`);
     await evaluate(`localStorage.removeItem('mathblog.website-favorites.v1')`);
-    await send('Page.reload'); await waitFor(`document.querySelector('[data-controls]')?.hidden===false`);
+    await evaluate(`document.querySelector('[data-catalog]').dataset.beforeReload='true'`);
+    await send('Page.reload'); await waitFor(`document.querySelector('[data-catalog]') && !document.querySelector('[data-catalog]').dataset.beforeReload && document.querySelector('[data-controls]')?.hidden===false`);
     assert.equal((await visible()).length, 8); assert.equal(await count(), '검색 결과 8개');
     await waitFor(`[...document.querySelectorAll('.website-preview img')].every(x=>x.complete)`);
     assert.equal(await evaluate(`[...document.querySelectorAll('.website-preview img')].filter(x=>x.naturalWidth>0).length`), 8);
@@ -56,7 +57,8 @@ try {
     assert.equal(await evaluate(`document.querySelector('[data-chips]').children.length`), 4);
     await click('[data-favorite="desmos"]'); await click('#website-favorites');
     assert.deepEqual(await visible(), ['desmos']);
-    await send('Page.reload'); await waitFor(`document.querySelector('[data-controls]')?.hidden===false`);
+    await evaluate(`document.querySelector('[data-catalog]').dataset.beforeReload='true'`);
+    await send('Page.reload'); await waitFor(`document.querySelector('[data-catalog]') && !document.querySelector('[data-catalog]').dataset.beforeReload && document.querySelector('[data-controls]')?.hidden===false`);
     assert.equal(await evaluate(`document.querySelector('[data-favorite="desmos"]').getAttribute('aria-pressed')`), 'true');
     await click('#website-favorites'); assert.deepEqual(await visible(), ['desmos']);
     await click('[data-favorite="desmos"]'); assert.deepEqual(await visible(), []);
@@ -88,9 +90,9 @@ try {
     assert.equal(await evaluate(`document.documentElement.scrollWidth<=innerWidth`), true);
     await screenshot('mobile');
     await evaluate(`document.querySelector('.catalog-filters summary').focus()`);
-    await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+    await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r' });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
-    assert.equal(await evaluate(`document.querySelector('.catalog-filters').open`), true);
+    await waitFor(`document.querySelector('.catalog-filters').open===true`);
     await click('input[name="website-category"][value="개발"]'); assert.equal((await visible()).length, 3);
     await reset();
     await evaluate(`document.documentElement.setAttribute('data-theme','dark')`);

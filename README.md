@@ -74,6 +74,10 @@ tags: ['finance']
 
 인터랙티브 글은 `.astro` 페이지와 별도 컴포넌트·데이터로 구성됩니다. `.astro` 파일을 추가하는 것만으로 Markdown 기반 블로그 목록에 등록되지는 않으므로 해당 목록의 메타데이터도 연결해야 합니다. 식당 기록 입력 규칙은 [식당 데이터 안내](src/data/korean-restaurants/README.md)를 참고하세요.
 
+### 웹사이트 모음
+
+`/mathblog/blog/websites/`의 사이트 목록은 `src/data/websites.ts`에서 관리합니다. 썸네일은 `public/images/websites/`에 저장하며, 사이트 추가·이미지 교체 방법은 [웹사이트 카탈로그 안내](src/data/websites/README.md)를 참고하세요.
+
 ### 프로젝트·연구
 
 프로젝트 페이지는 `src/pages/projects/`, 한국어 대응 페이지는 `src/pages/ko/projects/`에 있습니다. 프로젝트 목록은 `src/data/home.ts`와 `src/data/home-ko.ts`에서 관리합니다.

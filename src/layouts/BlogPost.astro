@@ -1,4 +1,5 @@
 ---
+import { websitesPost } from '../data/websites-post';
 import Layout from './Layout.astro';
 import '../styles/blog.css';
 import { restaurantPost, koreanRestaurantPost } from '../data/korean-restaurants/post';
@@ -38,7 +39,7 @@ const sortedPosts = Object.entries(sectionFiles)
                 ? sectionBase + path.replace('../pages/projects/mathematics/', '').replace('.md', '') + '/'
                 : sectionBase + path.replace('../pages/blog/', '').replace('.md', '') + '/',
     }))
-    .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost] : [])
+    .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost, websitesPost] : [])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 

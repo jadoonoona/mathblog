@@ -1,3 +1,5 @@
+import { websiteText, type CatalogLanguage } from './websites-i18n.ts';
+
 export interface Website {
     id: string;
     title: string;
@@ -28,7 +30,31 @@ export const websites: Website[] = [
     description: '부동산 통계정보를 한 곳에 모아 제공하는 한국부동산원 공식 통계 포털.',
     category: '부동산',
     tags: ['부동산', '통계'],
-    thumbnail: 'images/websites/reb.jpg',
+    thumbnail: 'images/websites/reb.png',
     addedAt: '2026-11-22',
 },
 ];
+
+// Keep stable IDs so favorites are shared between the two language versions.
+const englishEntries: Record<string, { title?: string; description: string }> = {
+    'data-go-kr': { title: 'Korea Public Data Portal', description: 'Find and use datasets and open APIs published by Korean public institutions.' },
+    'our-trip-plan': { description: 'Plan and share travel itineraries together.' },
+    desmos: { description: 'Plot equations and explore functions and mathematical concepts with an interactive calculator.' },
+    geogebra: { description: 'Explore geometry, algebra and graphs with interactive mathematics tools.' },
+    fred: { description: 'Economic time series and charts from the Federal Reserve Bank of St. Louis.' },
+    mdn: { description: 'Reference documentation for HTML, CSS, JavaScript and web APIs.' },
+    astro: { description: 'A web framework for content-driven websites, including this blog.' },
+    github: { description: 'Manage code, discover open-source projects and collaborate with others.' },
+    observable: { description: 'Explore data and create and share interactive visualizations.' },
+    reb: { title: 'Korea Real Estate Board', description: 'The Korea Real Estate Board’s official portal for real estate statistics and information.' },
+};
+
+export function localizedWebsites(lang: CatalogLanguage): Website[] {
+    if (lang === 'ko') return websites;
+    return websites.map(site => ({
+        ...site,
+        ...englishEntries[site.id],
+        category: websiteText(lang, site.category),
+        tags: site.tags.map(tag => websiteText(lang, tag)),
+    }));
+}

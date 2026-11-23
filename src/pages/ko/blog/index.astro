@@ -1,5 +1,5 @@
 ---
-import { websitesPost } from '../../../data/websites-post';
+import { koreanWebsitesPost } from '../../../data/websites-post';
 import Layout from '../../../layouts/Layout.astro';
 import '../../../styles/blog.css';
 import { koreanRestaurantPost } from '../../../data/korean-restaurants/post';
@@ -13,13 +13,18 @@ interface Post {
     hidden?: boolean;
 }
 
-const postFiles = import.meta.glob<{ frontmatter: Post }>('../../blog/*.md', { eager: true });
-const sorted: Post[] = Object.entries(postFiles)
-    .map(([path, mod]) => ({
-        ...mod.frontmatter,
-        url: `${import.meta.env.BASE_URL}blog/` + path.replace('../../blog/', '').replace('.md', '') + '/',
+const defaultPosts = import.meta.glob<{ frontmatter: Post }>('../../blog/*.md', { eager: true });
+const koreanPosts = import.meta.glob<{ frontmatter: Post }>('./*.md', { eager: true });
+const localizedPosts = new Map(Object.entries(defaultPosts).map(([path, post]) => [path.split('/').pop()!, { path, post }]));
+for (const [path, post] of Object.entries(koreanPosts)) {
+    localizedPosts.set(path.split('/').pop()!, { path, post });
+}
+const sorted: Post[] = Array.from(localizedPosts.values())
+    .map(({ path, post }) => ({
+        ...post.frontmatter,
+        url: `${import.meta.env.BASE_URL}${path.startsWith('./') ? 'ko/' : ''}blog/${path.split('/').pop()!.replace(/\.md$/, '')}/`,
     }))
-    .concat([koreanRestaurantPost, websitesPost])
+    .concat([koreanRestaurantPost, koreanWebsitesPost])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 function formatDate(dateStr: string) {

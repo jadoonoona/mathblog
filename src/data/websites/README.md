@@ -1,6 +1,6 @@
 # 웹사이트 모음 관리
 
-페이지: `/mathblog/blog/websites/`. Astro 정적 페이지이며 외부 API나 서버가 필요하지 않습니다.
+영어 페이지: `/mathblog/blog/websites/` (Bookmarks). 한국어 페이지: `/mathblog/ko/blog/websites/` (웹사이트 모음). Astro 정적 페이지이며 외부 API나 서버가 필요하지 않습니다.
 
 ## 사이트 추가
 
@@ -18,6 +18,8 @@
     addedAt: '2026-11-22', // YYYY-MM-DD, 등록일
 },
 ```
+
+`src/data/websites.ts`의 `englishEntries`에 같은 ID로 영어 제목(선택)과 설명을 추가합니다. 새 카테고리·태그의 영어 표기는 `src/data/websites-i18n.ts`에서 관리합니다. 사이트 ID는 두 언어에서 동일하게 유지하므로 즐겨찾기를 공유합니다.
 
 사이트 목록·카테고리·태그 외의 UI 코드를 수정할 필요는 없습니다. 초기 예시 항목은 교체할 수 있는 시작용 데이터이며 Our Trip Plan 링크는 기존 프로젝트 목록에서 가져왔습니다.
 

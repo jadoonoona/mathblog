@@ -369,6 +369,53 @@
     font-style: italic;
 }
 
+/* Photo spaces for the Jindo journal, ready to be replaced with photographs. */
+.post-body .jindo-photo-frame {
+    box-sizing: border-box;
+    aspect-ratio: 4 / 3;
+    min-width: 0;
+    margin: 0;
+    padding: 1.5rem;
+    border: 1px dashed var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-alt);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.post-body .jindo-photo-frame--cover {
+    aspect-ratio: 16 / 9;
+    margin-block: 2rem;
+}
+
+.jindo-photo-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.jindo-photo-frame figcaption {
+    font-size: 0.9rem;
+}
+
+.jindo-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-block: 1.5rem;
+}
+
+@media (max-width: 540px) {
+    .jindo-photo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .post-body hr {
     border: none;
     border-top: 1px solid var(--color-border);

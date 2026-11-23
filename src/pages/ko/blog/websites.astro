@@ -1,0 +1,8 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import WebsiteCatalog from '../../../components/WebsiteCatalog.astro';
+import { koreanWebsitesPost } from '../../../data/websites-post';
+---
+<Layout pageTitle={koreanWebsitesPost.title} description={koreanWebsitesPost.description} lang="ko">
+    <WebsiteCatalog lang="ko" />
+</Layout>

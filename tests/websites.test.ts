@@ -1,9 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { websites } from '../src/data/websites.ts';
+import { websites, localizedWebsites } from '../src/data/websites.ts';
 import { parseFavorites, selectWebsites, websiteDomain, type WebsiteFilters } from '../src/lib/websites.ts';
 const defaults: WebsiteFilters = { query: '', category: '', tags: [], favoritesOnly: false, sort: 'newest' };
+
+test('English catalog translates searchable content and preserves shared favorites', () => {
+    const english = localizedWebsites('en');
+    assert.deepEqual(english.map(site => site.id), websites.map(site => site.id));
+    for (const site of english) {
+        assert.doesNotMatch([site.title, site.description, site.category, ...site.tags].join(' '), /[가-힣]/);
+    }
+    const favorites = parseFavorites('["desmos","fred"]', english);
+    assert.deepEqual(selectWebsites(english, {
+        ...defaults, query: 'economic time series', category: 'Finance & economics',
+        tags: ['Data', 'Research'], favoritesOnly: true,
+    }, favorites).map(site => site.id), ['fred']);
+    assert.deepEqual([...parseFavorites(JSON.stringify([...favorites]), localizedWebsites('ko'))], ['desmos', 'fred']);
+    assert.equal(websites.find(site => site.id === 'fred')!.category, '금융·경제');
+});
 
 test('catalog search, category, all selected tags and favorites intersect', () => {
     const favorites = new Set(['desmos', 'geogebra', 'fred']);

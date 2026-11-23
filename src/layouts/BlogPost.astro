@@ -1,5 +1,5 @@
 ---
-import { websitesPost } from '../data/websites-post';
+import { websitesPost, koreanWebsitesPost } from '../data/websites-post';
 import Layout from './Layout.astro';
 import '../styles/blog.css';
 import { restaurantPost, koreanRestaurantPost } from '../data/korean-restaurants/post';
@@ -17,7 +17,7 @@ const { frontmatter } = Astro.props;
 const section = Astro.props.section ?? frontmatter.section ?? 'blog';
 
 const blogPostFiles = import.meta.glob<{ frontmatter: Post }>(
-    '../pages/blog/*.md',
+    ['../pages/blog/*.md', '../pages/ko/blog/*.md'],
     { eager: true }
 );
 const mathNoteFiles = import.meta.glob<{ frontmatter: Post }>(
@@ -34,8 +34,17 @@ if (frontmatter.lang === 'ko') {
         if (path.includes('/ko/')) localizedMathNotes.set(path.split('/').pop()!, [path, post]);
     }
 }
-const sectionFiles = section === 'mathematics' ? Object.fromEntries(localizedMathNotes.values()) : blogPostFiles;
-const sectionBase = section === 'mathematics' ? `${import.meta.env.BASE_URL}${frontmatter.lang === 'ko' ? 'ko/' : ''}projects/mathematics/` : `${import.meta.env.BASE_URL}blog/`;
+const localizedBlogPosts = new Map<string, [string, { frontmatter: Post }]>();
+for (const [path, post] of Object.entries(blogPostFiles)) {
+    if (!path.includes('/ko/')) localizedBlogPosts.set(path.split('/').pop()!, [path, post]);
+}
+if (frontmatter.lang === 'ko') {
+    for (const [path, post] of Object.entries(blogPostFiles)) {
+        if (path.includes('/ko/')) localizedBlogPosts.set(path.split('/').pop()!, [path, post]);
+    }
+}
+const sectionFiles = section === 'mathematics' ? Object.fromEntries(localizedMathNotes.values()) : Object.fromEntries(localizedBlogPosts.values());
+const sectionBase = section === 'mathematics' ? `${import.meta.env.BASE_URL}${frontmatter.lang === 'ko' ? 'ko/' : ''}projects/mathematics/` : `${import.meta.env.BASE_URL}${frontmatter.lang === 'ko' ? 'ko/' : ''}blog/`;
 const sidebarHeading = section === 'mathematics' ? 'All Notes' : 'All Posts';
 const sectionLabel = section === 'mathematics' ? 'Mathematics & Statistics and Computer Science' : 'Blog';
 const sectionFooterLabel = section === 'mathematics' ? 'Mathematics projects' : 'all posts';
@@ -46,9 +55,9 @@ const sortedPosts = Object.entries(sectionFiles)
         url:
             section === 'mathematics'
                 ? import.meta.env.BASE_URL + path.replace('../pages/', '').replace('.md', '') + '/'
-                : sectionBase + path.replace('../pages/blog/', '').replace('.md', '') + '/',
+                : import.meta.env.BASE_URL + path.replace('../pages/', '').replace('.md', '') + '/',
     }))
-    .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost, websitesPost] : [])
+    .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost, frontmatter.lang === 'ko' ? koreanWebsitesPost : websitesPost] : [])
     .filter(post => !post.hidden)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 

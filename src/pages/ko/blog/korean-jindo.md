@@ -10,10 +10,12 @@ lang: 'ko'
 진돗개의 모습과 성격, 함께하는 일상을 사진과 이야기로 기록하는 공간입니다. 사진과 글을 차근차근 더해갈 예정입니다.
 
 무엇보다 이 글이 한국에서 구조된 진돗개와 진도 믹스가 가족을 만나는 작은 계기가 되었으면 합니다. 입양에 관심이 있다면 글 마지막에 모아 둔 구조·입양 단체의 안내를 살펴봐 주세요.
-
-<figure class="jindo-photo-frame jindo-photo-frame--cover" role="img" aria-label="진돗개 대표 사진을 위한 자리">
-  <span class="jindo-photo-label">첫인사</span>
-  <figcaption>사진을 준비 중입니다.</figcaption>
+<figure>
+  <img
+    src="/mathblog/images/blog/jindo/portrait.jpg"
+    alt="진돗개의 모습"
+  />
+  <figcaption>사진 설명을 여기에 적어주세요.</figcaption>
 </figure>
 
 ## 진돗개 알아보기

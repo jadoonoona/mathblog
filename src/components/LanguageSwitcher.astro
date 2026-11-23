@@ -11,14 +11,15 @@ const isBlog = pathname.replace(/\/$/, '').endsWith('/blog');
 
 const isMidterm = pathname.replace(/\/$/, '').endsWith('/projects/nasdaq-after-us-midterm-elections');
 const isMathProjects = pathname.replace(/\/$/, '').endsWith('/projects/mathematics');
+const isRegularizationNote = pathname.replace(/\/$/, '').endsWith('/projects/mathematics/overfitting-regularization-early-stopping');
 const isPortfolio = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management/portfolio');
 const isHotel = pathname.replace(/\/$/, '').endsWith('/projects/hotel-asset-management');
 // Pair translated routes explicitly: replacing a language prefix can lead to nonexistent pages.
 // Unmapped pages fall back to the destination language's home. Add new translated routes here.
-const englishPath = isWebsites ? `${base}blog/websites/` : isBrinson ? `${base}projects/brinson-attribution/` : isRestaurantJournal ? `${base}blog/korean-restaurants/` : isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
+const englishPath = isRegularizationNote ? `${base}projects/mathematics/overfitting-regularization-early-stopping/` : isWebsites ? `${base}blog/websites/` : isBrinson ? `${base}projects/brinson-attribution/` : isRestaurantJournal ? `${base}blog/korean-restaurants/` : isMidterm ? `${base}projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}projects/mathematics/` : isPortfolio ? `${base}projects/hotel-asset-management/portfolio/` : isHotel ? `${base}projects/hotel-asset-management/` : isAbout
     ? `${base}about/`
         : isProjects ? `${base}projects/` : isBlog ? `${base}blog/` : base;
-const koreanPath = isWebsites ? `${base}blog/websites/` : isBrinson ? `${base}ko/projects/brinson-attribution/` : isRestaurantJournal ? `${base}ko/blog/korean-restaurants/` : isMidterm ? `${base}ko/projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}ko/projects/mathematics/` : isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
+const koreanPath = isRegularizationNote ? `${base}ko/projects/mathematics/overfitting-regularization-early-stopping/` : isWebsites ? `${base}blog/websites/` : isBrinson ? `${base}ko/projects/brinson-attribution/` : isRestaurantJournal ? `${base}ko/blog/korean-restaurants/` : isMidterm ? `${base}ko/projects/nasdaq-after-us-midterm-elections/` : isMathProjects ? `${base}ko/projects/mathematics/` : isPortfolio ? `${base}ko/projects/hotel-asset-management/portfolio/` : isHotel ? `${base}ko/projects/hotel-asset-management/` : isAbout
     ? `${base}ko/about/`
         : isProjects ? `${base}ko/projects/` : isBlog ? `${base}ko/blog/` : `${base}ko/`;
 ---

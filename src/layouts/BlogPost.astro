@@ -21,12 +21,21 @@ const blogPostFiles = import.meta.glob<{ frontmatter: Post }>(
     { eager: true }
 );
 const mathNoteFiles = import.meta.glob<{ frontmatter: Post }>(
-    '../pages/projects/mathematics/*.md',
+    ['../pages/projects/mathematics/*.md', '../pages/ko/projects/mathematics/*.md'],
     { eager: true }
 );
 
-const sectionFiles = section === 'mathematics' ? mathNoteFiles : blogPostFiles;
-const sectionBase = section === 'mathematics' ? `${import.meta.env.BASE_URL}projects/mathematics/` : `${import.meta.env.BASE_URL}blog/`;
+const localizedMathNotes = new Map<string, [string, { frontmatter: Post }]>();
+for (const [path, post] of Object.entries(mathNoteFiles)) {
+    if (!path.includes('/ko/')) localizedMathNotes.set(path.split('/').pop()!, [path, post]);
+}
+if (frontmatter.lang === 'ko') {
+    for (const [path, post] of Object.entries(mathNoteFiles)) {
+        if (path.includes('/ko/')) localizedMathNotes.set(path.split('/').pop()!, [path, post]);
+    }
+}
+const sectionFiles = section === 'mathematics' ? Object.fromEntries(localizedMathNotes.values()) : blogPostFiles;
+const sectionBase = section === 'mathematics' ? `${import.meta.env.BASE_URL}${frontmatter.lang === 'ko' ? 'ko/' : ''}projects/mathematics/` : `${import.meta.env.BASE_URL}blog/`;
 const sidebarHeading = section === 'mathematics' ? 'All Notes' : 'All Posts';
 const sectionLabel = section === 'mathematics' ? 'Mathematics & Statistics and Computer Science' : 'Blog';
 const sectionFooterLabel = section === 'mathematics' ? 'Mathematics projects' : 'all posts';
@@ -36,7 +45,7 @@ const sortedPosts = Object.entries(sectionFiles)
         ...mod.frontmatter,
         url:
             section === 'mathematics'
-                ? sectionBase + path.replace('../pages/projects/mathematics/', '').replace('.md', '') + '/'
+                ? import.meta.env.BASE_URL + path.replace('../pages/', '').replace('.md', '') + '/'
                 : sectionBase + path.replace('../pages/blog/', '').replace('.md', '') + '/',
     }))
     .concat(section === 'blog' ? [frontmatter.lang === 'ko' ? koreanRestaurantPost : restaurantPost, websitesPost] : [])

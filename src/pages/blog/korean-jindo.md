@@ -11,9 +11,11 @@ A place for getting to know the Korean Jindo through stories, observations and e
 
 Above all, I hope this post helps rescued Jindos and Jindo mixes from Korea find loving homes. If you are considering adoption, you will find links to rescue organizations at the end of this post.
 
-<figure class="jindo-photo-frame jindo-photo-frame--cover" role="img" aria-label="Placeholder for a Korean Jindo portrait">
-  <span class="jindo-photo-label">Portrait</span>
-  <figcaption>A photograph will be added here.</figcaption>
+<figure>
+  <img
+    src="/mathblog/images/blog/jindo/portrait.jpeg"
+    alt="A Korean Jindo"
+  />
 </figure>
 
 ## Getting to know the Korean Jindo

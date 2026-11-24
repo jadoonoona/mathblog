@@ -12,10 +12,9 @@ lang: 'ko'
 무엇보다 이 글이 한국에서 구조된 진돗개와 진도 믹스가 가족을 만나는 작은 계기가 되었으면 합니다. 입양에 관심이 있다면 글 마지막에 모아 둔 구조·입양 단체의 안내를 살펴봐 주세요.
 <figure>
   <img
-    src="/mathblog/images/blog/jindo/portrait.jpg"
+    src="/mathblog/images/blog/jindo/portrait.jpeg"
     alt="진돗개의 모습"
   />
-  <figcaption>사진 설명을 여기에 적어주세요.</figcaption>
 </figure>
 
 ## 진돗개 알아보기

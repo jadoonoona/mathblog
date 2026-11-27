@@ -25,7 +25,7 @@ test('catalog search, category, all selected tags and favorites intersect', () =
     const select = (overrides: Partial<WebsiteFilters>) => selectWebsites(websites, { ...defaults, ...overrides }, favorites).map(site => site.id);
     assert.deepEqual(select({ query: 'DESMOS.COM 그래프', category: '수학·통계', tags: ['시각화', '학습'], favoritesOnly: true }), ['desmos']);
     assert.deepEqual(select({ category: '개발', favoritesOnly: true }), []);
-    assert.deepEqual(select({ query: '  경제 시계열  ', tags: ['데이터'] }), ['fred']);
+    assert.deepEqual(select({ query: '  경제 시계열  ', tags: ['데이터'] }), ['ecos', 'fred']);
     assert.deepEqual(select({ query: 'ＭＤＮ' }), ['mdn']);
     assert.deepEqual(select({ tags: ['오픈소스', '협업'] }), ['github']);
     assert.deepEqual(select({ favoritesOnly: true }), ['desmos', 'geogebra', 'fred']);

@@ -14,6 +14,7 @@ export interface Website {
 
 // Starter entries, not personal recommendations. Add entries here without changing the UI.
 export const websites: Website[] = [
+    { id: 'kosis', title: 'KOSIS 국가통계포털', url: 'https://kosis.kr/index/index.do', description: '인구, 고용, 물가 등 다양한 분야의 국가통계를 검색하는 포털. 국내·국제 통계와 지역별 지표를 통계표와 시각화로 살펴볼 수 있습니다.', category: '데이터·시각화', tags: ['데이터', '통계', '공공데이터', '시각화'], thumbnail: '', addedAt: '2026-11-27' },
     { id: 'ecos', title: '한국은행 경제통계시스템 (ECOS)', url: 'https://ecos.bok.or.kr/#/', description: '한국은행이 제공하는 경제통계 포털. 금리, 환율, 통화, 국민계정 등 주요 경제지표와 시계열 통계를 검색하고 조회할 수 있습니다.', category: '금융·경제', tags: ['데이터', '통계', '리서치'], thumbnail: '', addedAt: '2026-11-27' },
     { id: 'seereal', title: '씨:리얼 (SEE:REAL)', url: 'https://seereal.lh.or.kr/main.do', description: '한국토지주택공사(LH)가 제공하는 부동산 정보 포털. 지도에서 토지·주택 정보를 살펴보고 실거래가, 공시가격과 부동산 통계를 조회할 수 있습니다.', category: '부동산', tags: ['부동산', '통계', '공공데이터'], thumbnail: '', addedAt: '2026-11-27' },
     { id: 'data-go-kr', title: '공공데이터포털', url: 'https://www.data.go.kr/index.do', description: '대한민국 공공기관의 파일 데이터와 오픈 API를 검색하고 활용할 수 있는 공공데이터 포털.', category: '데이터·시각화', tags: ['데이터', '공공데이터', 'API', '리서치'], thumbnail: 'images/websites/data-go-kr.jpg', addedAt: '2026-11-22' },
@@ -39,6 +40,7 @@ export const websites: Website[] = [
 
 // Keep stable IDs so favorites are shared between the two language versions.
 const englishEntries: Record<string, { title?: string; description: string }> = {
+    kosis: { title: 'Korean Statistical Information Service (KOSIS)', description: 'Search national statistics on population, employment, prices and other topics. Explore domestic and international statistics and regional indicators through tables and visualizations.' },
     ecos: { title: 'Bank of Korea Economic Statistics System (ECOS)', description: 'The Bank of Korea’s economic statistics portal. Search and explore key economic indicators and time series, including interest rates, exchange rates, money and national accounts.' },
     seereal: { title: 'SEE:REAL', description: 'A real estate information portal from Korea Land and Housing Corporation (LH). Explore land and housing on maps and look up transaction prices, assessed values and real estate statistics.' },
     'data-go-kr': { title: 'Korea Public Data Portal', description: 'Find and use datasets and open APIs published by Korean public institutions.' },
